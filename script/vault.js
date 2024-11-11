@@ -1,10 +1,4 @@
-/*
-document.querySelectorAll('.box').forEach(box => {
-    box.addEventListener('click', function() {
-        window.open(this.getAttribute('data-link'), '_blank');
-    });
-});
-*/
+/* <div class="box">の中に data-id="newTab"を入れると新しいタブで開く */
 document.querySelectorAll('.box').forEach(box => {
     box.addEventListener('click', function() {
         const link = this.getAttribute('data-link');
