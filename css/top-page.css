@@ -1,0 +1,80 @@
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  position: relative;
+}
+
+.circle {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  border: 2px solid black;
+  position: relative;
+}
+
+.horizontal-line {
+  width: 100%;
+  height: 2px;
+  background-color: black;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+.vertical-line {
+  width: 2px;
+  height: 50%;
+  background-color: black;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.text-above,
+.text-lower-left,
+.text-lower-right {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+}
+
+.text-above {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 25%;
+}
+
+.text-lower-left {
+  position: absolute;
+  width: 50%;
+  text-align: center;
+  top: 70%;
+  left: 0;
+  transform: translate(0, -50%);
+}
+
+.text-lower-right {
+  position: absolute;
+  width: 50%;
+  text-align: center;
+  top: 70%;
+  right: 0;
+  transform: translate(0, -50%);
+}
+
+.text-above,
+.text-lower-left,
+.text-lower-right {
+  font-family: 'mamelon3.5', sans-serif;
+  font-size: 4;
+  color: black;
+}
