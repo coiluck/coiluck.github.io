@@ -21,7 +21,7 @@
   width: 60%;
   height: 1px;
   background-color: #888;
-  margin: 40px auto 40px;
+  margin: 40px auto 30px;
 }
 @media (max-width: 767px) {
   .line-under-profile {
@@ -33,29 +33,13 @@
   margin: 0 auto;
   max-width: 800px;
 }
-.headline {
-  font-size: 1.4em;
-  margin: 1.5em 0 0.5em 0;
+.profile-text {
+  margin-top: 10px; 
   text-align: center;
-}
-.subheadline {
-  font-size: 1.1em;
-  margin: 1em 0 0.5em 2em;
-  color: #333;
-}
-.honbunn1 {
-  text-align: center;
-}
-.honbunn2 {
-  margin: 0.5em 0 0.5em 2em
- 
-}
-.honbunn2 p {
-  margin: 0.3em 0 0.3em 2em;
-}
-.red-symbol {
-  color: #ff7f7e;
 }
 a {
   color: #000000;
+}
+.red-symbol {
+  color: #ff7f7e;
 }
