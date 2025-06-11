@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Topbar from '../components/topbar.astro';
+import LinkSection from '../components/link-section.astro';
+import { createData } from '../data/link-data.js';
+---
+
+<Layout pageTitle="制作物">
+  <Topbar />
+  <LinkSection 
+    title={createData.title}
+    description={createData.description}
+    links={createData.links}
+  />
+</Layout>

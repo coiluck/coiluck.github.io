@@ -1,0 +1,119 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Topbar from '../components/topbar.astro';
+import VerticalLine from '../components/vertical-line.astro';
+import LinkPreviewBox from '../components/link-preview-box.astro';
+---
+<Layout pageTitle="love">
+  <Topbar />
+  <div class="container">
+    <div class="title">Love</div>
+    <VerticalLine />
+    <div class="content">
+      <div class="category-label">Novel</div>
+      <div class="category-text">
+        ハヤカワ文庫JAなどを好む。<br>
+        &nbsp;&nbsp;・プロジェクトぴあの<br>
+        &nbsp;&nbsp;・同志少女よ、敵を撃て<br>
+        &nbsp;&nbsp;・ツインスターサイクロンランナウェイ<br>
+        &nbsp;&nbsp;・虐殺器官<br>
+        その他<br>
+        &nbsp;&nbsp;・妹さえいればいい<br>
+        &nbsp;&nbsp;・蝶と帝国<br>
+      </div>
+      <div class="category-label">Web Novel</div>
+      <div class="category-text">
+        小説家になろうをメインで読んでいる。稀にカクヨムやハーメルンには足を延ばす。<br>
+      </div>
+      <div class="category-label">Comic</div>
+      <div class="category-text">
+        マンガを読むことはあまりないけど。<br>
+        &nbsp;&nbsp;・ゆゆ式<br>
+        &nbsp;&nbsp;・ゆるゆり<br>
+        &nbsp;&nbsp;・児玉まりあ文学集成<br>
+      </div>
+      <div class="category-label">Music</div>
+      <div class="category-text">
+        &nbsp;&nbsp;・マイナーで静かなボカロ<br>
+        &nbsp;&nbsp;・作詞作曲が麻枝准かユリイカノンのもの<br>
+        &nbsp;&nbsp;・音ゲーの曲<br>
+        &nbsp;&nbsp;・Nightcore<br>
+        <br>
+        これとか、<br>
+        <LinkPreviewBox
+          title="ボカロ - 静"
+          description="playlist · coiluck · 34 items"
+          url="https://youtube.com/playlist?list=PL3MPhEsfgh10a-2zYMJOdA0BCmPeFo5b0&si=GW4LjLQDJ_akc_0Q"
+        />
+        これなど。
+        <LinkPreviewBox
+          title="ピアノ"
+          description="playlist · coiluck · 75 items"
+          url="https://youtube.com/playlist?list=PL3MPhEsfgh10TkA8w41sGFC1ChFhrP7hQ&si=09uIqqL8Mvq2zFb7"
+        />
+      </div>
+      <div class="category-label">Game</div>
+      <div class="category-text">今プレイしているのはDelta Force（PC版）くらい。<br>
+        過去には<br>
+        &nbsp;&nbsp;・グランブルーファンタジー<br>
+        &nbsp;&nbsp;・アークナイツ<br>
+        &nbsp;&nbsp;・ヘブンバーンズレッド<br>
+        &nbsp;&nbsp;・ポケモンユナイト<br>
+        などをやっていた。
+      </div>
+      <div class="category-label">Other</div>
+      <div class="category-text">
+        好きな色: <span style="color: #ff7f7e;">#ff7f7e</span><br>
+        好きなこと: GitHub Pagesで動作するゲームを作ること<br>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .container {
+      width: 100%;
+      margin: 90px auto 90px;
+    }
+    .title {
+      width: 70%;
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin: 0 auto;
+    }
+    .content {
+      width: 70%;
+      margin: 0 auto;
+    }
+    .category-label {
+      padding: 7px 11px;
+      margin: 10px 0;
+      font-size: 1.1rem;
+      font-weight: bold;
+      background-color: #fff;
+      box-sizing: border-box;
+      border-left: 4px solid #ff7f7e;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
+    }
+    .category-text {
+      width: calc(100% - 2rem);
+      margin: 0 auto 0 2rem;
+      font-size: .9rem;
+    }
+    @media (max-width: 767px) {
+      .title {
+        width: 80%;
+      }
+      .content {
+        width: 80%;
+      }
+    }
+    @media (max-width: 480px) {
+      .title {
+        width: 90%;
+      }
+      .content {
+        width: 90%;
+      }
+    }
+  </style>
+</Layout>

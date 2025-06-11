@@ -1,0 +1,80 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout pageTitle="404">
+  <div class="content">
+    <div class="image">
+      <img src="/src/assets/images/404.avif" alt="404用画像">
+    </div>
+    <div class="text">
+      <h2>This page does not exist.</h2>
+      <p>
+        You will be redirected to the <a href="/" style="color: #000;">top page</a> 
+        <span style="display: inline-block;">
+          in <span id="countdown">5</span> seconds.
+        </span>
+      </p>
+    </div>
+  </div>
+  <style>
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .image {
+      width: 80%;
+      height: 50%;
+    }
+    .image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .text {
+      width: 80%;
+      text-align: center;
+    }
+    #countdown {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #ff7f7e;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    @media (max-width: 480px) {
+      .image {
+        width: 90%;
+      }
+      .text {
+        width: 90%;
+      }
+      .text h2 {
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+      .text p {
+        font-size: .9rem;
+      }
+      #countdown {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+  <script>
+    const countdown = document.getElementById('countdown');
+    let timeLeft = 5;
+    if (countdown) {
+      function updateCountdown() {
+        countdown.textContent = timeLeft.toString();
+        timeLeft--;
+        if (timeLeft < 0) {
+          window.location.href = '/';
+        }
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    }
+  </script>
+</Layout>

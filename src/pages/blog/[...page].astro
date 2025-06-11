@@ -1,0 +1,333 @@
+---
+import Topbar from '../../components/topbar.astro';
+import Layout from '../../layouts/Layout.astro';
+import BlogImage from '../../components/blog-image.astro';
+import Pagination from '../../components/pagination.astro'; 
+import BlogLine from '../../components/blog-line.astro';
+
+export async function getStaticPaths({ paginate }) {
+  console.log('=== getStaticPaths 開始 ===');
+  
+  try {
+    const AllPosts = await Astro.glob('../../content/posts/*.md');
+    console.log('基本パスで取得したファイル数:', AllPosts.length);
+    
+    // もしファイルが見つからない場合は、よくある他のパターンも試す
+    let posts = AllPosts;
+    if (posts.length === 0) {
+      console.log('⚠️ ファイルが見つかりません。別のパスを試行中...');
+      
+      try {
+        // パターン1: src基準
+        const posts1 = await Astro.glob('/src/content/posts/*.md');
+        console.log('パターン1 (/src/...):', posts1.length, '件');
+        if (posts1.length > 0) posts = posts1;
+      } catch (e) {
+        console.log('パターン1でエラー:', e.message);
+      }
+      if (posts.length === 0) {
+        try {
+          // パターン2: 相対パス短縮版
+          const posts2 = await Astro.glob('../content/posts/*.md');
+          console.log('パターン2 (../content/...):', posts2.length, '件');
+          if (posts2.length > 0) posts = posts2;
+        } catch (e) {
+          console.log('パターン2でエラー:', e.message);
+        }
+      }
+    }
+    // 非公開記事を除外
+    posts = posts.filter(post => post.frontmatter?.published !== false);
+
+    console.log('最終的に取得したファイル数:', posts.length);
+
+    // 抜粋処理
+    console.log('=== 抜粋処理開始 ===');
+    const postsWithExcerpts = await Promise.all(
+      posts.map(async (post, index) => {
+        let excerpt = ''; 
+    
+    try {
+      if (post.frontmatter?.custom_excerpt) {
+        excerpt = post.frontmatter.custom_excerpt;
+      } else {
+        let content = '';
+        if (post.rawContent) {
+          if (typeof post.rawContent === 'function') {
+            content = await post.rawContent();
+          } else {
+            content = post.rawContent;
+          }
+        }
+        
+        if (content) {
+          // Markdownの記法や改行を除去してプレーンテキストに近づける
+          const plainText = content
+            .replace(/#+\s/g, '')        // 見出し記号 (#) を除去
+            .replace(/<br\s*\/?>/gi, ' ') // <br> タグをスペースに変換
+            .replace(/\r\n|\n|\r/g, ' ') // 改行コードをスペースに変換
+            .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // Markdownリンクをテキストに
+            .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')  // Markdown画像を空に
+            .replace(/`/g, '')           // バッククォートを除去
+            .replace(/\*|_/g, '')        // 強調表現の記号を除去
+            .replace(/\s+/g, ' ')        // 連続する空白を1つにまとめる
+            .replace(/\{:\s*\.blog-link\s*\}/g, '')  // {: .blog-link } を除去
+            .replace(/<[^>]+>/g, '')     // HTMLタグをすべて除去
+            .trim();
+
+          const moreTag = '<!--more-->';
+          const moreIndex = plainText.indexOf(moreTag);
+          if (moreIndex !== -1) {
+            excerpt = plainText.substring(0, moreIndex).trim();
+          } else {
+            excerpt = plainText.substring(0, 150); // .trim()は不要
+            if (plainText.length > 150) {
+                excerpt += '...';
+            }
+          }
+        } else {
+          excerpt = `投稿${index + 1}の抜粋です。`;
+        }
+      }
+    } catch (error) {
+      console.error(`抜粋処理エラー (${post.frontmatter?.title}):`, error.message);
+      excerpt = '抜粋の取得に失敗しました。';
+    }
+    
+    return {
+      ...post,
+      excerpt
+    };
+      })
+    );
+    
+    // 有効な投稿のフィルタリング
+    const validPosts = postsWithExcerpts.filter(post => 
+      post.frontmatter?.title && post.frontmatter?.date
+    );
+    
+    console.log('有効な投稿数:', validPosts.length);
+    
+    // 日付でソート
+    const sortedPosts = validPosts.sort((a, b) => {
+      const dateA = new Date(a.frontmatter.date).getTime();
+      const dateB = new Date(b.frontmatter.date).getTime();
+      return dateB - dateA;
+    });
+    
+    console.log('ソート後の投稿:', sortedPosts.map(p => ({
+      title: p.frontmatter.title,
+      date: p.frontmatter.date,
+      excerptLength: p.excerpt?.length || 0
+    })));
+    
+    // ページネーション実行
+    console.log('=== ページネーション実行 ===');
+    const paginatedResult = paginate(sortedPosts, { pageSize: 5 });
+    
+    console.log('ページネーション結果:', {
+      totalPages: paginatedResult.length,
+      firstPageData: paginatedResult[0] ? {
+        paramsType: typeof paginatedResult[0].params,
+        params: paginatedResult[0].params,
+        propsType: typeof paginatedResult[0].props,
+        propsKeys: paginatedResult[0].props ? Object.keys(paginatedResult[0].props) : [],
+        pageDataLength: paginatedResult[0].props?.page?.data?.length
+      } : null
+    });
+    
+    console.log('=== getStaticPaths 完了 ===');
+    return paginatedResult;
+    
+  } catch (error) {
+    console.error('❌ getStaticPaths 致命的なエラー:', error);
+    console.error('エラーの詳細:', {
+      message: error.message,
+      stack: error.stack?.split('\n').slice(0, 5)
+    });
+    
+    // 緊急フォールバック
+    return paginate([{
+      file: '/error.md',
+      frontmatter: {
+        title: 'エラー用ダミー投稿',
+        date: '1970-01-01'
+      },
+      excerpt: 'システムエラーが発生しました。'
+    }], { pageSize: 5 });
+  }
+}
+
+// ページコンポーネント側のログ
+console.log('=== ページコンポーネント実行開始 ===');
+console.log('受信したAstro.props:', {
+  type: typeof Astro.props,
+  keys: Object.keys(Astro.props || {}),
+  stringified: JSON.stringify(Astro.props, null, 2)
+});
+
+const { page } = Astro.props;
+
+if (page) {
+  console.log('✅ pageオブジェクト正常受信:', {
+    currentPage: page.currentPage,
+    lastPage: page.lastPage,
+    dataLength: page.data?.length,
+    urlKeys: page.url ? Object.keys(page.url) : [],
+    firstDataSample: page.data?.[0] ? {
+      title: page.data[0].frontmatter?.title,
+      file: page.data[0].file
+    } : null
+  });
+} else {
+  console.error('❌ pageオブジェクトが未定義');
+}
+---
+
+<Layout pageTitle="blog">
+  <Topbar />
+  <BlogImage />
+  <article>
+    <div class="blog-content">
+      {/* メインコンテンツ */}
+      {page && page.data && page.data.length > 0 ? (
+        <>
+          {page.data.map((post, index) => {
+            const filename = post.file?.split('/').pop()?.replace('.md', '') || `post-${index}`;
+            
+            return (
+              <article class="blog-post" key={index}>
+                <header>
+                  <h2>
+                    <a href={`/blog/${filename}`}>
+                      {post.frontmatter?.title || `無題の投稿 ${index + 1}`}
+                    </a>
+                  </h2>
+                  <div class="meta">
+                    {post.frontmatter?.tags && post.frontmatter.tags.length > 0 && (
+                      <div class="tags">
+                        {post.frontmatter.tags.map((tag, tagIndex) => (
+                          <span key={tagIndex}>
+                            <a href={`/blog/tag/${encodeURIComponent(tag)}`} class="post-tag">
+                              <span style="color: #ff7f7e;">#</span>{tag}
+                            </a>
+                            {tagIndex < post.frontmatter.tags.length - 1 && ', '}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <time class="date">{post.frontmatter?.date || '日付不明'}</time>
+                  </div>
+                </header>
+                
+                {post.excerpt && (
+                  <p class="excerpt">{post.excerpt}</p>
+                )}
+                
+                <footer>
+                  <a href={`/blog/${filename}`} class="read-more">続きを読む</a>
+                </footer>
+              </article>
+            );
+          })}
+        </>
+      ) : (
+        <div style="text-align: center; padding: 2rem;">
+          <p>📝 現在、表示できる投稿がありません。</p>
+        </div>
+      )}
+    </div>
+    <BlogLine />
+    <Pagination page={page} />
+  </article>
+</Layout>
+
+<style>
+  .blog-content {
+    margin: 40px auto 30px;
+    width: 70%;
+  }
+
+  .blog-post {
+    margin: 2rem auto;
+    width: 100%;
+  }
+
+  .blog-post h2 {
+    text-align: center;
+  }
+
+  .blog-post h2 a {
+    color: black;
+    text-decoration: none;
+    background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
+		linear-gradient(#f6d893, #f6d893) right 60% / 0 .8em no-repeat;
+    transition: background-size .4s cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  .blog-post h2 a:hover {
+    background-position: right bottom, left 60%;
+    background-size: 0 2px, 100% .8em;
+  }
+  @media (pointer: none) { /* タッチデバイスではホバー効果を無効化 */
+    .post-title {
+      color: black;
+      text-decoration: none;
+      border-bottom: solid 2px black;
+      background: none;
+      transition: none;
+    }
+    .post-title:hover {
+      background-position: initial;
+      background-size: initial;
+    }
+  }
+  .meta {
+    margin-bottom: .5rem;
+    font-size: 0.9rem;
+    color: #666;
+    gap: 1rem;
+  }
+  
+  .tags {
+    color: #666;
+    margin-top: 1em;
+    text-align: center;
+  }
+  .tags a {
+    font-size: .95rem;
+    color: #666;
+    margin-top: 1em;
+    text-align: center;
+    text-decoration: none;
+  }
+  .tags a:hover {
+    text-decoration: underline;
+  }
+  .date {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: left;
+  }
+  
+  .excerpt {
+    margin: .5rem 0 0;
+    line-height: 1.6;
+    color: #222;
+  }
+
+  .read-more {
+    display: inline-block;
+    margin-top: 0.8em;
+    color: #0066cc;
+    text-decoration: none;
+  }
+  .read-more:hover {
+    text-decoration: underline;
+  }
+
+@media (max-width: 767px) {
+  .blog-content{
+    width: 90%;
+  }
+}
+</style>

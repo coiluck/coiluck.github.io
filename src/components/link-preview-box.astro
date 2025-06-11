@@ -1,0 +1,48 @@
+---
+// link-preview-box.astro
+const { title, description, url } = Astro.props;
+const domain = new URL(url).hostname;
+---
+
+<a href={url} class="link-preview-box" target="_blank" rel="noopener noreferrer">
+  <div class="link-preview-content">
+    <p class="link-title">{title}</p>
+    <p class="link-description">{description}</p>
+    <span class="link-domain">🔗{domain}</span>
+  </div>
+</a>
+
+<style>
+  .link-preview-box {
+    display: block;
+    border: 1px solid #000;
+    text-decoration: none;
+    color: inherit;
+    padding: 10px;
+    margin: 5px 0;
+  }
+
+  .link-preview-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .link-title {
+    font-weight: bold;
+    margin: 0;
+    font-size: .9rem;
+  }
+
+  .link-description {
+    margin: 0;
+    font-size: 0.7rem;
+    color: #666;
+  }
+
+  .link-domain {
+    margin: 0;
+    font-size: 0.7rem;
+    color: #666;
+  }
+</style>

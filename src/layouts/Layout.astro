@@ -1,0 +1,36 @@
+---
+const siteTitle = import.meta.env.SITE_TITLE;
+const { pageTitle } = Astro.props;
+---
+<!doctype html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" href="/src/assets/images/favicon.ico" />
+		<title>{siteTitle}{pageTitle && ` | ${pageTitle}`}</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<style>
+	@font-face {
+		font-family: 'mamelon3.5';
+		src: url('/src/assets/Mamelon-3.5HiRegular.woff2') format('woff2');
+	}
+	html, body {
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		font-family: 'mamelon3.5', sans-serif;
+		background-color: #eee;
+	}
+	* {
+		font-family: 'mamelon3.5', sans-serif;
+	}
+	html {
+		min-height: 100vh;
+	}
+</style>

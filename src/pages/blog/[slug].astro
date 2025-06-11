@@ -1,0 +1,283 @@
+---
+// src/pages/blog/[...slug].astro
+import Layout from '../../layouts/Layout.astro';
+import Topbar from '../../components/topbar.astro';
+import BlogImage from '../../components/blog-image.astro';
+
+export async function getStaticPaths() {
+  const posts = await Astro.glob('../../content/posts/*.md');
+  
+  return posts.map((post) => {
+    // ファイル名からスラッグを生成（例: 2024-08-24-example.md → 2024-08-24-example）
+    const filename = post.file.split('/').pop().replace('.md', '');
+    
+    return {
+      params: { slug: filename },
+      props: { post },
+    };
+  });
+}
+
+const { post } = Astro.props;
+const { Content } = post;
+---
+
+<Layout pageTitle={post.frontmatter.title}>
+  <Topbar />
+  <BlogImage />
+  <article class="blog-post">
+    <h2>{post.frontmatter.title}</h2>
+    <div class="meta">
+      <p>投稿日: {post.frontmatter.date}</p>
+      <p>
+        タグ: 
+        {post.frontmatter.tags.map((tag, tagIndex) => (
+          <span>
+            <a href={`/blog/tag/${encodeURIComponent(tag)}`}>
+              <span style="color: #ff7f7e;">#</span>{tag}
+            </a>
+            {tagIndex < post.frontmatter.tags.length - 1 && ', '}
+          </span>
+        ))}
+      </p>
+    </div>
+
+    <div class="blog-tag-line"></div>
+
+    <div class="content prose">
+      <Content />
+    </div>
+  </article>
+
+  <div class="line-under-blog"></div>
+
+  <button class="top-button-container">
+    <div class="circle-button">
+      <span class="arrow">&lt;</span>
+    </div>
+    <span class="top-text">Top</span>
+  </button>
+
+  <div style="height: 80px;"></div>
+
+  <style is:global>
+    .blog-post {
+      width: 70%;
+      margin: 0 auto;
+    }
+    @media (max-width: 767px) {
+      .blog-post {
+        width: 90%;
+      }
+    }
+    .blog-post h2 {
+      margin: .5rem 0 0;
+      text-align: center;
+    }
+    .meta {
+      font-size: 0.9rem;
+      text-align: center;
+      color: #666;
+    }
+    .meta p{
+      margin: .5rem 0 0;
+    }
+    .meta p span a {
+      color: #666;
+      text-decoration: none;
+    }
+    .blog-tag-line {
+      width: 100%;
+      height: 1px;
+      background-color: #888;
+      margin: 40px auto 30px;
+    }
+    .content {
+      margin-bottom: 32px;
+    }
+    /* 記事本文内の装飾 */
+    .ff7f7e {
+      color: #ff7f7e; /* 使うときは<span class="ff7f7e"> */
+    }
+    /* brタグが連続した場合、2つ目以降を非表示にする */
+    .footnotes h2, #footnote-label {
+      display: none;
+    }
+    .prose a.blog-link {
+      color: black;
+      text-decoration-color: black;
+    }
+    .prose sup a {
+      color: #6088C6;
+      text-decoration: none;
+    }
+    .prose sup a:visited {
+      color: #6088C6;
+    }
+    .prose sup a:hover,
+    .prose sup a:focus {
+      color: #6088C6;
+      text-decoration: none;
+    }
+    .prose a.data-footnote-backref {
+      color: #6088C6;
+      text-decoration: none;
+    }
+    .prose a.data-footnote-backref:visited {
+      color: #6088C6;
+    }
+    .prose a.data-footnote-backref:hover,
+    .prose a.data-footnote-backref:focus {
+      color: #6088C6;
+      text-decoration: none;
+    }
+    /* 引用部分の装飾 */
+    .prose blockquote {
+      padding: 10px 15px;
+      margin: 10px 0;
+      box-sizing: border-box;
+      border-left: 4px solid #ff7f7e;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
+    }
+    .prose blockquote p {
+      margin: 0;
+      padding: 0;
+    }
+    .prose p {
+      margin: 0;
+      padding: 0;
+    }
+    .prose .footnotes h2 {
+      display: none;
+    }
+    .prose code {
+      background-color: #ccc;
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-size: inherit;
+    }
+
+    /* 個別の記事のTopへボタン */
+    .top-button-container {
+      position: relative;
+      top: 20px;
+      margin-left: 15%;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      border: none;
+      color: #ff7f7e;
+      width: fit-content;
+      font-family: 'mamelon3.5', sans-serif;
+    }
+    .circle-button {
+      width: 20px;
+      height: 20px;
+      background-color: #ff7f7e;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+    }
+    .arrow {
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+    }
+    .top-text {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    @media (max-width: 767px) {
+      .top-button-container {
+        margin-left: 5%;
+      }
+    }
+    .line-under-blog {
+      width: 70%;
+      height: 1px;
+      background-color: #888;
+      margin: 20px auto 20px;
+    }
+    @media (max-width: 767px) {
+      .line-under-blog {
+        width: 90%;
+        margin-top: 2em;
+      }
+    }
+  </style>
+  <script>
+  // URLを保存
+  window.addEventListener('load', function() {
+    const referrer = document.referrer;
+    if (referrer && referrer.includes('/blog/')) {
+      sessionStorage.setItem('lastListPage', referrer);
+    }
+  
+    // クリック時の挙動を設定
+    const topButton = document.querySelector('.top-button-container');
+    if (topButton) {
+      topButton.addEventListener('click', function(e) {
+        e.preventDefault(); // デフォルトの遷移を防ぐ
+        const lastPage = sessionStorage.getItem('lastListPage');
+        if (lastPage && lastPage !== window.location.href) {
+          window.location.href = lastPage;
+        } else {
+          // 外部からの人は1ページ目へ
+          window.location.href = '/blog/';
+        }
+      });
+    }
+  });
+  // 連続した<br>タグを削除
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. 脚注セクションを探す
+    const footnotesContainer = document.querySelector('section[data-footnotes]');
+    console.log('📝 脚注セクションの検索結果:', footnotesContainer);
+  
+    if (!footnotesContainer) {
+      console.log('脚注セクションが見つかりませんでした');
+      return;
+    }
+
+    // 2. 脚注セクションの「直前の要素」を取得する
+    const lastElement = footnotesContainer.previousElementSibling;
+    console.log('脚注直前の要素:', lastElement);
+    console.log('要素のタグ名:', lastElement ? lastElement.tagName : 'なし');
+
+    // 3. その要素が <p> タグであるかをチェック
+    if (lastElement && lastElement.tagName === 'P') {
+      console.log('Pタグが見つかりました');
+      const pElement = lastElement;
+      
+      // 現在のHTML内容をログ出力
+      console.log('変更前のHTML:', pElement.innerHTML);
+    
+      // 末尾のBRタグをチェック
+      const brMatches = pElement.innerHTML.match(/(<br\s*\/?>\s*){2,}\s*$/);
+      console.log('末尾の連続BRタグ:', brMatches ? brMatches[0] : 'なし');
+
+      // 4. Pタグの内部HTMLを正規表現で置換する
+      //    末尾にある2つ以上連続した<br>タグを、2つの<br>に書き換える
+      const originalHTML = pElement.innerHTML;
+      pElement.innerHTML = pElement.innerHTML.replace(
+      /(<br\s*\/?>\s*){2,}\s*$/,
+      '<br><br>'
+    );
+    
+    // 変更後のHTML内容をログ出力
+    console.log('変更後のHTML:', pElement.innerHTML);
+    
+    // 実際に変更されたかをチェック
+    if (originalHTML !== pElement.innerHTML) {
+      console.log('HTMLが変更されました');
+    } else {
+      console.log('HTMLに変更はありませんでした');
+    }
+  } else {
+    console.log('脚注直前にPタグが見つかりませんでした');
+  }
+});
+  </script>
+</Layout>

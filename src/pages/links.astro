@@ -1,0 +1,15 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Topbar from '../components/topbar.astro';
+import LinkSection from '../components/link-section.astro';
+import { linksData } from '../data/link-data.js';
+---
+
+<Layout pageTitle="リンク集">
+  <Topbar />
+  <LinkSection 
+    title={linksData.title}
+    description={linksData.description}
+    links={linksData.links}
+  />
+</Layout>

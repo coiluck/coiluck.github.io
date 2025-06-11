@@ -1,0 +1,48 @@
+<div class="top-bar">
+  <p class="top-bar-text">
+    <a href="/" class="custom-link">革命学舎</a>
+  </p>
+</div>
+
+<style>
+  .top-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2em;
+    background-color: #ff7f7e;
+    color: black;
+    padding: 10px 0; /* position:absoluteに変えると右にスクロールされるようになった。下で左右は設定 */
+    z-index: 1000;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .top-bar-text {
+    margin: 0;
+    padding-left: 20px;
+    text-align: left;
+    flex: 1;
+  }
+  .custom-link {
+    color: black;
+    font-size: 4;
+    text-decoration: none; 
+  }
+  .custom-link:hover {
+    color: black;
+  }
+  .top-bar::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background-color: black;
+    z-index: -1;
+  }
+</style>
