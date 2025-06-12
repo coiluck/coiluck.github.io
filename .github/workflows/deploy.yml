@@ -17,6 +17,8 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SITE_TITLE: "革命学舎"
     steps:
       - name: Checkout your repository using git
         uses: actions/checkout@v4

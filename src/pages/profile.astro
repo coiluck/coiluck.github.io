@@ -2,12 +2,13 @@
 import Topbar from '../components/topbar.astro';
 import Layout from '../layouts/Layout.astro';
 import VerticalLine from '../components/vertical-line.astro';
+import profileIcon from '../assets/images/profile-icon.avif';
 ---
 
 <Layout pageTitle="profile">
 	<Topbar />
   <div class="container">
-    <img class="profile-picture" src="/src/assets/images/profile-icon.avif" alt="アイコン">
+    <img class="profile-picture" src={profileIcon.src} alt="アイコン">
 
     <VerticalLine />
 
@@ -31,7 +32,7 @@ import VerticalLine from '../components/vertical-line.astro';
       <div class="category-label">このサイトについて</div>
       <div class="category-text">
         人生暇すぎてやることがなかったから作った。<br>
-        <a href="./index.html" class="custom-link">トップページ</a>は<a href="https://en.wikipedia.org/wiki/T_and_O_map" target="_blank" rel="noopener noreferrer" class="custom-link">T-O Map</a>をイメージしている。
+        <a href="/index" class="custom-link">トップページ</a>は<a href="https://en.wikipedia.org/wiki/T_and_O_map" target="_blank" rel="noopener noreferrer" class="custom-link">T-O Map</a>をイメージしている。
       </div>
     </div>
   </div>

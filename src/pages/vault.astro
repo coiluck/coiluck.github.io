@@ -1,30 +1,35 @@
 ---
 import Topbar from '../components/topbar.astro';
 import Layout from '../layouts/Layout.astro';
+import profileIcon from '../assets/images/profile-icon.avif';
+import fromSideIcon from '../assets/images/icons/fromSide.avif';
+import hornIcon from '../assets/images/icons/horn.avif';
+import spaceIcon from '../assets/images/icons/space.avif';
+import cafeIcon from '../assets/images/icons/cafe.avif';
 ---
 
 
 <Layout pageTitle="vault">
 	<Topbar />
 	<div class="container">
-		<img class="profile-picture" src="/src/assets/images/profile-icon.avif" alt="アイコン">
+		<img class="profile-picture" src={profileIcon.src} alt="アイコン">
 	  <div class="line"></div>
 	</div>
 	<div class="content">
 		<div class="box" data-link="/links">
-			<img src="/src/assets/images/icons/fromSide.avif" alt="アイコン1">
+			<img src={fromSideIcon.src} alt="アイコン1">
 			<span>アカウント</span>
 		</div>
 		<div class="box" data-link="/love">
-			<img src="/src/assets/images/icons/horn.avif" alt="アイコン2">
+			<img src={hornIcon.src} alt="アイコン2">
 			<span>Love</span>
 		</div>
 		<div class="box" data-link="404.html">
-			<img src="/src/assets/images/icons/space.avif" alt="アイコン3">
+			<img src={spaceIcon.src} alt="アイコン3">
 			<span>未設定</span>
 		</div>
 		<div class="box" data-link="/create">
-			<img src="/src/assets/images/icons/cafe.avif" alt="アイコン4">
+			<img src={cafeIcon.src} alt="アイコン4">
 			<span>制作物</span>
 		</div>
   </div>

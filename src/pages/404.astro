@@ -1,11 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import fourZeroFourIcon from '../assets/images/404.avif';
 ---
 
 <Layout pageTitle="404">
   <div class="content">
     <div class="image">
-      <img src="/src/assets/images/404.avif" alt="404用画像">
+      <img src={fourZeroFourIcon.src} alt="404用画像">
     </div>
     <div class="text">
       <h2>This page does not exist.</h2>

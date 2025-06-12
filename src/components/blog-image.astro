@@ -2,7 +2,7 @@
 const siteTitle = import.meta.env.SITE_TITLE;
 ---
 <div class="image-container">
-  <img src="/src/assets/images/blog-pic.avif" alt="ブログトップ画像">
+  <img src="/images/blog-pic.avif" alt="ブログトップ画像">
   <div class="image-text">
     <div class="main-text">{siteTitle}</div>
     <div class="sub-text">書く、これしか出来ないから。</div>
@@ -11,64 +11,64 @@ const siteTitle = import.meta.env.SITE_TITLE;
 
 <style>
   .image-container {
-  position: relative;
-  width: 90%;
-  height: auto;
-  margin: 100px auto 40px;
-  overflow: hidden;
-}
-.image-container img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
-@media (max-width: 767px) {
+    position: relative;
+    width: 90%;
+    height: auto;
+    margin: 100px auto 40px;
+    overflow: hidden;
+  }
+  .image-container img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  @media (max-width: 767px) {
     .image-container {
-        width: 90%;
+      width: 90%;
     }
     .main-text {
-        font-size: 1.5em;
+      font-size: 1.5em;
     }
     .sub-text {
-        font-size: 0.8em;
+      font-size: 0.8em;
     }
-}
-@media (max-width: 480px) {
+  }
+  @media (max-width: 480px) {
     .main-text {
-        font-size: 1.2em;
+      font-size: 1.2em;
     }
     .sub-text {
-        font-size: 0.7em;
+      font-size: 0.7em;
     }
-}
-@media (min-width: 768px) {
+  }
+  @media (min-width: 768px) {
     .image-container {
-        width: 70%;
+      width: 70%;
     }
-}
-.image-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
-  width: 90%;
-  -webkit-user-select: none;
-  user-select: none;
-}
-.main-text {
-  font-size: 2em;
-  margin-bottom: 10px;
-  white-space: nowrap;
-  -webkit-user-select: none;
-  user-select: none;
-}
-.sub-text {
-  font-size: 1em;
-  -webkit-user-select: none;
-  user-select: none;
-}
+  }
+  .image-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+    width: 90%;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .main-text {
+    font-size: 2em;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .sub-text {
+    font-size: 1em;
+    -webkit-user-select: none;
+    user-select: none;
+  }
 </style>
