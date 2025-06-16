@@ -1,11 +1,13 @@
 ---
 import Topbar from '../components/topbar.astro';
 import Layout from '../layouts/Layout.astro';
-import profileIcon from '../assets/images/profile-icon.avif';
 import fromSideIcon from '../assets/images/icons/fromSide.avif';
 import hornIcon from '../assets/images/icons/horn.avif';
 import spaceIcon from '../assets/images/icons/space.avif';
 import cafeIcon from '../assets/images/icons/cafe.avif';
+// アイコン用
+import profileIcon from '../assets/images/profile-icon.avif';
+import catIcon from '../assets/images/cat.avif';
 ---
 
 
@@ -133,7 +135,7 @@ import cafeIcon from '../assets/images/icons/cafe.avif';
 			}
     }
 	</style>
-	<script>
+	<script define:vars={{ profileIconSrc: profileIcon.src, catIconSrc: catIcon.src }}>
 		/* <div class="box">の中に data-id="newTab"を入れると新しいタブで開く */
     document.querySelectorAll('.box').forEach(box => {
       box.addEventListener('click', function() {
@@ -158,13 +160,18 @@ import cafeIcon from '../assets/images/icons/cafe.avif';
     	box.addEventListener('mouseenter', startAnimation);
     	box.addEventListener('click', startAnimation);
 		});
-    
+
     // ページ読み込み時に画像をランダムに表示
-    const imgNum = Math.floor(Math.random() * 25) + 1;
-    const img = document.querySelector('.profile-picture');
-    if (img && imgNum === 25) {
-      img.src = `/src/assets/images/cat.avif`;
-    } else {
+    updateIcon();
+
+    function updateIcon() {
+      const imgNum = Math.floor(Math.random() * 20) + 1;
+      const img = document.querySelector('.profile-picture');
+      if (img && imgNum % 5 === 0) {
+        img.src = catIconSrc;
+      } else {
+        img.src = profileIconSrc;
+      }
       console.log(imgNum);
     }
 	</script>
