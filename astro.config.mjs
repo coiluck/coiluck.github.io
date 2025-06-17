@@ -8,8 +8,10 @@ import remarkAttributes from 'remark-attributes';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
+// sitemap
+import sitemap from '@astrojs/sitemap';
 
-// https://astro.build/config
+
 export default defineConfig({
   markdown: {
     shikiConfig: {
@@ -29,5 +31,8 @@ export default defineConfig({
   build: {
     format: 'directory'
   },
-  site: 'https://coiluck.moe'
+  site: 'https://coiluck.moe',
+  integrations: [
+    sitemap()
+  ]
 });
