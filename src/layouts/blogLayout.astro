@@ -1,6 +1,8 @@
 ---
 const siteTitle = import.meta.env.SITE_TITLE;
-const { pageTitle } = Astro.props;
+const { pageTitle, ogTitle, ogDescription, ogUrl } = Astro.props;
+const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://coiluck.moe';
+const OGImage = new URL("/images/ogp.png", siteUrl).toString();
 ---
 <!doctype html>
 <html lang="ja">
@@ -10,6 +12,13 @@ const { pageTitle } = Astro.props;
     <link rel="icon" href="/images/favicon.ico" />
     <link rel="alternate" type="application/rss+xml" title="革命学舎 | blog" href="/rss.xml" />
     <title>{siteTitle}{pageTitle && ` | ${pageTitle}`}</title>
+    <meta property="og:title" content={`${siteTitle} | ${ogTitle || pageTitle}`} />
+    <meta property="og:description" content={ogDescription || '革命学舎'} />
+    <meta property="og:url" content={ogUrl || Astro.url.toString()} />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content={OGImage} />
+    <meta property="og:site_name" content={siteTitle} />
+    <meta name="twitter:card" content="summary" />
   </head>
   <body>
       <slot />

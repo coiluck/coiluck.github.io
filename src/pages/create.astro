@@ -3,9 +3,11 @@ import Layout from '../layouts/Layout.astro';
 import Topbar from '../components/topbar.astro';
 import LinkSection from '../components/link-section.astro';
 import { createData } from '../data/link-data.js';
+
+const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<Layout pageTitle="制作物">
+<Layout pageTitle="制作物" ogUrl={ogUrl}>
   <Topbar />
   <LinkSection 
     title={createData.title}

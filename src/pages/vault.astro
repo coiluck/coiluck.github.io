@@ -8,10 +8,12 @@ import cafeIcon from '../assets/images/icons/cafe.avif';
 // アイコン用
 import profileIcon from '../assets/images/profile-icon.avif';
 import catIcon from '../assets/images/cat.avif';
+
+const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 
-<Layout pageTitle="vault">
+<Layout pageTitle="vault" ogUrl={ogUrl}>
 	<Topbar />
 	<div class="container">
 		<img class="profile-picture" src={profileIcon.src} alt="アイコン">

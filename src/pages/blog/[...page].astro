@@ -168,6 +168,11 @@ console.log('受信したAstro.props:', {
 
 const { page } = Astro.props;
 
+// OGP用
+const ogTitle = "blog";
+const ogDescription = "書く、これしか出来ないから";
+const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
+
 if (page) {
   console.log('✅ pageオブジェクト正常受信:', {
     currentPage: page.currentPage,
@@ -184,7 +189,12 @@ if (page) {
 }
 ---
 
-<Layout pageTitle="blog">
+<Layout 
+  pageTitle="blog" 
+  ogTitle={ogTitle} 
+  ogDescription={ogDescription} 
+  ogUrl={ogUrl}
+>
   <Topbar />
   <BlogImage />
   <article>

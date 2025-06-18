@@ -3,9 +3,11 @@ import Layout from '../layouts/Layout.astro';
 import Topbar from '../components/topbar.astro';
 import LinkSection from '../components/link-section.astro';
 import { linksData } from '../data/link-data.js';
+
+const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<Layout pageTitle="リンク集">
+<Layout pageTitle="リンク集" ogUrl={ogUrl}>
   <Topbar />
   <LinkSection 
     title={linksData.title}

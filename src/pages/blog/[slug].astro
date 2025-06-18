@@ -22,10 +22,69 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = post;
----
+const { Content, rawContent, frontmatter } = post;
 
-<Layout pageTitle={post.frontmatter.title}>
+// OGP用
+const ogTitle = post.frontmatter.title;
+const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
+let ogDescription = '';
+
+try {
+  // custom_excerptを使用
+  if (frontmatter.custom_excerpt) {
+    ogDescription = frontmatter.custom_excerpt;
+
+  } else {
+    const markdownContent = typeof rawContent === 'function' ? await rawContent() : (rawContent || '');
+
+    if (markdownContent) {
+      const moreTag = '<!--more-->';
+      const moreTagIndex = markdownContent.indexOf(moreTag);
+      let textToProcess = markdownContent;
+
+      // <!--more--> タグまで抜き出す
+      if (moreTagIndex !== -1) {
+        textToProcess = markdownContent.substring(0, moreTagIndex);
+      }
+
+      // 除去
+      const plainText = textToProcess
+        .replace(/#+\s/g, '')        // 見出し記号 (#) を除去
+        .replace(/<br\s*\/?>/gi, ' ') // <br> タグをスペースに変換
+        .replace(/\r\n|\n|\r/g, ' ') // 改行コードをスペースに変換
+        .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // Markdownリンクをテキストに
+        .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')  // Markdown画像を空に
+        .replace(/`/g, '')           // バッククォートを除去
+        .replace(/\*|_/g, '')        // 強調表現の記号を除去
+        .replace(/\s+/g, ' ')        // 連続する空白を1つにまとめる
+        .replace(/\{:\s*\.blog-link\s*\}/g, '')  // {: .blog-link } を除去
+        .replace(/<[^>]+>/g, '')     // HTMLタグをすべて除去
+        .trim();
+
+      // 何もない -> 50文字抜き出す
+      if (moreTagIndex === -1 && plainText.length > 50) {
+        ogDescription = plainText.substring(0, 50) + '...';
+      } else {
+        ogDescription = plainText;
+      }
+
+    } else {
+      // コンテンツが空の場合(そんなことある？)
+      ogDescription = frontmatter.title;
+    }
+  }
+} catch (error) {
+  // エラーが発生した場合の処理
+  console.error(`OGP Descriptionの生成エラー (記事: ${frontmatter.title}):`, error);
+  ogDescription = '投稿';
+}
+---
+<Layout
+  pageTitle={post.frontmatter.title}
+  ogTitle={ogTitle}
+  ogDescription={ogDescription}
+  ogUrl={ogUrl}
+>
   <Topbar />
   <BlogImage />
   <article class="blog-post">

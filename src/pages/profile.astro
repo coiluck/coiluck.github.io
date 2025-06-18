@@ -3,9 +3,11 @@ import Topbar from '../components/topbar.astro';
 import Layout from '../layouts/Layout.astro';
 import VerticalLine from '../components/vertical-line.astro';
 import profileIcon from '../assets/images/profile-icon.avif';
+
+const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<Layout pageTitle="profile">
+<Layout pageTitle="profile" ogUrl={ogUrl}>
 	<Topbar />
   <div class="container">
     <img class="profile-picture" src={profileIcon.src} alt="アイコン">
