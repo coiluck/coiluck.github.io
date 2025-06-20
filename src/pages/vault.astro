@@ -1,6 +1,8 @@
 ---
 import Topbar from '../components/topbar.astro';
 import Layout from '../layouts/Layout.astro';
+
+import { Image } from 'astro:assets';
 import fromSideIcon from '../assets/images/icons/fromSide.avif';
 import hornIcon from '../assets/images/icons/horn.avif';
 import spaceIcon from '../assets/images/icons/space.avif';
@@ -16,24 +18,24 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 <Layout pageTitle="vault" ogUrl={ogUrl}>
 	<Topbar />
 	<div class="container">
-		<img class="profile-picture" src={profileIcon.src} alt="アイコン">
+		<Image class="profile-picture" src={profileIcon} alt="アイコン" />
 	  <div class="line"></div>
 	</div>
 	<div class="content">
 		<div class="box" data-link="/links">
-			<img src={fromSideIcon.src} alt="アイコン1">
+			<Image src={fromSideIcon} alt="アイコン1" />
 			<span>アカウント</span>
 		</div>
 		<div class="box" data-link="/love">
-			<img src={hornIcon.src} alt="アイコン2">
+			<Image src={hornIcon} alt="アイコン2" />
 			<span>Love</span>
 		</div>
 		<div class="box" data-link="404.html">
-			<img src={spaceIcon.src} alt="アイコン3">
+			<Image src={spaceIcon} alt="アイコン3" />
 			<span>未設定</span>
 		</div>
 		<div class="box" data-link="/create">
-			<img src={cafeIcon.src} alt="アイコン4">
+			<Image src={cafeIcon} alt="アイコン4" />
 			<span>制作物</span>
 		</div>
   </div>

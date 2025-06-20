@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
 import fourZeroFourIcon from '../assets/images/404.avif';
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
@@ -7,7 +8,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 <Layout pageTitle="404" ogUrl={ogUrl}>
   <div class="content">
     <div class="image">
-      <img src={fourZeroFourIcon.src} alt="404用画像">
+      <Image src={fourZeroFourIcon} alt="404用画像" />
     </div>
     <div class="text">
       <h2>This page does not exist.</h2>

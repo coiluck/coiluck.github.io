@@ -1,8 +1,10 @@
 ---
+import { Image } from 'astro:assets';
+import blogImage from '../assets/images/blog-pic.avif';
 const siteTitle = import.meta.env.SITE_TITLE;
 ---
 <div class="image-container">
-  <img src="/images/blog-pic.avif" alt="ブログトップ画像">
+  <Image src={blogImage} alt="ブログトップ画像" />
   <div class="image-text">
     <div class="main-text">{siteTitle}</div>
     <div class="sub-text">書く、これしか出来ないから。</div>
