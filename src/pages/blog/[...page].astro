@@ -61,9 +61,21 @@ export async function getStaticPaths({ paginate }) {
         }
         
         if (content) {
+          const moreTag = '<!--more-->';
+          const moreIndex = content.indexOf(moreTag);
+    
+          let textToProcess = '';
+          if (moreIndex !== -1) {
+            // <!--more-->がある -> その前の部分だけを処理
+            textToProcess = content.substring(0, moreIndex);
+          } else {
+            // <!--more-->がない -> 全体を処理
+            textToProcess = content;
+          }
           // Markdownの記法や改行を除去してプレーンテキストに近づける
-          const plainText = content
+          const plainText = textToProcess
             .replace(/#+\s/g, '')        // 見出し記号 (#) を除去
+            .replace(/<rt>.*?<\/rt>/gi, '') // <rt></rt> タグとその中身を除去
             .replace(/<br\s*\/?>/gi, ' ') // <br> タグをスペースに変換
             .replace(/\r\n|\n|\r/g, ' ') // 改行コードをスペースに変換
             .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // Markdownリンクをテキストに
@@ -75,14 +87,12 @@ export async function getStaticPaths({ paginate }) {
             .replace(/<[^>]+>/g, '')     // HTMLタグをすべて除去
             .trim();
 
-          const moreTag = '<!--more-->';
-          const moreIndex = plainText.indexOf(moreTag);
           if (moreIndex !== -1) {
-            excerpt = plainText.substring(0, moreIndex).trim();
+            excerpt = plainText;
           } else {
-            excerpt = plainText.substring(0, 150); // .trim()は不要
+            excerpt = plainText.substring(0, 150);
             if (plainText.length > 150) {
-                excerpt += '...';
+              excerpt += '...';
             }
           }
         } else {

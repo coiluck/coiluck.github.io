@@ -78,9 +78,21 @@ export async function getStaticPaths({ paginate }) {
               }
               
               if (content) {
+                const moreTag = '<!--more-->';
+                const moreIndex = content.indexOf(moreTag);
+
+                let textToProcess = '';
+                if (moreIndex !== -1) {
+                  // <!--more-->がある -> その前の部分だけを処理
+                  textToProcess = content.substring(0, moreIndex);
+                } else {
+                  // <!--more-->がない -> 全体を処理
+                  textToProcess = content;
+                }
                 // Markdownの記法や改行を除去してプレーンテキストに近づける
-                const plainText = content
+                const plainText = textToProcess
                   .replace(/#+\s/g, '')        // 見出し記号 (#) を除去
+                  .replace(/<rt>.*?<\/rt>/gi, '') // <rt></rt> タグとその中身を除去
                   .replace(/<br\s*\/?>/gi, ' ') // <br> タグをスペースに変換
                   .replace(/\r\n|\n|\r/g, ' ') // 改行コードをスペースに変換
                   .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // Markdownリンクをテキストに
@@ -92,10 +104,8 @@ export async function getStaticPaths({ paginate }) {
                   .replace(/<[^>]+>/g, '')     // HTMLタグをすべて除去
                   .trim();
 
-                const moreTag = '<!--more-->';
-                const moreIndex = plainText.indexOf(moreTag);
                 if (moreIndex !== -1) {
-                  excerpt = plainText.substring(0, moreIndex).trim();
+                  excerpt = plainText;
                 } else {
                   excerpt = plainText.substring(0, 150);
                   if (plainText.length > 150) {
@@ -208,57 +218,57 @@ if (page) {
       </div>
       <div class="blog-tag-line"></div>
       
-        {/* メインコンテンツ */}
-        {page && page.data && page.data.length > 0 ? (
-          <>
-            {page.data.map((post, index) => {
-              const filename = post.file?.split('/').pop()?.replace('.md', '') || `post-${index}`;
-              
-              return (
-                <article class="blog-post" key={index}>
-                  <header>
-                    <h2>
-                      <a href={`/blog/${filename}`}>
-                        {post.frontmatter?.title || `無題の投稿 ${index + 1}`}
-                      </a>
-                    </h2>
-                    <div class="meta">
-                      {post.frontmatter?.tags && post.frontmatter.tags.length > 0 && (
-                        <div class="tags">
-                          {post.frontmatter.tags.map((tag, tagIndex) => (
-                            <span key={tagIndex}>
-                              <a href={`/blog/tag/${encodeURIComponent(tag)}`} class="post-tag">
-                                <span style="color: #ff7f7e;">#</span>{tag}
-                              </a>
-                              {tagIndex < post.frontmatter.tags.length - 1 && ', '}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                      <time class="date">{post.frontmatter?.date || '日付不明'}</time>
-                    </div>
-                  </header>
-                  
-                  {post.excerpt && (
-                    <p class="excerpt">{post.excerpt}</p>
-                  )}
-                  
-                  <footer>
-                    <a href={`/blog/${filename}`} class="read-more">続きを読む</a>
-                  </footer>
-                </article>
-              );
-            })}
-          </>
-        ) : (
-          <div style="text-align: center; padding: 2rem;">
-            <p>📝 現在、表示できる投稿がありません。</p>
-          </div>
-        )}
-      </div>
-      <BlogLine />
-      <Pagination page={page} />
-    </article>
+      {/* メインコンテンツ */}
+      {page && page.data && page.data.length > 0 ? (
+        <>
+          {page.data.map((post, index) => {
+            const filename = post.file?.split('/').pop()?.replace('.md', '') || `post-${index}`;
+  
+            return (
+              <article class="blog-post" key={index}>
+                <header>
+                  <h2>
+                    <a href={`/blog/${filename}`}>
+                      {post.frontmatter?.title || `無題の投稿 ${index + 1}`}
+                    </a>
+                  </h2>
+                  <div class="meta">
+                    {post.frontmatter?.tags && post.frontmatter.tags.length > 0 && (
+                      <div class="tags">
+                        {post.frontmatter.tags.map((tag, tagIndex) => (
+                          <span key={tagIndex}>
+                            <a href={`/blog/tag/${encodeURIComponent(tag)}`} class="post-tag">
+                              <span style="color: #ff7f7e;">#</span>{tag}
+                            </a>
+                            {tagIndex < post.frontmatter.tags.length - 1 && ', '}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    <time class="date">{post.frontmatter?.date || '日付不明'}</time>
+                  </div>
+                </header>
+
+                {post.excerpt && (
+                  <p class="excerpt">{post.excerpt}</p>
+                )}
+
+                <footer>
+                  <a href={`/blog/${filename}`} class="read-more">続きを読む</a>
+                </footer>
+              </article>
+            );
+          })}
+        </>
+      ) : (
+        <div style="text-align: center; padding: 2rem;">
+          <p>📝 現在、表示できる投稿がありません。</p>
+        </div>
+      )}
+    </div>
+    <BlogLine />
+    <Pagination page={page} />
+  </article>
 
     <style>
       .tag-pankuzu {

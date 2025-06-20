@@ -51,6 +51,7 @@ try {
       const plainText = textToProcess
         .replace(/#+\s/g, '')        // 見出し記号 (#) を除去
         .replace(/<br\s*\/?>/gi, ' ') // <br> タグをスペースに変換
+        .replace(/<rt>.*?<\/rt>/gi, '') // <rt></rt> タグとその中身を除去
         .replace(/\r\n|\n|\r/g, ' ') // 改行コードをスペースに変換
         .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // Markdownリンクをテキストに
         .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')  // Markdown画像を空に
@@ -61,7 +62,6 @@ try {
         .replace(/<[^>]+>/g, '')     // HTMLタグをすべて除去
         .trim();
 
-      // 何もない -> 50文字抜き出す
       if (moreTagIndex === -1 && plainText.length > 50) {
         ogDescription = plainText.substring(0, 50) + '...';
       } else {
@@ -294,7 +294,7 @@ try {
   });
   // 連続した<br>タグを削除
   document.addEventListener('DOMContentLoaded', () => {
-    // 1. 脚注セクションを探す
+    // 脚注セクションを探す
     const footnotesContainer = document.querySelector('section[data-footnotes]');
     console.log('📝 脚注セクションの検索結果:', footnotesContainer);
   
@@ -303,12 +303,12 @@ try {
       return;
     }
 
-    // 2. 脚注セクションの「直前の要素」を取得する
+    // 脚注セクションの直前の要素を取得
     const lastElement = footnotesContainer.previousElementSibling;
     console.log('脚注直前の要素:', lastElement);
     console.log('要素のタグ名:', lastElement ? lastElement.tagName : 'なし');
 
-    // 3. その要素が <p> タグであるかをチェック
+    // その要素が <p> タグであるかをチェック
     if (lastElement && lastElement.tagName === 'P') {
       console.log('Pタグが見つかりました');
       const pElement = lastElement;
@@ -320,26 +320,25 @@ try {
       const brMatches = pElement.innerHTML.match(/(<br\s*\/?>\s*){2,}\s*$/);
       console.log('末尾の連続BRタグ:', brMatches ? brMatches[0] : 'なし');
 
-      // 4. Pタグの内部HTMLを正規表現で置換する
-      //    末尾にある2つ以上連続した<br>タグを、2つの<br>に書き換える
+      // 末尾にある2つ以上連続した<br>タグを、2つの<br>に書き換える
       const originalHTML = pElement.innerHTML;
       pElement.innerHTML = pElement.innerHTML.replace(
-      /(<br\s*\/?>\s*){2,}\s*$/,
-      '<br><br>'
-    );
+        /(<br\s*\/?>\s*){2,}\s*$/,
+        '<br><br>'
+      );
     
-    // 変更後のHTML内容をログ出力
-    console.log('変更後のHTML:', pElement.innerHTML);
+      // 変更後のHTML内容をログ出力
+      console.log('変更後のHTML:', pElement.innerHTML);
     
-    // 実際に変更されたかをチェック
-    if (originalHTML !== pElement.innerHTML) {
-      console.log('HTMLが変更されました');
+      // 実際に変更されたかをチェック
+      if (originalHTML !== pElement.innerHTML) {
+        console.log('HTMLが変更されました');
+      } else {
+        console.log('HTMLに変更はありませんでした');
+      }
     } else {
-      console.log('HTMLに変更はありませんでした');
+      console.log('脚注直前にPタグが見つかりませんでした');
     }
-  } else {
-    console.log('脚注直前にPタグが見つかりませんでした');
-  }
-});
+  });
   </script>
 </Layout>
