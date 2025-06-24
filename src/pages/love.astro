@@ -9,7 +9,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 <Layout pageTitle="love" ogUrl={ogUrl}>
   <Topbar />
   <div class="container">
-    <div class="title">Love</div>
+    <h3 class="title">Love</h3>
     <VerticalLine />
     <div class="content">
       <div class="category-label">Novel</div>
@@ -78,7 +78,6 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     }
     .title {
       width: 70%;
-      font-size: 1.3rem;
       font-weight: bold;
       margin: 0 auto;
     }

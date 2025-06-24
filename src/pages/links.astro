@@ -1,17 +1,100 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Topbar from '../components/topbar.astro';
-import LinkSection from '../components/link-section.astro';
-import { linksData } from '../data/link-data.js';
+import LinkPreviewBox from '../components/link-preview-box.astro';
 
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <Layout pageTitle="リンク集" ogUrl={ogUrl}>
   <Topbar />
-  <LinkSection 
-    title={linksData.title}
-    description={linksData.description}
-    links={linksData.links}
-  />
+  <div class="links-container">
+    <h3>リンク集</h3>
+    <p>僕が使っているアカウントなど</p>
+    <div class="vertical-line"></div>
+    <div class="links-box">
+      <LinkPreviewBox
+        title="GitHub"
+        description="Pages用のリポジトリしかない"
+        url="https://github.com/coiluck/"
+      />
+      <LinkPreviewBox
+        title="Discord"
+        description="あまり見ていないかも"
+        url="https://discordlookup.com/user/611161347987734559"
+      />
+      <LinkPreviewBox
+        title="Twitter"
+        description="Xではありません"
+        url="https://twitter.com/RabbitGbf"
+      />
+      <LinkPreviewBox
+        title="chichi-pui"
+        description="AIイラスト。投稿をやめると過去の投稿が消される"
+        url="https://www.chichi-pui.com/users/coiluck/"
+      />
+      <LinkPreviewBox
+        title="pixiv"
+        description="更新しない。ナゾノクサの絵ばかり"
+        url="https://www.pixiv.net/users/63923759"
+      />
+      <LinkPreviewBox
+        title="Truth Social"
+        description="二日で飽きた"
+        url="https://truthsocial.com/@coiluck"
+      />
+      <LinkPreviewBox
+        title="Steam"
+        description="遊ぶ"
+        url="https://steamcommunity.com/id/coiluck/"
+      />
+      <LinkPreviewBox
+        title="YouTube"
+        description="限定公開で動画を共有する時に使う"
+        url="https://www.youtube.com/@kozakurakokone"
+      />
+      <LinkPreviewBox
+        title="Misskey"
+        description="予備"
+        url="https://misskey.io/@Asiraat/"
+      />
+      <LinkPreviewBox
+        title="mixi2"
+        description="予備"
+        url="https://mixi.social/@coiluck"
+      />
+    </div>
+  </div>
+  <style>
+    h3, p {
+      margin: 20px 0 0;
+    }
+    .links-container {
+      display: flex;
+      flex-direction: column;
+      width: 70%;
+      margin: 60px auto;
+    }
+    .vertical-line {
+      width: 100%;
+      height: 1px;
+      background-color: #888;
+      margin: 30px auto 30px;
+    }
+    .links-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 10px 20px;
+    }
+    @media (max-width: 767px) {
+      .links-container {
+        width: 80%;
+      }
+    }
+    @media (max-width: 480px) {
+      .links-container {
+        width: 90%;
+      }
+    }
+  </style>
 </Layout>
