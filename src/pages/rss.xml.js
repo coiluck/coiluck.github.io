@@ -8,7 +8,7 @@ export async function GET(context) {
   const sortedPosts = publishedPosts.sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date));
 
   return rss({
-    title: '革命学舎 | blog',
+    title: '革命学舎',
     description: 'こいらっくのwebサイト（coiluck.moe）',
     site: context.site,
     items: await Promise.all(sortedPosts.map(async (post) => {
@@ -30,6 +30,7 @@ export async function GET(context) {
             // Markdown記法やHTMLタグを除去
             const plainText = content
               .replace(/#+\s/g, '')
+              .replace(/<rt>.*?<\/rt>/gi, '')
               .replace(/<br\s*\/?>/gi, ' ')
               .replace(/\r\n|\n|\r/g, ' ')
               .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
