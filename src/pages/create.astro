@@ -1,17 +1,121 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Topbar from '../components/topbar.astro';
-import LinkSection from '../components/link-section.astro';
-import { createData } from '../data/link-data.js';
 
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <Layout pageTitle="制作物" ogUrl={ogUrl}>
   <Topbar />
-  <LinkSection 
-    title={createData.title}
-    description={createData.description}
-    links={createData.links}
-  />
+  <div class="content">
+    <div class="content-header">
+      <h2>ひとつひとつでいいからね</h2>
+      <p>One step at a time.</p>
+    </div>
+    <div class="content-inner">
+      <h2>制作物</h2>
+      <p>つくったものなど</p>
+    </div>
+    <a class="content-boxes" href="https://coiluck.github.io/nongenerate-generater/" target="_blank" rel="noopener noreferrer">
+      <h3>絶対に決める</h3>
+      <p>何か決めたいとき用</p>
+    </a>
+    <a class="content-boxes" href="https://coiluck.github.io/anya/" target="_blank" rel="noopener noreferrer">
+      <h3>アーニャのお仕事体験記</h3>
+      <p>ギャグノベルゲーム</p>
+    </a>
+    <a class="content-boxes" href="https://coiluck.github.io/truth-edokko/" target="_blank" rel="noopener noreferrer">
+      <h3>真の江戸っ子になれ！</h3>
+      <p>お金を使い切るゲーム</p>
+    </a>
+    <a class="content-boxes" href="https://coiluck.github.io/CountryChain/" target="_blank" rel="noopener noreferrer">
+      <h3>国境しりとり</h3>
+      <p>接している国を交互に言い合うゲーム</p>
+    </a>
+    <a class="content-boxes" href="https://coiluck.github.io/SinkendenSonne/" target="_blank" rel="noopener noreferrer">
+      <h3>陽の沈む場所</h3>
+      <p>月面を開発するノベルゲーム</p>
+    </a>
+    <a class="content-boxes" href="https://coiluck.github.io/history-game/" target="_blank" rel="noopener noreferrer">
+      <h3>歴史の扉</h3>
+      <p>人物の年代を比べるゲーム</p>
+    </a>
+    <a class="content-boxes" href="https://coiluck.github.io/CardCreater/" target="_blank" rel="noopener noreferrer">
+      <h3>カード作成ツール</h3>
+      <p>オリジナルのカードを作成するツール</p>
+    </a>
+  </div>
+  <style>
+    body {
+      display: flow-root;
+      height: 100vh;
+      background-image: radial-gradient(#555 1px, transparent 1px);
+      background-size: 20px 20px;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    .content {
+      width: 70%;
+      height: calc(100vh - 160px);
+      margin: 80px auto;
+      text-align: center;
+      padding: 10px;
+      border-radius: 10px;
+      overflow-y: auto;
+      scrollbar-width: none;
+      scroll-snap-type: y proximity;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    .content::-webkit-scrollbar {
+      display: none;
+    }
+    /* かっこいいセリフ */
+    .content-header {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transform: translateY(-120px); /* 位置調整（この方法しかない？） */
+      scroll-snap-align: start;
+    }
+    .content-header h2 {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      margin: 0;
+      padding: 15px;
+      font-weight: 100;
+    }
+    .content-header p {
+      margin: 0;
+      font-weight: 100;
+    }
+    /* 「制作物」のタイトル */
+    .content-inner {
+      display: block;
+      margin: 60px auto;
+      padding: 5px 15px;
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid #555;
+      scroll-snap-align: start;
+    }
+    .content-boxes {
+      display: block;
+      width: 70%;
+      margin: 60px auto;
+      padding: 5px 15px;
+      color: inherit;
+      background-color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      border: 1px solid #555;
+      border-radius: 10px;
+    }
+  </style>
 </Layout>
