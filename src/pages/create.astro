@@ -1,12 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Topbar from '../components/topbar.astro';
+import { Image } from 'astro:assets';
+import createImage from '../assets/images/create.avif';
 
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <Layout pageTitle="制作物" ogUrl={ogUrl}>
   <Topbar />
+  <div class="image-container">
+    <Image src={createImage} alt="おにゃのこ" />
+  </div>
   <div class="content">
     <div class="content-header">
       <h2>ひとつひとつでいいからね</h2>
@@ -16,34 +21,36 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       <h2>制作物</h2>
       <p>つくったものなど</p>
     </div>
-    <a class="content-boxes" href="https://coiluck.github.io/nongenerate-generater/" target="_blank" rel="noopener noreferrer">
-      <h3>絶対に決める</h3>
-      <p>何か決めたいとき用</p>
-    </a>
-    <a class="content-boxes" href="https://coiluck.github.io/anya/" target="_blank" rel="noopener noreferrer">
-      <h3>アーニャのお仕事体験記</h3>
-      <p>ギャグノベルゲーム</p>
-    </a>
-    <a class="content-boxes" href="https://coiluck.github.io/truth-edokko/" target="_blank" rel="noopener noreferrer">
-      <h3>真の江戸っ子になれ！</h3>
-      <p>お金を使い切るゲーム</p>
-    </a>
-    <a class="content-boxes" href="https://coiluck.github.io/CountryChain/" target="_blank" rel="noopener noreferrer">
-      <h3>国境しりとり</h3>
-      <p>接している国を交互に言い合うゲーム</p>
-    </a>
-    <a class="content-boxes" href="https://coiluck.github.io/SinkendenSonne/" target="_blank" rel="noopener noreferrer">
-      <h3>陽の沈む場所</h3>
-      <p>月面を開発するノベルゲーム</p>
-    </a>
-    <a class="content-boxes" href="https://coiluck.github.io/history-game/" target="_blank" rel="noopener noreferrer">
-      <h3>歴史の扉</h3>
-      <p>人物の年代を比べるゲーム</p>
-    </a>
-    <a class="content-boxes" href="https://coiluck.github.io/CardCreater/" target="_blank" rel="noopener noreferrer">
-      <h3>カード作成ツール</h3>
-      <p>オリジナルのカードを作成するツール</p>
-    </a>
+    <div class="projects-container">
+      <a class="content-boxes" href="https://coiluck.github.io/nongenerate-generater/" target="_blank" rel="noopener noreferrer">
+        <h3>絶対に決める</h3>
+        <p>何か決めたいとき用</p>
+      </a>
+      <a class="content-boxes" href="https://coiluck.github.io/anya/" target="_blank" rel="noopener noreferrer">
+        <h3>アーニャのお仕事体験記</h3>
+        <p>ギャグノベルゲーム</p>
+      </a>
+      <a class="content-boxes" href="https://coiluck.github.io/truth-edokko/" target="_blank" rel="noopener noreferrer">
+        <h3>真の江戸っ子になれ！</h3>
+        <p>お金を使い切るゲーム</p>
+      </a>
+      <a class="content-boxes" href="https://coiluck.github.io/CountryChain/" target="_blank" rel="noopener noreferrer">
+        <h3>国境しりとり</h3>
+        <p>接している国を交互に言い合うゲーム</p>
+      </a>
+      <a class="content-boxes" href="https://coiluck.github.io/SinkendenSonne/" target="_blank" rel="noopener noreferrer">
+        <h3>陽の沈む場所</h3>
+        <p>月面を開発するノベルゲーム</p>
+      </a>
+      <a class="content-boxes" href="https://coiluck.github.io/history-game/" target="_blank" rel="noopener noreferrer">
+        <h3>歴史の扉</h3>
+        <p>人物の年代を比べるゲーム</p>
+      </a>
+      <a class="content-boxes" href="https://coiluck.github.io/CardCreater/" target="_blank" rel="noopener noreferrer">
+        <h3>カード作成ツール</h3>
+        <p>オリジナルのカードを作成するツール</p>
+      </a>
+    </div>
   </div>
   <style>
     body {
@@ -53,8 +60,29 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       background-size: 20px 20px;
       font-family: sans-serif;
       overflow: hidden;
+      z-index: -1;
+    }
+    .image-container {
+      position: absolute;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    .image-container img {
+      display: block;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      max-width: 100%;
+      height: auto;
+      max-height: 80%;
+      object-fit: contain;
+      object-position: bottom right; 
     }
     .content {
+      position: relative;
       width: 70%;
       height: calc(100vh - 160px);
       margin: 80px auto;
@@ -63,38 +91,49 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       border-radius: 10px;
       overflow-y: auto;
       scrollbar-width: none;
-      scroll-snap-type: y proximity;
+      scroll-snap-type: y mandatory;
       &::-webkit-scrollbar {
         display: none;
       }
+      z-index: 2;
     }
     .content::-webkit-scrollbar {
       display: none;
     }
     /* かっこいいセリフ */
     .content-header {
-      height: 100%;
+      height: 100vh;
       width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      transform: translateY(-120px); /* 位置調整（この方法しかない？） */
+      transform: translateY(-120px);
       scroll-snap-align: start;
+      scroll-snap-stop: always;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
     .content-header h2 {
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
+      position: relative;
       width: 100%;
       margin: 0;
       padding: 15px;
-      font-weight: 100;
+      font-weight: 200 !important;
     }
     .content-header p {
       margin: 0;
       font-weight: 100;
+    }
+    .content-header h2 span {
+      display: inline-block;
     }
     /* 「制作物」のタイトル */
     .content-inner {
@@ -105,6 +144,14 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       text-decoration: none;
       border-bottom: 1px solid #555;
       scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+    /* プロジェクト一覧のコンテナ */
+    .projects-container {
+      min-height: calc(100vh - 200px);
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      padding-bottom: 100px;
     }
     .content-boxes {
       display: block;
@@ -112,10 +159,41 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       margin: 60px auto;
       padding: 5px 15px;
       color: inherit;
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(255, 255, 255, 0.7);
       text-decoration: none;
       border: 1px solid #555;
       border-radius: 10px;
     }
+    @media (max-width: 768px) {
+      .content {
+        width: 80%;
+      }
+      .content-boxes {
+        width: 80%;
+      }
+    }
+    @media (max-width: 480px) {
+      .content {
+        width: 90%;
+      }
+      .content-boxes {
+        margin: 40px auto;
+      }
+    }
   </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const random = Math.floor(Math.random() * 20);
+      console.log(random);
+      if (random === 0) {
+        document.querySelector('.content-header').removeChild(document.querySelector('.content-header p'));
+        const h2Text = document.querySelector('.content-header h2');
+        h2Text.innerHTML = '<span>Break the dream,</span> <span>embrace the night.</span>';
+      } else if (random === 1) {
+        document.querySelector('.content-header').removeChild(document.querySelector('.content-header p'));
+        const h2Text = document.querySelector('.content-header h2');
+        h2Text.innerHTML = '<span>Seek the morrow,</span> <span>till dawn breaks.</span>';
+      }
+    });
+  </script>
 </Layout>
