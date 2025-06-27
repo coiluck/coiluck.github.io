@@ -17,11 +17,11 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       <h2>ひとつひとつでいいからね</h2>
       <p>One step at a time.</p>
     </div>
-    <div class="content-inner">
-      <h2>制作物</h2>
-      <p>つくったものなど</p>
-    </div>
     <div class="projects-container">
+      <div class="content-inner">
+        <h2>制作物</h2>
+        <p>つくったものなど</p>
+      </div>
       <a class="content-boxes" href="https://coiluck.github.io/nongenerate-generater/" target="_blank" rel="noopener noreferrer">
         <h3>絶対に決める</h3>
         <p>何か決めたいとき用</p>
@@ -143,8 +143,6 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       color: inherit;
       text-decoration: none;
       border-bottom: 1px solid #555;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
     }
     /* プロジェクト一覧のコンテナ */
     .projects-container {
