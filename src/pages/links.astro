@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Topbar from '../components/topbar.astro';
 import LinkPreviewBox from '../components/link-preview-box.astro';
+import { Image } from 'astro:assets';
+import linksImage from '../assets/images/links.avif';
 
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
@@ -12,6 +14,9 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     <h3>リンク集</h3>
     <p>僕が使っているアカウントなど</p>
     <div class="vertical-line"></div>
+    <div class="image-container">
+      <Image src={linksImage} alt="ココネ" />
+    </div>
     <div class="links-box">
       <LinkPreviewBox
         title="GitHub"
@@ -90,6 +95,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 10px 20px;
+      z-index: 2;
     }
     @media (max-width: 767px) {
       .links-container {
@@ -100,6 +106,25 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       .links-container {
         width: 90%;
       }
+    }
+    .image-container {
+      position: fixed;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    .image-container img {
+      display: block;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      max-width: 100%;
+      height: auto;
+      max-height: 80%;
+      object-fit: contain;
+      object-position: bottom right; 
     }
   </style>
 </Layout>
