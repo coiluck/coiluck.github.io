@@ -46,6 +46,10 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         <h3>歴史の扉</h3>
         <p>人物の年代を比べるゲーム</p>
       </a>
+      <a class="content-boxes" href="https://coiluck.moe/ElementResonance/" target="_blank" rel="noopener noreferrer">
+        <h3>自然共鳴</h3>
+        <p>ローグライクカードゲーム</p>
+      </a>
     </div>
   </div>
   <style>
@@ -175,19 +179,4 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       }
     }
   </style>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const random = Math.floor(Math.random() * 20);
-      console.log(random);
-      if (random === 0) {
-        document.querySelector('.content-header').removeChild(document.querySelector('.content-header p'));
-        const h2Text = document.querySelector('.content-header h2');
-        h2Text.innerHTML = '<span>Break the dream,</span> <span>embrace the night.</span>';
-      } else if (random === 1) {
-        document.querySelector('.content-header').removeChild(document.querySelector('.content-header p'));
-        const h2Text = document.querySelector('.content-header h2');
-        h2Text.innerHTML = '<span>Seek the morrow,</span> <span>till dawn breaks.</span>';
-      }
-    });
-  </script>
 </Layout>
