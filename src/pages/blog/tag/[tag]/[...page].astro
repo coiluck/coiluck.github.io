@@ -1,159 +1,111 @@
 ---
-// コンポーネントのインポートパスが深くなる点に注意
+import { getCollection } from 'astro:content';
 import Topbar from '../../../../components/topbar.astro';
 import Layout from '../../../../layouts/blogLayout.astro';
 import BlogImage from '../../../../components/blog-image.astro';
 import Pagination from '../../../../components/pagination.astro'; 
 import BlogLine from '../../../../components/blog-line.astro';
 
-interface Post {
-  frontmatter: {
-    title?: string;
-    date?: string;
-    tags?: string[];
-    custom_excerpt?: string;
-    published?: boolean;
-  };
-  rawContent: () => Promise<string> | string;
-  file: string;
-}
-
-interface PageData {
-  currentPage: number;
-  lastPage: number;
-  url: {
-    prev: string | undefined;
-    next: string | undefined;
-  };
-  data: Array<{
-    frontmatter: {
-      title?: string;
-      date?: string;
-      tags?: string[];
-    };
-    file?: string;
-    excerpt?: string;
-  }>;
-}
-
 export async function getStaticPaths({ paginate }) {
-  try {
-    // 1. すべてのブログ投稿を取得
-    const posts = await import.meta.glob<Post>('/src/content/posts/*.md', { eager: true });
-    const postEntries = Object.entries(posts);
-    
-    // 2. frontmatterからすべてのタグを重複なく収集する
-    const allTags = new Set<string>();
-    postEntries.forEach(([_, post]) => {
-      if (post.frontmatter.tags && Array.isArray(post.frontmatter.tags)) {
-        post.frontmatter.tags.forEach(tag => allTags.add(tag));
-      }
-    });
+  // excerptを生成する関数
+  function generateExcerpt(entry) {
+    // すでにcustom_excerptがある場合はそれを使用
+    if (entry.data.custom_excerpt) {
+      return entry.data.custom_excerpt;
+    }
 
-    // 3. 各タグごとにページを生成する
+    // 抜粋を生成
+    const content = entry.body || '';
+    
+    let excerpt = '';
+
+    if (content) {
+      const moreTag = '<!--more-->';
+      const moreIndex = content.indexOf(moreTag);
+
+      let textToProcess = moreIndex !== -1 
+        ? content.substring(0, moreIndex) 
+        : content;
+
+      const plainText = textToProcess
+        .replace(/#+\s/g, '')
+        .replace(/<rt>.*?<\/rt>/gi, '')
+        .replace(/<br\s*\/?>/gi, ' ')
+        .replace(/\r\n|\n|\r/g, ' ')
+        .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
+        .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')
+        .replace(/`/g, '')
+        .replace(/\*|_/g, '')
+        .replace(/\s+/g, ' ')
+        .replace(/\{:\s*\.blog-link\s*\}/g, '')
+        .replace(/<[^>]+>/g, '')
+        .trim();
+
+      if (moreIndex !== -1) {
+        excerpt = plainText;
+      } else {
+        excerpt = plainText.substring(0, 150);
+        if (plainText.length > 150) {
+          excerpt += '...';
+        }
+      }
+    }
+    return excerpt;
+  }
+
+  try {
+    const allPosts = await getCollection('posts', ({ data }) => {
+      return data.published !== false;
+    });
+    
+    // すべてのタグを収集
+    const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags ?? []))];
+    
+    // 各タグごとにページを生成
     const paths = [];
     
     for (const tag of allTags) {
       // 現在のタグが含まれる投稿のみをフィルタリング
-      const filteredPosts = postEntries
-        .map(([_, post]) => post)
-        .filter(post => post.frontmatter.tags?.includes(tag as string));
-
-      // 抜粋処理
-      const postsWithExcerpts = await Promise.all(
-        filteredPosts.map(async (post, index) => {
-          let excerpt = '';
-          
-          try {
-            if (post.frontmatter?.custom_excerpt) {
-              excerpt = post.frontmatter.custom_excerpt;
-            } else {
-              let content = '';
-              if (post.rawContent) {
-                if (typeof post.rawContent === 'function') {
-                  content = await post.rawContent();
-                } else {
-                  content = post.rawContent;
-                }
-              }
-              
-              if (content) {
-                const moreTag = '<!--more-->';
-                const moreIndex = content.indexOf(moreTag);
-
-                let textToProcess = '';
-                if (moreIndex !== -1) {
-                  // <!--more-->がある -> その前の部分だけを処理
-                  textToProcess = content.substring(0, moreIndex);
-                } else {
-                  // <!--more-->がない -> 全体を処理
-                  textToProcess = content;
-                }
-                // Markdownの記法や改行を除去してプレーンテキストに近づける
-                const plainText = textToProcess
-                  .replace(/#+\s/g, '')        // 見出し記号 (#) を除去
-                  .replace(/<rt>.*?<\/rt>/gi, '') // <rt></rt> タグとその中身を除去
-                  .replace(/<br\s*\/?>/gi, ' ') // <br> タグをスペースに変換
-                  .replace(/\r\n|\n|\r/g, ' ') // 改行コードをスペースに変換
-                  .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // Markdownリンクをテキストに
-                  .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')  // Markdown画像を空に
-                  .replace(/`/g, '')           // バッククォートを除去
-                  .replace(/\*|_/g, '')        // 強調表現の記号を除去
-                  .replace(/\s+/g, ' ')        // 連続する空白を1つにまとめる
-                  .replace(/\{:\s*\.blog-link\s*\}/g, '')  // {: .blog-link } を除去
-                  .replace(/<[^>]+>/g, '')     // HTMLタグをすべて除去
-                  .trim();
-
-                if (moreIndex !== -1) {
-                  excerpt = plainText;
-                } else {
-                  excerpt = plainText.substring(0, 150);
-                  if (plainText.length > 150) {
-                    excerpt += '...';
-                  }
-                }
-              } else {
-                excerpt = `投稿${index + 1}の抜粋です。`;
-              }
-            }
-          } catch (error) {
-            excerpt = '抜粋の取得に失敗しました。';
-          }
-          
-          return {
-            ...post,
-            excerpt
-          };
-        })
+      const filteredPosts = allPosts.filter(post => 
+        post.data.tags?.includes(tag)
       );
+    
+      // excerptを生成
+      const postsWithExcerpt = filteredPosts.map((post) => {
+        const excerpt = generateExcerpt(post);
+        return {
+          ...post,
+          excerpt
+        };
+      });
 
-      // 有効な投稿のフィルタリング
-      const validPosts = postsWithExcerpts.filter(post => 
-        post.frontmatter?.title && post.frontmatter?.date && post.frontmatter?.published !== false
-      );
-
-      // 投稿を日付の新しい順にソート
-      const sortedPosts = validPosts.sort((a, b) =>
-        new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
-      );
-
-      // フィルタリングとソートが完了した投稿リストでページネーションを実行
+      // 日付でソート
+      const sortedPosts = postsWithExcerpt.sort((a, b) => {
+        const dateA = new Date(a.data.date).getTime();
+        const dateB = new Date(b.data.date).getTime();
+        return dateB - dateA;
+      });
+      
+      // ページネーション実行
       const paginatedPosts = paginate(sortedPosts, {
         params: { tag },
         pageSize: 5,
       });
-
-      // 各ページのパスを追加
+      
       paths.push(...paginatedPosts);
     }
     
     return paths;
     
   } catch (error) {
-    // 緊急フォールバック
+    console.error('エラーの詳細:', {
+      message: error.message,
+      stack: error.stack?.split('\n').slice(0, 5)
+    });
+    // エラー用投稿
     return paginate([{
-      file: '/error.md',
-      frontmatter: {
+      id: 'error',
+      data: {
         title: 'エラー用ダミー投稿',
         date: '1970-01-01',
         tags: ['error']
@@ -166,36 +118,13 @@ export async function getStaticPaths({ paginate }) {
   }
 }
 
-// ページコンポーネント側のログ
-console.log('=== タグページコンポーネント実行開始 ===');
-console.log('受信したAstro.props:', {
-  type: typeof Astro.props,
-  keys: Object.keys(Astro.props || {}),
-  stringified: JSON.stringify(Astro.props, null, 2)
-});
-
-const { page } = Astro.props as { page: PageData };
+const { page } = Astro.props;
 const { tag } = Astro.params;
 
 // OGP用
 const ogTitle = `タグ: ${tag}`;
 const ogDescription = "書く、これしか出来ないから";
 const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
-
-if (page) {
-  console.log('✅ pageオブジェクト正常受信:', {
-    currentPage: page.currentPage,
-    lastPage: page.lastPage,
-    dataLength: page.data?.length,
-    urlKeys: page.url ? Object.keys(page.url) : [],
-    firstDataSample: page.data?.[0] ? {
-      title: page.data[0].frontmatter?.title,
-      file: page.data[0].file
-    } : null
-  });
-} else {
-  console.error('❌ pageオブジェクトが未定義');
-}
 ---
 
 <Layout 
@@ -210,7 +139,7 @@ if (page) {
     <div class="blog-content">
       <div class="tag-head">
         <div class="tag-pankuzu">
-          <a href="/blog">Top</a> &gt;&gt; <a href="">{tag}</a>
+          <a href="/blog">Top</a> &gt;&gt; <a href={`/blog/tag/${encodeURIComponent(tag)}`}>{tag}</a>
         </div>
         <div class="tag-itirann">
           <span><strong><font color="#ff7f7e">#</font>{tag} の記事の一覧</strong></span>
@@ -218,34 +147,36 @@ if (page) {
       </div>
       <div class="blog-tag-line"></div>
       
-      {/* メインコンテンツ */}
       {page && page.data && page.data.length > 0 ? (
         <>
           {page.data.map((post, index) => {
-            const filename = post.file?.split('/').pop()?.replace('.md', '') || `post-${index}`;
-  
+            const slug = post.id.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
+            const title = post.data?.title || `無題の投稿 ${index + 1}`;
+            const tags = post.data.tags ?? [];
+            const date = post.data.date;
+
             return (
               <article class="blog-post" key={index}>
                 <header>
                   <h2>
-                    <a href={`/blog/${filename}`}>
-                      {post.frontmatter?.title || `無題の投稿 ${index + 1}`}
+                    <a href={`/blog/${slug}`}>
+                      {title}
                     </a>
                   </h2>
                   <div class="meta">
-                    {post.frontmatter?.tags && post.frontmatter.tags.length > 0 && (
+                    {tags.length > 0 && (
                       <div class="tags">
-                        {post.frontmatter.tags.map((tag, tagIndex) => (
+                        {tags.map((t, tagIndex) => (
                           <span key={tagIndex}>
-                            <a href={`/blog/tag/${encodeURIComponent(tag)}`} class="post-tag">
-                              <span style="color: #ff7f7e;">#</span>{tag}
+                            <a href={`/blog/tag/${encodeURIComponent(t)}`} class="post-tag">
+                              <span style="color: #ff7f7e;">#</span>{t}
                             </a>
-                            {tagIndex < post.frontmatter.tags.length - 1 && ', '}
+                            {tagIndex < tags.length - 1 && ', '}
                           </span>
                         ))}
                       </div>
                     )}
-                    <time class="date">{post.frontmatter?.date || '日付不明'}</time>
+                    <time class="date">{date}</time>
                   </div>
                 </header>
 
@@ -254,7 +185,7 @@ if (page) {
                 )}
 
                 <footer>
-                  <a href={`/blog/${filename}`} class="read-more">続きを読む</a>
+                  <a href={`/blog/${slug}`} class="read-more">続きを読む</a>
                 </footer>
               </article>
             );
@@ -262,120 +193,121 @@ if (page) {
         </>
       ) : (
         <div style="text-align: center; padding: 2rem;">
-          <p>📝 現在、表示できる投稿がありません。</p>
+          <p>現在、表示できる投稿がありません。</p>
         </div>
       )}
     </div>
-    <BlogLine />
-    <Pagination page={page} />
+  <BlogLine />
+  <Pagination page={page} />
   </article>
 
-    <style>
-      .tag-pankuzu {
-        font-size: 0.95rem;
-      }
-      .tag-pankuzu a {
-        color: #666;
-        text-decoration: none;
-      }
-      .tag-itirann {
-        margin-top: 10px;
-      }
-      .tag-itirann span {
-        font-size: 1.1em;
-      }
-      .blog-tag-line {
-        width: 100%;
-        height: 1px;
-        background-color: #888;
-        margin: 30px auto 30px;
-      }
-      .blog-content {
-        margin: 40px auto 30px;
-        width: 70%;
-      }
-    
-      .blog-post {
-        margin: 2rem auto;
-        width: 100%;
-      }
-    
-      .blog-post h2 {
-        text-align: center;
-      }
-    
-      .blog-post h2 a {
+
+  <style>
+    .tag-pankuzu {
+      font-size: 0.95rem;
+    }
+    .tag-pankuzu a {
+      color: #666;
+      text-decoration: none;
+    }
+    .tag-itirann {
+      margin-top: 10px;
+    }
+    .tag-itirann span {
+      font-size: 1.1em;
+    }
+    .blog-tag-line {
+      width: 100%;
+      height: 1px;
+      background-color: #888;
+      margin: 30px auto 30px;
+    }
+    .blog-content {
+      margin: 40px auto 30px;
+      width: 70%;
+    }
+  
+    .blog-post {
+      margin: 2rem auto;
+      width: 100%;
+    }
+  
+    .blog-post h2 {
+      text-align: center;
+    }
+  
+    .blog-post h2 a {
+      color: black;
+      text-decoration: none;
+      background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
+      linear-gradient(#f6d893, #f6d893) right 60% / 0 .8em no-repeat;
+      transition: background-size .4s cubic-bezier(0.215, 0.61, 0.355, 1);
+    }
+    .blog-post h2 a:hover {
+      background-position: right bottom, left 60%;
+      background-size: 0 2px, 100% .8em;
+    }
+    @media (pointer: none) {
+      .post-title {
         color: black;
         text-decoration: none;
-        background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
-        linear-gradient(#f6d893, #f6d893) right 60% / 0 .8em no-repeat;
-        transition: background-size .4s cubic-bezier(0.215, 0.61, 0.355, 1);
+        border-bottom: solid 2px black;
+        background: none;
+        transition: none;
       }
-      .blog-post h2 a:hover {
-        background-position: right bottom, left 60%;
-        background-size: 0 2px, 100% .8em;
+      .post-title:hover {
+        background-position: initial;
+        background-size: initial;
       }
-      @media (pointer: none) { /* タッチデバイスではホバー効果を無効化 */
-        .post-title {
-          color: black;
-          text-decoration: none;
-          border-bottom: solid 2px black;
-          background: none;
-          transition: none;
-        }
-        .post-title:hover {
-          background-position: initial;
-          background-size: initial;
-        }
-      }
-      .meta {
-        margin-bottom: .5rem;
-        font-size: 0.9rem;
-        color: #666;
-        gap: 1rem;
-      }
-      
-      .tags {
-        color: #666;
-        margin-top: 1em;
-        text-align: center;
-      }
-      .tags a {
-        font-size: .95rem;
-        color: #666;
-        margin-top: 1em;
-        text-align: center;
-        text-decoration: none;
-      }
-      .tags a:hover {
-        text-decoration: underline;
-      }
-      .date {
-        font-size: 0.9rem;
-        color: #666;
-        text-align: left;
-      }
-      
-      .excerpt {
-        margin: .5rem 0 0;
-        line-height: 1.6;
-        color: #222;
-      }
+    }
+    .meta {
+      margin-bottom: .5rem;
+      font-size: 0.9rem;
+      color: #666;
+      gap: 1rem;
+    }
     
-      .read-more {
-        display: inline-block;
-        margin-top: 0.8em;
-        color: #0066cc;
-        text-decoration: none;
-      }
-      .read-more:hover {
-        text-decoration: underline;
-      }
+    .tags {
+      color: #666;
+      margin-top: 1em;
+      text-align: center;
+    }
+    .tags a {
+      font-size: .95rem;
+      color: #666;
+      margin-top: 1em;
+      text-align: center;
+      text-decoration: none;
+    }
+    .tags a:hover {
+      text-decoration: underline;
+    }
+    .date {
+      font-size: 0.9rem;
+      color: #666;
+      text-align: left;
+    }
     
+    .excerpt {
+      margin: .5rem 0 0;
+      line-height: 1.6;
+      color: #222;
+    }
+  
+    .read-more {
+      display: inline-block;
+      margin-top: 0.8em;
+      color: #0066cc;
+      text-decoration: none;
+    }
+    .read-more:hover {
+      text-decoration: underline;
+    }
+  
     @media (max-width: 767px) {
       .blog-content{
         width: 90%;
       }
     }
-    </style>
-  </Layout>
+  </style>
+</Layout>

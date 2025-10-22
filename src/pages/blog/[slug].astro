@@ -1,86 +1,78 @@
 ---
-// src/pages/blog/[slug].astro
+import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/blogLayout.astro';
 import Topbar from '../../components/topbar.astro';
 import BlogImage from '../../components/blog-image.astro';
 
 export async function getStaticPaths() {
-  const posts = await Astro.glob('../../content/posts/*.md');
+  const posts = await getCollection('posts', ({ data }) => {
+    return data.published !== false;
+  });
 
-  // frontmatterに `published: false` がある記事を除外
-  const publishedPosts = posts.filter(post => post.frontmatter?.published !== false);
+  return posts.map((post) => {
+    const filename = post.id.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
+    const slug = filename.replace(/^\d{4}-\d{2}-\d{2}-/, '');
 
-  return publishedPosts.map((post) => {
-    // ファイル名からスラッグを生成（例: 2024-08-24-example.md → 2024-08-24-example）
-    const filename = post.file.split('/').pop().replace('.md', '');
-    
     return {
-      params: { slug: filename },
+      params: { slug },
       props: { post },
     };
   });
 }
 
 const { post } = Astro.props;
-const { Content, rawContent, frontmatter } = post;
+const { Content } = await render(post);
 
-// OGP用
-const ogTitle = post.frontmatter.title;
+const ogTitle = post.data.title || '投稿';
 const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 let ogDescription = '';
 
 try {
-  // custom_excerptを使用
-  if (frontmatter.custom_excerpt) {
-    ogDescription = frontmatter.custom_excerpt;
-
+  // custom_excerptがあればそれを使用
+  if (post.data.custom_excerpt) {
+    ogDescription = post.data.custom_excerpt;
   } else {
-    const markdownContent = typeof rawContent === 'function' ? await rawContent() : (rawContent || '');
+    const content = post.body || '';
 
-    if (markdownContent) {
+    if (content) {
       const moreTag = '<!--more-->';
-      const moreTagIndex = markdownContent.indexOf(moreTag);
-      let textToProcess = markdownContent;
+      const moreIndex = content.indexOf(moreTag);
+      let textToProcess = content;
 
-      // <!--more--> タグまで抜き出す
-      if (moreTagIndex !== -1) {
-        textToProcess = markdownContent.substring(0, moreTagIndex);
+      if (moreIndex !== -1) {
+        textToProcess = content.substring(0, moreIndex);
       }
 
-      // 除去
       const plainText = textToProcess
-        .replace(/#+\s/g, '')        // 見出し記号 (#) を除去
-        .replace(/<br\s*\/?>/gi, ' ') // <br> タグをスペースに変換
-        .replace(/<rt>.*?<\/rt>/gi, '') // <rt></rt> タグとその中身を除去
-        .replace(/\r\n|\n|\r/g, ' ') // 改行コードをスペースに変換
-        .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1') // Markdownリンクをテキストに
-        .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')  // Markdown画像を空に
-        .replace(/`/g, '')           // バッククォートを除去
-        .replace(/\*|_/g, '')        // 強調表現の記号を除去
-        .replace(/\s+/g, ' ')        // 連続する空白を1つにまとめる
-        .replace(/\{:\s*\.blog-link\s*\}/g, '')  // {: .blog-link } を除去
-        .replace(/<[^>]+>/g, '')     // HTMLタグをすべて除去
+        .replace(/#+\s/g, '')
+        .replace(/<br\s*\/?>/gi, ' ')
+        .replace(/<rt>.*?<\/rt>/gi, '')
+        .replace(/\r\n|\n|\r/g, ' ')
+        .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
+        .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')
+        .replace(/`/g, '')
+        .replace(/\*|_/g, '')
+        .replace(/\s+/g, ' ')
+        .replace(/\{:\s*\.blog-link\s*\}/g, '')
+        .replace(/<[^>]+>/g, '')
         .trim();
 
-      if (moreTagIndex === -1 && plainText.length > 50) {
-        ogDescription = plainText.substring(0, 50) + '...';
+      if (moreIndex === -1 && plainText.length > 120) {
+        ogDescription = plainText.substring(0, 120) + '...';
       } else {
         ogDescription = plainText;
       }
-
     } else {
-      // コンテンツが空の場合(そんなことある？)
-      ogDescription = frontmatter.title;
+      ogDescription = post.data.title || '投稿';
     }
   }
 } catch (error) {
-  // エラーが発生した場合の処理
-  console.error(`OGP Descriptionの生成エラー (記事: ${frontmatter.title}):`, error);
-  ogDescription = '投稿';
+  console.error(`OGP Descriptionの生成エラー (記事: ${post.data.title}):`, error);
+  ogDescription = post.data.title || '投稿';
 }
 ---
 <Layout
-  pageTitle={post.frontmatter.title}
+  pageTitle={post.data.title}
   ogTitle={ogTitle}
   ogDescription={ogDescription}
   ogUrl={ogUrl}
@@ -88,17 +80,17 @@ try {
   <Topbar />
   <BlogImage />
   <article class="blog-post">
-    <h2>{post.frontmatter.title}</h2>
+    <h2>{post.data.title}</h2>
     <div class="meta">
-      <p>投稿日: {post.frontmatter.date}</p>
+      <p>投稿日: {post.data.date}</p>
       <p>
-        タグ: 
-        {post.frontmatter.tags.map((tag, tagIndex) => (
-          <span>
+        タグ:
+        {(post.data.tags ?? []).map((tag, tagIndex) => (
+          <span key={tagIndex}>
             <a href={`/blog/tag/${encodeURIComponent(tag)}`}>
               <span style="color: #ff7f7e;">#</span>{tag}
             </a>
-            {tagIndex < post.frontmatter.tags.length - 1 && ', '}
+            {tagIndex < (post.data.tags ?? []).length - 1 && ', '}
           </span>
         ))}
       </p>
@@ -221,16 +213,17 @@ try {
 
     /* 個別の記事のTopへボタン */
     .top-button-container {
+      display: flex;
+      align-items: center;
       position: relative;
       top: 20px;
       margin-left: 15%;
-      display: flex;
-      align-items: center;
+      width: fit-content;
+      color: #ff7f7e;
+      font-family: 'mamelon3.5', sans-serif;
       text-decoration: none;
       border: none;
-      color: #ff7f7e;
-      width: fit-content;
-      font-family: 'mamelon3.5', sans-serif;
+      cursor: pointer;
     }
     .circle-button {
       width: 20px;
@@ -281,7 +274,6 @@ try {
     const topButton = document.querySelector('.top-button-container');
     if (topButton) {
       topButton.addEventListener('click', function(e) {
-        e.preventDefault(); // デフォルトの遷移を防ぐ
         const lastPage = sessionStorage.getItem('lastListPage');
         if (lastPage && lastPage !== window.location.href) {
           window.location.href = lastPage;
@@ -296,29 +288,17 @@ try {
   document.addEventListener('DOMContentLoaded', () => {
     // 脚注セクションを探す
     const footnotesContainer = document.querySelector('section[data-footnotes]');
-    console.log('📝 脚注セクションの検索結果:', footnotesContainer);
   
     if (!footnotesContainer) {
-      console.log('脚注セクションが見つかりませんでした');
       return;
     }
 
     // 脚注セクションの直前の要素を取得
     const lastElement = footnotesContainer.previousElementSibling;
-    console.log('脚注直前の要素:', lastElement);
-    console.log('要素のタグ名:', lastElement ? lastElement.tagName : 'なし');
 
     // その要素が <p> タグであるかをチェック
     if (lastElement && lastElement.tagName === 'P') {
-      console.log('Pタグが見つかりました');
       const pElement = lastElement;
-      
-      // 現在のHTML内容をログ出力
-      console.log('変更前のHTML:', pElement.innerHTML);
-    
-      // 末尾のBRタグをチェック
-      const brMatches = pElement.innerHTML.match(/(<br\s*\/?>\s*){2,}\s*$/);
-      console.log('末尾の連続BRタグ:', brMatches ? brMatches[0] : 'なし');
 
       // 末尾にある2つ以上連続した<br>タグを、2つの<br>に書き換える
       const originalHTML = pElement.innerHTML;
@@ -326,11 +306,6 @@ try {
         /(<br\s*\/?>\s*){2,}\s*$/,
         '<br><br>'
       );
-    
-      // 変更後のHTML内容をログ出力
-      console.log('変更後のHTML:', pElement.innerHTML);
-    
-      // 実際に変更されたかをチェック
       if (originalHTML !== pElement.innerHTML) {
         console.log('HTMLが変更されました');
       } else {
