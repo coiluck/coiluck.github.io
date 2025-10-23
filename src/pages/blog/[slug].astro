@@ -115,6 +115,10 @@ try {
   <div style="height: 80px;"></div>
 
   <style is:global>
+    @font-face {
+      font-family: 'JetBrainsMono';
+      src: url('/JetBrainsMono-Light.woff2') format('woff2');
+    }
     .blog-post {
       width: 70%;
       margin: 0 auto;
@@ -208,7 +212,22 @@ try {
       background-color: #ccc;
       padding: 0.2em 0.4em;
       border-radius: 3px;
-      font-size: inherit;
+      font-size: .8rem;
+      font-family: "JetBrainsMono", sans-serif;
+    }
+    .prose .astro-code code {
+      padding: 0;
+      background: transparent;
+      font-size: .8rem;
+      font-family: "JetBrainsMono", sans-serif;
+    }
+    .prose .astro-code {
+      padding: 5px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .prose .astro-code::-webkit-scrollbar {
+      display: none;
     }
 
     /* 個別の記事のTopへボタン */
