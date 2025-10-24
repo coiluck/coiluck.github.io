@@ -5,6 +5,8 @@ import Layout from '../../../../layouts/blogLayout.astro';
 import BlogImage from '../../../../components/blog-image.astro';
 import Pagination from '../../../../components/pagination.astro'; 
 import BlogLine from '../../../../components/blog-line.astro';
+import { Image } from 'astro:assets';
+import pankuzuIcon from '../../../../assets/images/pankuzu.svg';
 
 export async function getStaticPaths({ paginate }) {
   // excerptを生成する関数
@@ -139,7 +141,9 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
     <div class="blog-content">
       <div class="tag-head">
         <div class="tag-pankuzu">
-          <a href="/blog">Top</a> &gt;&gt; <a href={`/blog/tag/${encodeURIComponent(tag)}`}>{tag}</a>
+          <a href="/blog">Top</a>
+          <Image src={pankuzuIcon} alt="" />
+          <a href={`/blog/tag/${encodeURIComponent(tag)}`}>{tag}</a>
         </div>
         <div class="tag-itirann">
           <span><strong><font color="#ff7f7e">#</font>{tag} の記事の一覧</strong></span>
@@ -204,17 +208,35 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
   <style>
     .tag-pankuzu {
-      font-size: 0.95rem;
+      font-size: 1rem;
+      color: #666;
     }
     .tag-pankuzu a {
+      padding: 4px;
       color: #666;
       text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .tag-pankuzu a:hover {
+      text-decoration: underline rgba(102, 102, 102, 1);
+    }
+    .tag-pankuzu img {
+      width: 10px;
+      height: 10px;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      -webkit-user-drag: none;
+      -khtml-user-drag: none;
+      -moz-user-drag: none;
+      -o-user-drag: none;
     }
     .tag-itirann {
       margin-top: 10px;
     }
     .tag-itirann span {
-      font-size: 1.1em;
+      font-size: 1.2rem;
     }
     .blog-tag-line {
       width: 100%;
@@ -269,18 +291,17 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
     
     .tags {
       color: #666;
-      margin-top: 1em;
+      margin-top: 1rem;
       text-align: center;
     }
     .tags a {
-      font-size: .95rem;
       color: #666;
-      margin-top: 1em;
-      text-align: center;
-      text-decoration: none;
+      text-decoration: underline rgba(102, 102, 102, 0);;
+      transition: all 0.3s ease;
     }
     .tags a:hover {
-      text-decoration: underline;
+      color: #333;
+      text-decoration: underline rgba(51, 51, 51, 1);
     }
     .date {
       font-size: 0.9rem;
@@ -296,12 +317,26 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
   
     .read-more {
       display: inline-block;
-      margin-top: 0.8em;
+      position: relative;
+      margin-top: 0.8rem;
       color: #0066cc;
       text-decoration: none;
     }
-    .read-more:hover {
-      text-decoration: underline;
+    .read-more::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: rgba(0, 102, 204, 1);
+      transform: scaleY(0.5);
+      transform-origin: bottom;
+      transition: width 0.3s ease;
+    }
+    .read-more:hover::before {
+      width: 100%;
+      background-color: rgba(0, 102, 204, 1);
     }
   
     @media (max-width: 767px) {

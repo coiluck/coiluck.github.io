@@ -7,11 +7,8 @@ interface Props {
 
 const { page } = Astro.props;
 ---
-
-{/* ページが2ページ以上ある場合のみページネーションを表示する */}
 {page && page.lastPage > 1 && (
-  <nav class="pagination" aria-label="ページネーション">
-    {/* 前のページがある場合のみリンクを表示し、ない場合はスペーサーを置く */}
+  <nav class="pagination">
     {page.url.prev ? (
       <a href={page.url.prev} class="page-link prev" rel="prev">
         &lt;&lt; Prev
@@ -20,12 +17,10 @@ const { page } = Astro.props;
       <span class="placeholder"></span>
     )}
 
-    {/* 現在のページ情報 */}
     <span class="page-info" aria-current="page">
       {page.currentPage}<span class="separator"> ／ </span>{page.lastPage}
     </span>
 
-    {/* 次のページがある場合のみリンクを表示し、ない場合はスペーサーを置く */}
     {page.url.next ? (
       <a href={page.url.next} class="page-link next" rel="next">
         Next &gt;&gt;
@@ -57,25 +52,35 @@ const { page } = Astro.props;
     transform: translateX(-50%);
     text-align: center;
   }
-  .pagination .prev {
-    position: absolute;
-    left: 15%;
+  .pagination .page-link {
+    position: relative;
     color: #0066cc;
     text-decoration: none;
     font-size: 1.1em;
   }
-  .pagination .prev:hover {
-    text-decoration: underline;
+  .pagination .page-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: rgba(0, 102, 204, 1);
+    transform: scaleY(0.5);
+    transform-origin: bottom;
+    transition: width 0.3s ease;
+  }
+  .pagination .page-link:hover::before {
+    width: 100%;
+    background-color: rgba(0, 102, 204, 1);
+  }
+  .pagination .prev {
+    position: absolute;
+    left: 15%;
   }
   .pagination .next {
     position: absolute;
     right: 15%;
-    color: #0066cc;
-    text-decoration: none;
-    font-size: 1.1em;
-  }
-  .pagination .next:hover {
-    text-decoration: underline;
   }
   /* 1/4みたいなやつ、PCでは広げて表示 */
   .separator {
