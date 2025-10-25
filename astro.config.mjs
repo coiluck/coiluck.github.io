@@ -11,6 +11,9 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 // sitemap
 import sitemap from '@astrojs/sitemap';
 
+// expressive-code
+import expressiveCode from "astro-expressive-code";
+
 
 export default defineConfig({
   markdown: {
@@ -26,13 +29,17 @@ export default defineConfig({
       rehypeSlug,
       rehypeAutolinkHeadings
     ],
-    allowHTML: true
+    allowHTML: true,
+    syntaxHighlight: false,
   },
   build: {
     format: 'directory'
   },
   site: 'https://coiluck.moe',
   integrations: [
-    sitemap()
+    sitemap(),
+    expressiveCode({
+      themes: ["github-dark-default", "github-light-default"],
+    }),
   ]
 });
