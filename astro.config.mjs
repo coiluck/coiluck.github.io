@@ -39,7 +39,7 @@ export default defineConfig({
   integrations: [
     sitemap(),
     expressiveCode({
-      themes: ["github-dark-default", "github-light-default"],
+      themes: ["dark-plus", "github-light-default"],
     }),
   ]
 });
