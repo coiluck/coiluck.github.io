@@ -3,7 +3,6 @@ import { defineConfig } from 'astro/config';
 
 // Markdownプラグインをインポート
 import remarkGfm from 'remark-gfm';
-import remarkFootnotes from 'remark-footnotes';
 import remarkAttributes from 'remark-attributes'; 
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
@@ -17,13 +16,10 @@ import expressiveCode from "astro-expressive-code";
 
 export default defineConfig({
   markdown: {
-    shikiConfig: {
-      theme: 'github-dark'
-    },
+    gfm: false,
     remarkPlugins: [
       remarkGfm,
-      remarkFootnotes,
-      remarkAttributes 
+      remarkAttributes
     ],
     rehypePlugins: [
       rehypeSlug,
@@ -39,7 +35,7 @@ export default defineConfig({
   integrations: [
     sitemap(),
     expressiveCode({
-      themes: ["dark-plus", "github-light-default"],
+      themes: ["dark-plus"],
     }),
   ]
 });
