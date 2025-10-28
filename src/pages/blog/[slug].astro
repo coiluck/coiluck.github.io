@@ -114,7 +114,7 @@ const ogDescription = generateExcerpt(post, 75);
       width: 100%;
       height: 1px;
       background-color: #888;
-      margin: 40px auto 30px;
+      margin: 30px auto;
     }
     .content {
       margin-bottom: 32px;
@@ -123,9 +123,15 @@ const ogDescription = generateExcerpt(post, 75);
     .ff7f7e {
       color: #ff7f7e; /* 使うときは<span class="ff7f7e"> */
     }
-    /* brタグが連続した場合、2つ目以降を非表示にする */
+    .footnotes {
+      border-top: 1px dashed #888;
+    }
+    /* 勝手に出てくる装飾を無効化 */
     .footnotes h2, #footnote-label {
       display: none;
+    }
+    .footnotes ol {
+      margin: 32px 0; /* .contentについているmargin-bottomと合わせる */
     }
     .prose a.blog-link {
       color: black;
