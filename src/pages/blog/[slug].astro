@@ -5,6 +5,7 @@ import Topbar from '../../components/topbar.astro';
 import BlogImage from '../../components/blog-image.astro';
 import { Image } from 'astro:assets';
 import backIcon from '../../assets/images/back.svg';
+import '../../styles/remark-link-card.css';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => {

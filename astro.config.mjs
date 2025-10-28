@@ -3,7 +3,8 @@ import { defineConfig } from 'astro/config';
 
 // Markdownプラグインをインポート
 import remarkGfm from 'remark-gfm';
-import remarkAttributes from 'remark-attributes'; 
+import remarkAttributes from 'remark-attributes';
+import remarkLinkCardPlus from 'remark-link-card-plus';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
@@ -19,7 +20,12 @@ export default defineConfig({
     gfm: false,
     remarkPlugins: [
       remarkGfm,
-      remarkAttributes
+      remarkAttributes,
+      [remarkLinkCardPlus, {
+        cache: false,
+        shortenUrl: true,
+        thumbnailPosition: "left"
+      }],
     ],
     rehypePlugins: [
       rehypeSlug,
