@@ -1,67 +1,36 @@
 import rss from '@astrojs/rss';
+import { getCollection } from 'astro:content';
+import { generateExcerpt } from '../utils/generateExcerpt.js';
 
 export async function GET(context) {
-  const postImportResult = import.meta.glob('../content/posts/*.md', { eager: true });
-  const posts = Object.values(postImportResult);
+  // Content Collectionから取得
+  const posts = await getCollection('posts', ({ data }) => {
+    return data.published !== false;
+  });
 
-  const publishedPosts = posts.filter(post => post.frontmatter.published !== false);
-  const sortedPosts = publishedPosts.sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date));
+  // 日付でソート
+  const sortedPosts = posts.sort((a, b) => {
+    const dateA = new Date(a.data.date).getTime();
+    const dateB = new Date(b.data.date).getTime();
+    return dateB - dateA;
+  });
 
   return rss({
     title: '革命学舎',
     description: 'こいらっくのwebサイト（coiluck.moe）',
     site: context.site,
-    items: await Promise.all(sortedPosts.map(async (post) => {
-      let description = '';
-      try {
-        if (post.frontmatter?.custom_excerpt) {
-          description = post.frontmatter.custom_excerpt;
-        } else {
-          let content = '';
-          if (post.rawContent) {
-            if (typeof post.rawContent === 'function') {
-              content = await post.rawContent();
-            } else {
-              content = post.rawContent;
-            }
-          }
-
-          if (content) {
-            // Markdown記法やHTMLタグを除去
-            const plainText = content
-              .replace(/#+\s/g, '')
-              .replace(/<rt>.*?<\/rt>/gi, '')
-              .replace(/<br\s*\/?>/gi, ' ')
-              .replace(/\r\n|\n|\r/g, ' ')
-              .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
-              .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')
-              .replace(/`/g, '')
-              .replace(/\*|_/g, '')
-              .replace(/\s+/g, ' ')
-              .replace(/\{:\s*\.blog-link\s*\}/g, '')
-              .replace(/<[^>]+>/g, '')
-              .trim();
-            
-            // 50文字でカット
-            description = plainText.slice(0, 50) + (plainText.length > 50 ? '…' : '');
-
-          } else {
-            description = '抜粋がありません。';
-          }
-        }
-      } catch (error) {
-        console.error(`RSS抜粋処理エラー (${post.frontmatter?.title}):`, error.message);
-        description = '抜粋の取得に失敗しました。';
-      }
+    items: sortedPosts.map((post) => {
+      const description = generateExcerpt(post, 50);
+      const slug = post.id.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
 
       return {
-        title: post.frontmatter.title,
-        pubDate: new Date(post.frontmatter.date),
+        title: post.data.title,
+        pubDate: new Date(post.data.date),
         description: description,
-        link: post.url || `/blog/${post.file.split('/').pop().replace('.md', '')}/`,
-        customData: `<category>${post.frontmatter.tags?.join(', ') || ''}</category>`,
+        link: `/blog/${slug}/`,
+        customData: `<category>${post.data.tags?.join(', ') || ''}</category>`,
       };
-    })),
+    }),
     customData: `<language>ja</language>`,
   });
 }
