@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { addExcerpts } from '../../../../utils/generateExcerpt.js';
 import Topbar from '../../../../components/topbar.astro';
 import Layout from '../../../../layouts/blogLayout.astro';
 import BlogImage from '../../../../components/blog-image.astro';
@@ -9,52 +10,6 @@ import { Image } from 'astro:assets';
 import pankuzuIcon from '../../../../assets/images/pankuzu.svg';
 
 export async function getStaticPaths({ paginate }) {
-  // excerptを生成する関数
-  function generateExcerpt(entry) {
-    // すでにcustom_excerptがある場合はそれを使用
-    if (entry.data.custom_excerpt) {
-      return entry.data.custom_excerpt;
-    }
-
-    // 抜粋を生成
-    const content = entry.body || '';
-    
-    let excerpt = '';
-
-    if (content) {
-      const moreTag = '<!--more-->';
-      const moreIndex = content.indexOf(moreTag);
-
-      let textToProcess = moreIndex !== -1 
-        ? content.substring(0, moreIndex) 
-        : content;
-
-      const plainText = textToProcess
-        .replace(/#+\s/g, '')
-        .replace(/<rt>.*?<\/rt>/gi, '')
-        .replace(/<br\s*\/?>/gi, ' ')
-        .replace(/\r\n|\n|\r/g, ' ')
-        .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
-        .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')
-        .replace(/`/g, '')
-        .replace(/\*|_/g, '')
-        .replace(/\s+/g, ' ')
-        .replace(/\{:\s*\.blog-link\s*\}/g, '')
-        .replace(/<[^>]+>/g, '')
-        .trim();
-
-      if (moreIndex !== -1) {
-        excerpt = plainText;
-      } else {
-        excerpt = plainText.substring(0, 150);
-        if (plainText.length > 150) {
-          excerpt += '...';
-        }
-      }
-    }
-    return excerpt;
-  }
-
   try {
     const allPosts = await getCollection('posts', ({ data }) => {
       return data.published !== false;
@@ -73,13 +28,7 @@ export async function getStaticPaths({ paginate }) {
       );
     
       // excerptを生成
-      const postsWithExcerpt = filteredPosts.map((post) => {
-        const excerpt = generateExcerpt(post);
-        return {
-          ...post,
-          excerpt
-        };
-      });
+      const postsWithExcerpt = addExcerpts(filteredPosts);
 
       // 日付でソート
       const sortedPosts = postsWithExcerpt.sort((a, b) => {
@@ -151,53 +100,51 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
       </div>
       <div class="blog-tag-line"></div>
       
-      {page && page.data && page.data.length > 0 ? (
+      {page && page.data ? (
         <>
-          {page.data.map((post, index) => {
-            const slug = post.id.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
-            const title = post.data?.title || `無題の投稿 ${index + 1}`;
-            const tags = post.data.tags ?? [];
-            const date = post.data.date;
-
-            return (
-              <article class="blog-post" key={index}>
-                <header>
-                  <h2>
-                    <a href={`/blog/${slug}`}>
-                      {title}
-                    </a>
-                  </h2>
-                  <div class="meta">
-                    {tags.length > 0 && (
-                      <div class="tags">
-                        {tags.map((t, tagIndex) => (
-                          <span key={tagIndex}>
-                            <a href={`/blog/tag/${encodeURIComponent(t)}`} class="post-tag">
-                              <span style="color: #ff7f7e;">#</span>{t}
-                            </a>
-                            {tagIndex < tags.length - 1 && ', '}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                    <time class="date">{date}</time>
-                  </div>
-                </header>
-
-                {post.excerpt && (
-                  <p class="excerpt">{post.excerpt}</p>
-                )}
-
-                <footer>
-                  <a href={`/blog/${slug}`} class="read-more">続きを読む</a>
-                </footer>
-              </article>
-            );
-          })}
-        </>
+        {page.data.map((post, index) => {
+          const slug = post.id.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
+          const title = post.data?.title || `無題の投稿 ${index + 1}`;
+          const tags = post.data.tags ?? [];
+          const date = post.data.date;
+  
+          return (
+            <article class="blog-post">
+              <header>
+                <h2>
+                  <a href={`/blog/${slug}`}>
+                    {title}
+                  </a>
+                </h2>
+                <div class="meta">
+                  {tags.length > 0 && (
+                    <div class="tags">
+                      {tags.map((tag, tagIndex) => (
+                        <span>
+                          <a href={`/blog/tag/${encodeURIComponent(tag)}`} class="post-tag">
+                            <span style="color: #ff7f7e;">#</span>{tag}
+                          </a>
+                          {tagIndex < tags.length - 1 && ', '}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <time class="date">{date}</time>
+                </div>
+              </header>
+              {post.excerpt && (
+                <p class="excerpt">{post.excerpt}</p>
+              )}
+              <footer>
+                <a href={`/blog/${slug}`} class="read-more">続きを読む</a>
+              </footer>
+            </article>
+          );
+        })}
+      </>
       ) : (
         <div style="text-align: center; padding: 2rem;">
-          <p>現在、表示できる投稿がありません。</p>
+          <p>現在、表示できる投稿がありません</p>
         </div>
       )}
     </div>
