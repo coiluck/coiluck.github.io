@@ -176,13 +176,14 @@ const ogDescription = generateExcerpt(post, 75);
     .prose p {
       margin: 0;
       padding: 0;
+      line-height: 1.5rem;
     }
     .prose .footnotes h2 {
       display: none;
     }
     .prose code {
       background-color: #ccc;
-      padding: 0.2rem 0.4rem;
+      padding: 0.15rem 0.4rem;
       border-radius: 3px;
       font-size: .8rem;
       font-family: "JetBrainsMono", sans-serif;
@@ -302,17 +303,19 @@ const ogDescription = generateExcerpt(post, 75);
     }
   </style>
   <script>
-  // URLを保存
-  window.addEventListener('load', function() {
-    const referrer = document.referrer;
-    if (referrer && referrer.includes('/blog/')) {
-      sessionStorage.setItem('lastListPage', referrer);
-    }
-  
-    // クリック時の挙動を設定
-    const topButton = document.querySelector('.top-button-container');
-    if (topButton) {
-      topButton.addEventListener('click', function(e) {
+    document.addEventListener('DOMContentLoaded', function() {
+      saveReferrer();
+      removeBr();
+      makeLinkBlank();
+    });
+    
+    function saveReferrer() {
+      const referrer = document.referrer;
+      if (referrer && referrer.includes('/blog/') && referrer !== window.location.href) {
+        sessionStorage.setItem('lastListPage', referrer);
+      }
+      // クリック時の設定
+      document.querySelector('.top-button-container').addEventListener('click', function(e) {
         const lastPage = sessionStorage.getItem('lastListPage');
         if (lastPage && lastPage !== window.location.href) {
           window.location.href = lastPage;
@@ -322,37 +325,29 @@ const ogDescription = generateExcerpt(post, 75);
         }
       });
     }
-  });
-  // 連続した<br>タグを削除
-  document.addEventListener('DOMContentLoaded', () => {
-    // 脚注セクションを探す
-    const footnotesContainer = document.querySelector('section[data-footnotes]');
-  
-    if (!footnotesContainer) {
-      return;
-    }
-
-    // 脚注セクションの直前の要素を取得
-    const lastElement = footnotesContainer.previousElementSibling;
-
-    // その要素が <p> タグであるかをチェック
-    if (lastElement && lastElement.tagName === 'P') {
-      const pElement = lastElement;
-
-      // 末尾にある2つ以上連続した<br>タグを、2つの<br>に書き換える
-      const originalHTML = pElement.innerHTML;
-      pElement.innerHTML = pElement.innerHTML.replace(
-        /(<br\s*\/?>\s*){2,}\s*$/,
-        '<br><br>'
-      );
-      if (originalHTML !== pElement.innerHTML) {
-        console.log('HTMLが変更されました');
-      } else {
-        console.log('HTMLに変更はありませんでした');
+    function removeBr() {
+      // 脚注セクションを探す
+      const footnotesContainer = document.querySelector('section[data-footnotes]');
+      if (!footnotesContainer) {
+        return;
       }
-    } else {
-      console.log('脚注直前にPタグが見つかりませんでした');
+      // 脚注セクションの直前の要素が<p>タグかチェック
+      const lastElement = footnotesContainer.previousElementSibling;
+      if (lastElement && lastElement.tagName === 'P') {
+        const pElement = lastElement;
+        // 末尾にある2つ以上連続した<br>タグを、1つの<br>に書き換える
+        const originalHTML = pElement.innerHTML;
+        pElement.innerHTML = pElement.innerHTML.replace(
+          /(<br\s*\/?>\s*){2,}\s*$/,
+          '<br>'
+        );
+      }
     }
-  });
+    function makeLinkBlank() {
+      const links = document.querySelectorAll('a.blog-link');
+      links.forEach(link => {
+        link.target = '_blank';
+      });
+    }
   </script>
 </Layout>

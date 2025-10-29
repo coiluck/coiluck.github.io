@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   role="img"
+   width="21.609896"
+   height="16.622002"
+   viewBox="0 0 21.609896 16.622002"
+   aria-labelledby="backAltIconTitle"
+   stroke="#2329d6"
+   stroke-width="2"
+   stroke-linecap="round"
+   stroke-linejoin="round"
+   fill="none"
+   color="#2329d6"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <title
+     id="backAltIconTitle">Back</title>
+  <g
+     id="layer1"
+     transform="matrix(0.9,0,0,0.9,-0.05763932,-5.4889986)">
+    <path
+       d="M 23.241704,23.734444 13.119552,15.333333 23.241704,6.9322222"
+       id="path1"
+       style="stroke:#0066cc;stroke-width:1.66667;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+    <path
+       d="M 11.019482,23.734444 0.89733151,15.333333 11.019482,6.9322222"
+       id="path2"
+       style="stroke:#0066cc;stroke-width:1.66667;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+  </g>
+</svg>

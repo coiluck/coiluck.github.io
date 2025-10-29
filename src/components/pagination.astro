@@ -1,5 +1,7 @@
 ---
 import type { Page } from 'astro';
+import nextIcon from '../assets/images/nextIcon.svg';
+import prevIcon from '../assets/images/prevIcon.svg';
 
 interface Props {
   page: Page;
@@ -11,7 +13,8 @@ const { page } = Astro.props;
   <nav class="pagination">
     {page.url.prev ? (
       <a href={page.url.prev} class="page-link prev" rel="prev">
-        &lt;&lt; Prev
+        <img src={prevIcon.src} class="arrow-icon" />
+        <span>Prev</span>
       </a>
     ) : (
       <span class="placeholder"></span>
@@ -23,7 +26,8 @@ const { page } = Astro.props;
 
     {page.url.next ? (
       <a href={page.url.next} class="page-link next" rel="next">
-        Next &gt;&gt;
+        <span>Next</span>
+        <img src={nextIcon.src} class="arrow-icon" />
       </a>
     ) : (
       <span class="placeholder"></span>
@@ -34,7 +38,7 @@ const { page } = Astro.props;
   .pagination {
     margin: 0 auto;
     padding: 20px 0 80px;
-    height: 1.1em;
+    height: 1.1rem;
     display: flex;
     align-items: center;
   }
@@ -54,6 +58,10 @@ const { page } = Astro.props;
   }
   .pagination .page-link {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     color: #0066cc;
     text-decoration: none;
     font-size: 1.1em;
@@ -82,15 +90,15 @@ const { page } = Astro.props;
     position: absolute;
     right: 15%;
   }
-  /* 1/4みたいなやつ、PCでは広げて表示 */
   .separator {
-    padding: 0 0.5em;
+    padding: 0 0.5rem;
+  }
+  .arrow-icon {
+    height: 0.8rem;
+    aspect-ratio: 1 / 1;
   }
 
   @media (max-width: 767px) {
-    .separator {
-      padding: 0;
-    }
     .pagination .prev {
 	    left: 5%;
     }
