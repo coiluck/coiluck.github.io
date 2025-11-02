@@ -29,8 +29,7 @@ export default defineConfig({
       }],
       [remarkToc, {
         heading: "目次|Contents",
-        maxDepth: 3,
-        tight: true
+        maxDepth: 4
       }],
       [remarkCollapse, {
         test: "目次|Contents",

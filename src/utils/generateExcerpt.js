@@ -18,6 +18,7 @@ export function generateExcerpt(entry, cut_length = 150) {
 
   // マークダウン記法を除去してプレーンテキスト化
   const plainText = textToProcess
+    .replace(/#{2,}[\s\S]*?\{\:\s*\.toc-heading\}/g, '') // 目次用
     .replace(/#+\s/g, '')                           // 見出し
     .replace(/<rt>.*?<\/rt>/gi, '')                 // ルビタグ
     .replace(/<br\s*\/?>/gi, ' ')                   // 改行タグ
