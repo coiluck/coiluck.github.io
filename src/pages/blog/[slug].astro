@@ -124,6 +124,7 @@ const ogDescription = generateExcerpt(post, 75);
       color: #ff7f7e; /* 使うときは<span class="ff7f7e"> */
     }
     .footnotes {
+      margin-top: 32px;
       border-top: 1px dashed #888;
     }
     /* 勝手に出てくる装飾を無効化 */
@@ -136,6 +137,19 @@ const ogDescription = generateExcerpt(post, 75);
     .prose a.blog-link {
       color: black;
       text-decoration-color: black;
+    }
+    .prose ul {
+      margin: 0;
+    }
+    .prose img {
+      display: block;
+      width: 90%;
+      margin: 5px auto;
+    }
+    .prose .remark-link-card-plus__container img {
+      display: initial;
+      width: initial;
+      margin: initial;
     }
     .prose sup a {
       color: #6088C6;
@@ -227,7 +241,7 @@ const ogDescription = generateExcerpt(post, 75);
       bottom: 0;
       left: 0;
       width: 0px;
-      height: 0.5px;
+      height: 1px;
       background-color: #ff7f7e;
       transition: width 0.3s ease-in-out;
     }
@@ -326,20 +340,22 @@ const ogDescription = generateExcerpt(post, 75);
       });
     }
     function removeBr() {
+      // 注意: p要素以外には適用されないので基本的に最後はbrを書かないようにすること！
       // 脚注セクションを探す
+      let lastElement;
       const footnotesContainer = document.querySelector('section[data-footnotes]');
       if (!footnotesContainer) {
         return;
+      } else {
+        lastElement = footnotesContainer.previousElementSibling;
       }
-      // 脚注セクションの直前の要素が<p>タグかチェック
-      const lastElement = footnotesContainer.previousElementSibling;
+      // 記事の最後の要素が<p>タグかチェック
       if (lastElement && lastElement.tagName === 'P') {
         const pElement = lastElement;
-        // 末尾にある2つ以上連続した<br>タグを、1つの<br>に書き換える
-        const originalHTML = pElement.innerHTML;
+        // 末尾にある<br>タグを除去
         pElement.innerHTML = pElement.innerHTML.replace(
-          /(<br\s*\/?>\s*){2,}\s*$/,
-          '<br>'
+          /(<br\s*\/?>\s*){1,}\s*$/,
+          ''
         );
       }
     }
