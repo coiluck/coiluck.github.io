@@ -88,7 +88,7 @@ const ogDescription = generateExcerpt(post, 75);
         width: 90%;
       }
     }
-    .blog-post h2 {
+    .blog-post > h2 {
       margin: .5rem 0 0;
       text-align: center;
     }
@@ -145,6 +145,47 @@ const ogDescription = generateExcerpt(post, 75);
       display: block;
       width: 90%;
       margin: 5px auto;
+    }
+    /* 見出しの装飾 */
+    .prose .toc-heading {
+      display: none;
+    }
+    .prose details {
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      cursor: pointer;
+    }
+    .prose details a {
+      color: #6088C6;
+    }
+    .prose h2, .prose h3, .prose h4 {
+      position: relative;
+      width: fit-content;
+      margin: .7rem 0;
+      border-bottom: 2px solid #ff7f7e;
+    }
+    .prose h2::before, .prose h3::before, .prose h4::before {
+      content: '#';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      color: #ff7f7e;
+    }
+    .prose h2 {
+      font-size: 1.3rem;
+      padding: 0 .5rem 0 1.3rem;
+    }
+    .prose h3 {
+      font-size: 1.1rem;
+      padding: 0 .5rem 0 1.1rem;
+    }
+    .prose h4 {
+      font-size: 1rem;
+      padding: 0 .5rem 0 1rem;
     }
     .prose .remark-link-card-plus__container img {
       display: initial;
