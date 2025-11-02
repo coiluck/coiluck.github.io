@@ -5,8 +5,9 @@ import { defineConfig } from 'astro/config';
 import remarkGfm from 'remark-gfm';
 import remarkAttributes from 'remark-attributes';
 import remarkLinkCardPlus from 'remark-link-card-plus';
+import remarkToc from 'remark-toc';
+import remarkCollapse from 'remark-collapse';
 import rehypeSlug from 'rehype-slug';
-import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 
 // sitemap
 import sitemap from '@astrojs/sitemap';
@@ -26,10 +27,18 @@ export default defineConfig({
         shortenUrl: true,
         thumbnailPosition: "left"
       }],
+      [remarkToc, {
+        heading: "目次|Contents",
+        maxDepth: 3,
+        tight: true
+      }],
+      [remarkCollapse, {
+        test: "目次|Contents",
+        summary: "目次",
+      }]
     ],
     rehypePlugins: [
-      rehypeSlug,
-      rehypeAutolinkHeadings
+      rehypeSlug
     ],
     allowHTML: true,
     syntaxHighlight: false,
