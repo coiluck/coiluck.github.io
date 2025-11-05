@@ -61,7 +61,9 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
   ogUrl={ogUrl}
 >
   <Topbar />
-  <BlogImage />
+  <div class="blog-header">
+    <BlogImage />
+  </div>
   <article>
     <div class="blog-content">
       {page && page.data ? (
@@ -95,6 +97,9 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 </Layout>
 
 <style>
+  .blog-header {
+    padding: 90px 0 0;
+  }
   .blog-content {
     margin: 0 auto;
     width: 70%;

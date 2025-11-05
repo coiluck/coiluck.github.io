@@ -8,13 +8,13 @@
   width: 100%;
   height: 76.67px;
   display: flex;
-  border: 1px solid #666;
+  border: 1px solid var(--meta);
   text-decoration: none;
   overflow: hidden;
   transition: all 0.3s ease-in-out;
 }
 .remark-link-card-plus__card:hover {
-  border-color: #000000;
+  border-color: var(--bg-gyaku);
 }
 
 
@@ -46,14 +46,14 @@
 }
 .remark-link-card-plus__title {
   margin: 0;
-  color: #000;
+  color: var(--bg-gyaku);
   font-size: .9rem;
   font-weight: bold;
 }
 .remark-link-card-plus__description {
   width: 100%;
   margin: 0;
-  color: #666;
+  color: var(--meta);
   font-size: 0.7rem;
   white-space: nowrap;
   overflow: hidden;
@@ -75,6 +75,6 @@
 }
 .remark-link-card-plus__url {
   margin: 0;
-  color: #666;
+  color: var(--meta);
   font-size: 0.7rem;
 }

@@ -156,11 +156,17 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       color: inherit;
       background-color: rgba(255, 243, 241, 0.5);
       text-decoration: none;
-      border: 1px solid #555;
-      border-radius: 10px;
+      border: 1px solid var(--border);
+      border-radius: 5px;
     }
     :root[data-theme="dark"] .content-boxes {
       background-color: rgba(39, 60, 120, 0.4);
+    }
+    .content-boxes h3 {
+      color: var(--bg-gyaku);
+    }
+    .content-boxes p {
+      color: var(--meta);
     }
     @media (max-width: 768px) {
       .content {
@@ -179,4 +185,15 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       }
     }
   </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (Math.random() < 0.5) {
+        document.querySelector('.content-header h2').textContent = 'ひとつひとつでいいからね';
+        document.querySelector('.content-header p').textContent = 'One step at a time.';
+      } else {
+        document.querySelector('.content-header h2').textContent = '限界なんて、ココにはないよ';
+        document.querySelector('.content-header p').textContent = 'Here, limits fall silent.';
+      }
+    });
+  </script>
 </Layout>
