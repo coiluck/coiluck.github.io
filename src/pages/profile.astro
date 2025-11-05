@@ -46,7 +46,8 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 90px auto 0;
+      margin: 0 auto;
+      padding-top: 90px;
     }
     .profile-picture {
       width: 150px;
@@ -80,6 +81,14 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     .custom-link:hover {
       background-position: right bottom, left 60%;
       background-size: 0 1px, 100% .8em;
+    }
+    :root[data-theme="dark"] .custom-link {
+      background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
+        linear-gradient(#6088C6, #6088C6) right 60% / 0 .8em no-repeat;
+    }
+    :root[data-theme="dark"] .custom-link:hover {
+      background-position: right bottom, left 60%;
+      background-size: 0 2px, 100% .8em;
     }
     @media (max-width: 767px) {
       .title {

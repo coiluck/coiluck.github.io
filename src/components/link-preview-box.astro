@@ -15,7 +15,7 @@ const domain = new URL(url).hostname;
 <style>
   .link-preview-box {
     display: block;
-    border: 1px solid #000;
+    border: 1px solid var(--bg-gyaku);
     text-decoration: none;
     color: inherit;
     background-color: rgba(255, 243, 241, 0.7);
@@ -23,7 +23,7 @@ const domain = new URL(url).hostname;
     margin: 5px 0;
   }
   :root[data-theme="dark"] .link-preview-box {
-    background-color: rgba(39, 60, 120, 0.4);
+    background-color: rgba(39, 60, 120, 0.7);
   }
 
   .link-preview-content {
@@ -39,16 +39,9 @@ const domain = new URL(url).hostname;
     font-weight: bold;
     margin: 0;
   }
-
-  .link-description {
+  .link-description, .link-domain {
     margin: 0;
-    color: #666;
-    font-size: 0.7rem;
-  }
-
-  .link-domain {
-    margin: 0;
-    color: #666;
+    color: var(--meta);
     font-size: 0.7rem;
   }
 </style>

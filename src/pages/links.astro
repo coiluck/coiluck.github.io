@@ -76,19 +76,17 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     </div>
   </div>
   <style>
-    h3, p {
-      margin: 20px 0 0;
-    }
     .links-container {
       display: flex;
       flex-direction: column;
       width: 70%;
-      margin: 60px auto;
+      margin: 0 auto;
+      padding: 60px 0;
     }
     .vertical-line {
       width: 100%;
       height: 1px;
-      background-color: #888;
+      background-color: var(--border);
       margin: 30px auto 30px;
     }
     .links-box {

@@ -45,12 +45,21 @@ const siteTitle = import.meta.env.SITE_TITLE;
     width: 24px;
     height: 24px;
     margin: 0 20px;
+    cursor: pointer;
   }
   #top-bar-toggle img {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
     transition: opacity 0.3s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
   }
   #sun-icon {
     opacity: 1;
