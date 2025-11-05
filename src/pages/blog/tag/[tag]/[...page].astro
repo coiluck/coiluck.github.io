@@ -1,13 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import { addExcerpts } from '../../../../utils/generateExcerpt.js';
-import Topbar from '../../../../components/topbar.astro';
 import Layout from '../../../../layouts/blogLayout.astro';
-import BlogImage from '../../../../components/blog-image.astro';
-import Pagination from '../../../../components/pagination.astro'; 
-import BlogLine from '../../../../components/blog-line.astro';
+import Topbar from '../../../../components/topbar.astro';
 import { Image } from 'astro:assets';
 import pankuzuIcon from '../../../../assets/images/pankuzu.svg';
+import BlogImage from '../../../../components/blog-image.astro';
+import BlogPostCard from '../../../../components/blog-post-card.astro';
+import BlogLine from '../../../../components/blog-line.astro';
+import Pagination from '../../../../components/pagination.astro';
+
 
 export async function getStaticPaths({ paginate }) {
   try {
@@ -109,36 +111,13 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
           const date = post.data.date;
   
           return (
-            <article class="blog-post">
-              <header>
-                <h2>
-                  <a href={`/blog/${slug}`}>
-                    {title}
-                  </a>
-                </h2>
-                <div class="meta">
-                  {tags.length > 0 && (
-                    <div class="tags">
-                      {tags.map((tag, tagIndex) => (
-                        <span>
-                          <a href={`/blog/tag/${encodeURIComponent(tag)}`} class="post-tag">
-                            <span style="color: #ff7f7e;">#</span>{tag}
-                          </a>
-                          {tagIndex < tags.length - 1 && ', '}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                  <time class="date">{date}</time>
-                </div>
-              </header>
-              {post.excerpt && (
-                <p class="excerpt">{post.excerpt}</p>
-              )}
-              <footer>
-                <a href={`/blog/${slug}`} class="read-more">続きを読む</a>
-              </footer>
-            </article>
+            <BlogPostCard 
+              slug={slug}
+              title={title}
+              tags={tags}
+              date={date}
+              excerpt={post.excerpt}
+            />
           );
         })}
       </>
@@ -151,144 +130,54 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
   <BlogLine />
   <Pagination page={page} />
   </article>
-
-
-  <style>
-    .tag-pankuzu {
-      font-size: 1rem;
-      color: #666;
-    }
-    .tag-pankuzu a {
-      padding: 4px;
-      color: #666;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-    .tag-pankuzu a:hover {
-      text-decoration: underline rgba(102, 102, 102, 1);
-    }
-    .tag-pankuzu img {
-      width: 10px;
-      height: 10px;
-      user-select: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      -webkit-user-drag: none;
-      -khtml-user-drag: none;
-      -moz-user-drag: none;
-      -o-user-drag: none;
-    }
-    .tag-itirann {
-      margin-top: 10px;
-    }
-    .tag-itirann span {
-      font-size: 1.2rem;
-    }
-    .blog-tag-line {
-      width: 100%;
-      height: 1px;
-      background-color: #888;
-      margin: 30px auto 30px;
-    }
-    .blog-content {
-      margin: 40px auto 30px;
-      width: 70%;
-    }
-  
-    .blog-post {
-      margin: 2rem auto;
-      width: 100%;
-    }
-  
-    .blog-post h2 {
-      text-align: center;
-    }
-  
-    .blog-post h2 a {
-      color: black;
-      text-decoration: none;
-      background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
-      linear-gradient(#f6d893, #f6d893) right 60% / 0 .8em no-repeat;
-      transition: background-size .4s cubic-bezier(0.215, 0.61, 0.355, 1);
-    }
-    .blog-post h2 a:hover {
-      background-position: right bottom, left 60%;
-      background-size: 0 2px, 100% .8em;
-    }
-    @media (pointer: none) {
-      .post-title {
-        color: black;
-        text-decoration: none;
-        border-bottom: solid 2px black;
-        background: none;
-        transition: none;
-      }
-      .post-title:hover {
-        background-position: initial;
-        background-size: initial;
-      }
-    }
-    .meta {
-      display: flex;
-      flex-direction: column;
-      margin: .5rem 0;  
-      font-size: 0.9rem;
-      color: #666;
-    }
-  
-    .tags {
-      display: flex;
-      justify-content: center;
-      gap: 5px;
-    }
-    .tags span a {
-      color: #666;
-      text-decoration: underline rgba(102, 102, 102, 0);;
-      transition: all 0.3s ease;
-    }
-    .tags span a:hover {
-      color: #333;
-      text-decoration: underline rgba(51, 51, 51, 1);
-    }
-    .date {
-      text-align: left;
-    }
-    
-    .excerpt {
-      margin: .5rem 0 0;
-      line-height: 1.6;
-      color: #222;
-    }
-  
-    .read-more {
-      display: inline-block;
-      position: relative;
-      margin-top: 0.8rem;
-      color: #0066cc;
-      text-decoration: none;
-    }
-    .read-more::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background-color: rgba(0, 102, 204, 1);
-      transform: scaleY(0.5);
-      transform-origin: bottom;
-      transition: width 0.3s ease;
-    }
-    .read-more:hover::before {
-      width: 100%;
-      background-color: rgba(0, 102, 204, 1);
-    }
-  
-    @media (max-width: 767px) {
-      .blog-content{
-        width: 90%;
-      }
-    }
-  </style>
 </Layout>
+
+<style>
+  .tag-pankuzu {
+    font-size: 1rem;
+    color: #666;
+  }
+  .tag-pankuzu a {
+    padding: 4px;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  .tag-pankuzu a:hover {
+    text-decoration: underline rgba(102, 102, 102, 1);
+  }
+  .tag-pankuzu img {
+    width: 10px;
+    height: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+  }
+  .tag-itirann {
+    margin-top: 10px;
+  }
+  .tag-itirann span {
+    font-size: 1.2rem;
+  }
+  .blog-tag-line {
+    width: 100%;
+    height: 1px;
+    background-color: #888;
+    margin: 30px auto 30px;
+  }
+  .blog-content {
+    margin: 40px auto 30px;
+    width: 70%;
+  }
+
+  @media (max-width: 767px) {
+    .blog-content{
+      width: 90%;
+    }
+  }
+</style>
