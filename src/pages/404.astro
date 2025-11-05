@@ -13,7 +13,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     <div class="text">
       <h2>This page does not exist.</h2>
       <p>
-        You will be redirected to the <a href="/" style="color: #000;">top page</a> 
+        You will be redirected to the <a href="/" style="color: var(--text);">top page</a> 
         <span style="display: inline-block;">
           in <span id="countdown">5</span> seconds.
         </span>
@@ -39,6 +39,9 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     .text {
       width: 80%;
       text-align: center;
+    }
+    .text h2 {
+      color: var(--bg-gyaku);
     }
     #countdown {
       font-size: 1.3rem;

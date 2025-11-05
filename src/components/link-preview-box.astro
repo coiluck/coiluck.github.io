@@ -18,9 +18,12 @@ const domain = new URL(url).hostname;
     border: 1px solid #000;
     text-decoration: none;
     color: inherit;
-    background-color: rgba(238, 238, 238, 0.7);
+    background-color: rgba(255, 243, 241, 0.7);
     padding: 10px;
     margin: 5px 0;
+  }
+  :root[data-theme="dark"] .link-preview-box {
+    background-color: rgba(39, 60, 120, 0.4);
   }
 
   .link-preview-content {
@@ -31,20 +34,21 @@ const domain = new URL(url).hostname;
   }
 
   .link-title {
+    color: var(--bg-gyaku);
+    font-size: .9rem;
     font-weight: bold;
     margin: 0;
-    font-size: .9rem;
   }
 
   .link-description {
     margin: 0;
-    font-size: 0.7rem;
     color: #666;
+    font-size: 0.7rem;
   }
 
   .link-domain {
     margin: 0;
-    font-size: 0.7rem;
     color: #666;
+    font-size: 0.7rem;
   }
 </style>

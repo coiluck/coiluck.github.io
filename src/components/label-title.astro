@@ -1,0 +1,17 @@
+---
+const { text } = Astro.props
+---
+<div class="category-label">{text}</div>
+
+<style>
+  .category-label {
+    padding: 7px 11px;
+    margin: 10px 0;
+    color: var(--bg-gyaku);
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-sizing: border-box;
+    border-left: 4px solid #ff7f7e;
+    box-shadow: 2px 2px 4px var(--shadow);
+  }
+</style>

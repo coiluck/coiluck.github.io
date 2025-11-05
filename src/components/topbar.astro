@@ -1,48 +1,87 @@
+---
+import { Image } from 'astro:assets';
+import sunImage from '../assets/images/sun.svg';
+import moonImage from '../assets/images/moon.svg';
+const siteTitle = import.meta.env.SITE_TITLE;
+---
 <div class="top-bar">
   <p class="top-bar-text">
-    <a href="/" class="custom-link">革命学舎</a>
+    <a href="/" class="custom-link">{siteTitle}</a>
   </p>
+  <div id="top-bar-toggle">
+    <Image src={sunImage} alt="太陽のアイコン" id="sun-icon" />
+    <Image src={moonImage} alt="月のアイコン" id="moon-icon" />
+  </div>
 </div>
 
 <style>
   .top-bar {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
-    height: 2em;
-    background-color: #ff7f7e;
-    color: black;
-    padding: 10px 0; /* position:absoluteに変えると右にスクロールされるようになった。下で左右は設定 */
-    z-index: 1000;
-    margin: 0;
-    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    height: 2rem;
+    margin: 0;
+    padding: 10px 0;
+    background-color: #ff7f7e;
+    z-index: 1000;
+    overflow: hidden;
   }
   .top-bar-text {
-    margin: 0;
-    padding-left: 20px;
+    margin: 0 20px;
     text-align: left;
-    flex: 1;
   }
   .custom-link {
-    color: black;
-    font-size: 4;
+    color: var(--text-dark);
     text-decoration: none; 
   }
   .custom-link:hover {
-    color: black;
+    color: var(--text-dark);
+  }
+  #top-bar-toggle {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    margin: 0 20px;
+  }
+  #top-bar-toggle img {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: opacity 0.3s ease-in-out;
+  }
+  #sun-icon {
+    opacity: 1;
+  }
+  #moon-icon {
+    opacity: 0;
+  }
+  :global([data-theme="dark"]) #sun-icon {
+    opacity: 0;
+  }
+  :global([data-theme="dark"]) #moon-icon {
+    opacity: 1;
   }
   .top-bar::after {
     content: '';
     position: absolute;
     left: 0;
+    right: 0;
     bottom: 0;
-    width: 100%;
     height: 1px;
     background-color: black;
     z-index: -1;
   }
 </style>
+
+<script>
+  function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  }
+  document.getElementById("top-bar-toggle").addEventListener('click', toggleTheme);
+</script>

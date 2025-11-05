@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Topbar from '../components/topbar.astro';
+import LabelTitle from '../components/label-title.astro';
 import VerticalLine from '../components/vertical-line.astro';
 import LinkPreviewBox from '../components/link-preview-box.astro';
 
@@ -12,7 +13,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     <h3 class="title">Love</h3>
     <VerticalLine />
     <div class="content">
-      <div class="category-label">Novel</div>
+      <LabelTitle text = "Novel" />
       <div class="category-text">
         ハヤカワ文庫JAなどを好む。<br>
         &nbsp;&nbsp;・プロジェクトぴあの<br>
@@ -23,18 +24,18 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         &nbsp;&nbsp;・妹さえいればいい<br>
         &nbsp;&nbsp;・蝶と帝国<br>
       </div>
-      <div class="category-label">Web Novel</div>
+      <LabelTitle text = "Web Novel" />
       <div class="category-text">
         小説家になろうをメインで読んでいる。稀にカクヨムやハーメルンには足を延ばす。<br>
       </div>
-      <div class="category-label">Comic</div>
+      <LabelTitle text = "Comic" />
       <div class="category-text">
         マンガを読むことはあまりないけど。<br>
         &nbsp;&nbsp;・ゆゆ式<br>
         &nbsp;&nbsp;・ゆるゆり<br>
         &nbsp;&nbsp;・児玉まりあ文学集成<br>
       </div>
-      <div class="category-label">Music</div>
+      <LabelTitle text = "Music" />
       <div class="category-text">
         &nbsp;&nbsp;・マイナーで静かなボカロ<br>
         &nbsp;&nbsp;・作詞作曲が麻枝准かユリイカノンのもの<br>
@@ -54,7 +55,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
           url="https://youtube.com/playlist?list=PL3MPhEsfgh10TkA8w41sGFC1ChFhrP7hQ&si=09uIqqL8Mvq2zFb7"
         />
       </div>
-      <div class="category-label">Game</div>
+      <LabelTitle text = "Game" />
       <div class="category-text">今プレイしているのはDelta Force（PC版）くらい。<br>
         過去には<br>
         &nbsp;&nbsp;・グランブルーファンタジー<br>
@@ -63,9 +64,9 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         &nbsp;&nbsp;・ポケモンユナイト<br>
         などをやっていた。
       </div>
-      <div class="category-label">Other</div>
+      <LabelTitle text = "Other" />
       <div class="category-text">
-        好きな色: <span style="color: #ff7f7e;">#ff7f7e</span><br>
+        好きな色: <span style="color: #ff7f7e;">#FF7F7E</span><br>
         好きなこと: GitHub Pagesで動作するゲームを作ること<br>
       </div>
     </div>
@@ -84,16 +85,6 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     .content {
       width: 70%;
       margin: 0 auto;
-    }
-    .category-label {
-      padding: 7px 11px;
-      margin: 10px 0;
-      font-size: 1.1rem;
-      font-weight: bold;
-      background-color: #fff;
-      box-sizing: border-box;
-      border-left: 4px solid #ff7f7e;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
     }
     .category-text {
       width: calc(100% - 2rem);
