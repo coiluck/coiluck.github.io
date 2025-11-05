@@ -20,8 +20,29 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
     <meta property="og:site_name" content={siteTitle} />
     <meta name="twitter:card" content="summary" />
   </head>
-  <body>
-      <slot />
+  <body class="loading">
+    <script is:inline>
+      function setTheme () {
+        const storedTheme = localStorage.getItem('theme');
+        
+        if (storedTheme) {
+          document.documentElement.setAttribute('data-theme', storedTheme);
+        } else {
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          console.log(prefersDark)
+          document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+        }
+      };
+      setTheme();
+    </script>
+
+    <slot />
+
+    <script is:inline>
+      window.onload = () => {
+        document.body.classList.remove('loading');
+      };
+    </script>
   </body>
 </html>
 
@@ -30,17 +51,45 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
     font-family: 'mamelon3.5';
     src: url('/Mamelon-3.5HiRegular.woff2') format('woff2');
   }
+  :root {
+    --primary: #1a2a4f;
+    --accent: #ff7f7e;
+    --text-dark: #0a0f1e;
+    /* ここから変わる部分 */
+    --bg: #fff3f1;
+    --bg-gyaku: #0a0f1e;
+    --text: #1a2a4f;
+    --border: #888;
+    --link: #0066cc;
+    --meta: #666;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0a0f1e;
+    --bg-gyaku: #fff3f1;
+    --text: #fff3f1;
+    --border: #2a3a5f;
+    --link: #6088C6;
+    --meta: #909090;
+  }
   html, body {
     margin: 0;
     padding: 0;
     width: 100%;
     font-family: 'mamelon3.5', sans-serif;
-    background-color: #eee;
+    background-color: var(--bg);
   }
   * {
     font-family: 'mamelon3.5', sans-serif;
   }
   html {
     min-height: 100vh;
+  }
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    transition: all 0.3s;
+  }
+  body.loading {
+    transition: none !important;
   }
 </style>

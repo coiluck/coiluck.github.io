@@ -89,7 +89,6 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
   <Topbar />
   <BlogImage />
   <article>
-    <div class="blog-content">
       <div class="tag-head">
         <div class="tag-pankuzu">
           <a href="/blog">Top</a>
@@ -100,8 +99,10 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
           <span><strong><font color="#ff7f7e">#</font>{tag} の記事の一覧</strong></span>
         </div>
       </div>
-      <div class="blog-tag-line"></div>
       
+      <BlogLine />
+      
+    <div class="blog-content">
       {page && page.data ? (
         <>
         {page.data.map((post, index) => {
@@ -127,24 +128,41 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
         </div>
       )}
     </div>
-  <BlogLine />
-  <Pagination page={page} />
+    <BlogLine />
+    <Pagination page={page} />
   </article>
 </Layout>
 
 <style>
+  .tag-head {
+    margin: 30px auto;
+    width: 70%;
+  }
   .tag-pankuzu {
     font-size: 1rem;
-    color: #666;
+    color: var(--meta);
   }
   .tag-pankuzu a {
-    padding: 4px;
-    color: #666;
+    position: relative;
+    padding: 2px 4px;
+    color: var(--meta);
     text-decoration: none;
     transition: all 0.3s ease;
   }
-  .tag-pankuzu a:hover {
-    text-decoration: underline rgba(102, 102, 102, 1);
+  .tag-pankuzu a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--meta);
+    transform: scaleY(0.5);
+    transform-origin: bottom;
+    transition: width 0.3s ease;
+  }
+  .tag-pankuzu a:hover::before {
+    width: 100%;
   }
   .tag-pankuzu img {
     width: 10px;
@@ -160,23 +178,15 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
   }
   .tag-itirann {
     margin-top: 10px;
-  }
-  .tag-itirann span {
+    color: var(--bg-gyaku);
     font-size: 1.2rem;
-  }
-  .blog-tag-line {
-    width: 100%;
-    height: 1px;
-    background-color: #888;
-    margin: 30px auto 30px;
   }
   .blog-content {
     margin: 40px auto 30px;
     width: 70%;
   }
-
   @media (max-width: 767px) {
-    .blog-content{
+    .tag-head, .blog-content {
       width: 90%;
     }
   }

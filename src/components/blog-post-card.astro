@@ -40,30 +40,23 @@ const { slug, title, tags, date, excerpt } = Astro.props;
   }
 
   .blog-post h2 a {
-    color: black;
+    color: var(--bg-gyaku);
     text-decoration: none;
     background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
       linear-gradient(#f6d893, #f6d893) right 60% / 0 .8em no-repeat;
     transition: background-size .4s cubic-bezier(0.215, 0.61, 0.355, 1);
   }
-  
   .blog-post h2 a:hover {
     background-position: right bottom, left 60%;
     background-size: 0 2px, 100% .8em;
   }
-  
-  @media (pointer: none) {
-    .blog-post h2 a {
-      color: black;
-      text-decoration: none;
-      border-bottom: solid 2px black;
-      background: none;
-      transition: none;
-    }
-    .blog-post h2 a:hover {
-      background-position: initial;
-      background-size: initial;
-    }
+  :root[data-theme="dark"] .blog-post h2 a {
+    background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
+      linear-gradient(#6088C6, #6088C6) right 60% / 0 .8em no-repeat;
+  }
+  :root[data-theme="dark"] .blog-post h2 a:hover {
+    background-position: right bottom, left 60%;
+    background-size: 0 2px, 100% .8em;
   }
   
   .meta {
@@ -71,7 +64,7 @@ const { slug, title, tags, date, excerpt } = Astro.props;
     flex-direction: column;
     margin: .5rem 0;
     font-size: 0.9rem;
-    color: #666;
+    color: var(--meta);
   }
   
   .tags {
@@ -81,14 +74,25 @@ const { slug, title, tags, date, excerpt } = Astro.props;
   }
   
   .tags span a {
-    color: #666;
-    text-decoration: underline rgba(102, 102, 102, 0);
+    position: relative;
+    color: var(--meta);
+    text-decoration: none;
     transition: all 0.3s ease;
   }
-  
-  .tags span a:hover {
-    color: #333;
-    text-decoration: underline rgba(51, 51, 51, 1);
+  .tags span a::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--meta);
+    transform: scaleY(0.5);
+    transform-origin: bottom;
+    transition: width 0.3s ease;
+  }
+  .tags span a:hover::before {
+    width: 100%;
   }
   
   .date {
@@ -98,17 +102,16 @@ const { slug, title, tags, date, excerpt } = Astro.props;
   .excerpt {
     margin: .5rem 0 0;
     line-height: 1.6;
-    color: #222;
+    color: var(--text);
   }
 
   .read-more {
     display: inline-block;
     position: relative;
     margin-top: 0.8rem;
-    color: #0066cc;
+    color: var(--link);
     text-decoration: none;
   }
-  
   .read-more::before {
     content: '';
     position: absolute;
@@ -116,14 +119,12 @@ const { slug, title, tags, date, excerpt } = Astro.props;
     left: 0;
     width: 0;
     height: 2px;
-    background-color: rgba(0, 102, 204, 1);
+    background-color: var(--link);
     transform: scaleY(0.5);
     transform-origin: bottom;
     transition: width 0.3s ease;
   }
-  
   .read-more:hover::before {
     width: 100%;
-    background-color: rgba(0, 102, 204, 1);
   }
 </style>

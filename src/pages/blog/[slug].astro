@@ -4,9 +4,11 @@ import { generateExcerpt } from '../../utils/generateExcerpt.js';
 import Layout from '../../layouts/blogLayout.astro';
 import Topbar from '../../components/topbar.astro';
 import BlogImage from '../../components/blog-image.astro';
+import BlogLine from '../../components/blog-line.astro';
 import { Image } from 'astro:assets';
 import backIcon from '../../assets/images/back.svg';
 import '../../styles/remark-link-card.css';
+import BlogLayout from '../../layouts/blogLayout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => {
@@ -63,7 +65,7 @@ const ogDescription = generateExcerpt(post, 75);
     </div>
   </article>
 
-  <div class="line-under-blog"></div>
+  <BlogLine />
 
   <button class="top-button-container">
     <div class="circle-button">
@@ -90,30 +92,43 @@ const ogDescription = generateExcerpt(post, 75);
     }
     .blog-post > h2 {
       margin: .5rem 0 0;
+      color: var(--text-dark);
       text-align: center;
     }
     .meta {
       font-size: 0.9rem;
       text-align: center;
-      color: #666;
+      color: var(--meta);
     }
     .meta p{
       margin: .5rem 0 0;
     }
     .meta p span a {
-      color: #666;
-      text-decoration: underline rgba(102, 102, 102, 0);;
+      position: relative;
+      color: var(--meta);
+      text-decoration: none;
       transition: all 0.3s ease;
     }
-    .meta p span a:hover {
-      color: #333;
-      text-decoration: underline rgba(102, 102, 102, 1);
+    .meta p span a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--meta);
+       transform: scaleY(0.5);
+      transform-origin: bottom;
+      transition: width 0.3s ease;
+    }
+    .meta p span a:hover::before {
+      width: 100%;
     }
 
     .blog-tag-line {
       width: 100%;
       height: 1px;
-      background-color: #888;
+      background-color: var(--border);
       margin: 30px auto;
     }
     .content {
@@ -135,8 +150,8 @@ const ogDescription = generateExcerpt(post, 75);
       margin: 32px 0; /* .contentについているmargin-bottomと合わせる */
     }
     .prose a.blog-link {
-      color: black;
-      text-decoration-color: black;
+      color: var(--text);
+      text-decoration-color: var(--text);
     }
     .prose ul {
       margin: 0;
@@ -243,12 +258,15 @@ const ogDescription = generateExcerpt(post, 75);
     .prose .footnotes h2 {
       display: none;
     }
-    .prose code {
+    .prose code:not(pre code) {
       background-color: #ccc;
       padding: 0.15rem 0.4rem;
       border-radius: 3px;
       font-size: .8rem;
       font-family: "JetBrainsMono", sans-serif;
+    }
+    :root[data-theme="dark"] .prose code:not(pre code) {
+      background-color: #484848;
     }
     .expressive-code { /* 「```」で囲まれたコードの上下にスペースを追加 */
       margin: 1.2rem 0;
@@ -270,13 +288,13 @@ const ogDescription = generateExcerpt(post, 75);
       display: flex;
       align-items: center;
       position: relative;
-      top: 20px;
       margin-left: 15%;
       width: fit-content;
-      color: #ff7f7e;
+      color: var(--accent);
       font-family: 'mamelon3.5', sans-serif;
       text-decoration: none;
       border: none;
+      background: transparent;
       cursor: pointer;
       user-select: none;
       -webkit-user-select: none;
@@ -290,7 +308,7 @@ const ogDescription = generateExcerpt(post, 75);
       left: 0;
       width: 0px;
       height: 1px;
-      background-color: #ff7f7e;
+      background-color: var(--accent);
       transition: width 0.3s ease-in-out;
     }
     .top-button-container:hover::before {
@@ -349,18 +367,6 @@ const ogDescription = generateExcerpt(post, 75);
     @media (max-width: 767px) {
       .top-button-container {
         margin-left: 5%;
-      }
-    }
-    .line-under-blog {
-      width: 70%;
-      height: 1px;
-      background-color: #888;
-      margin: 20px auto 20px;
-    }
-    @media (max-width: 767px) {
-      .line-under-blog {
-        width: 90%;
-        margin-top: 2em;
       }
     }
   </style>
