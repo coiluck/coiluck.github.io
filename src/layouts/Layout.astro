@@ -1,9 +1,8 @@
 ---
 const siteTitle = import.meta.env.SITE_TITLE;
-const { pageTitle, ogUrl } = Astro.props;
+const { pageTitle, ogUrl, ogDescription } = Astro.props;
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://coiluck.moe';
 const OGImage = new URL("/images/ogp.png", siteUrl).toString();
-const ogDescription = "世界の果てに、幻想と舞う";
 ---
 <!DOCTYPE html>
 <html lang="ja">
@@ -11,6 +10,7 @@ const ogDescription = "世界の果てに、幻想と舞う";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" href="/images/favicon.ico" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{siteTitle}{pageTitle && ` | ${pageTitle}`}</title>
     <meta property="og:title" content={pageTitle ? `${siteTitle} | ${pageTitle}` : siteTitle} />
     <meta property="og:description" content={ogDescription} />

@@ -10,7 +10,7 @@ import profileIcon from '../assets/images/profile-icon.avif';
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<Layout pageTitle="profile" ogUrl={ogUrl}>
+<Layout pageTitle="profile" ogUrl={ogUrl} ogDescription="自己紹介">
 	<Topbar />
   <div class="container">
     <Image class="profile-picture" src={profileIcon} alt="アイコン" />

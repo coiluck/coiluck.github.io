@@ -14,7 +14,7 @@ import catIcon from '../assets/images/cat.avif';
 
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
-<Layout pageTitle="vault" ogUrl={ogUrl}>
+<Layout pageTitle="vault" ogUrl={ogUrl} ogDescription="ほかのページへの導線">
 	<Topbar />
 	<div class="profile-container">
 		<Image class="profile-picture" src={profileIcon} alt="アイコン" />

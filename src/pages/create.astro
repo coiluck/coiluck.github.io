@@ -7,7 +7,7 @@ import createImage from '../assets/images/create.avif';
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<Layout pageTitle="制作物" ogUrl={ogUrl}>
+<Layout pageTitle="制作物" ogUrl={ogUrl} ogDescription="制作物の一覧">
   <Topbar />
   <div class="image-container">
     <Image src={createImage} alt="おにゃのこ" />

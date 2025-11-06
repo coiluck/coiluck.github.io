@@ -7,7 +7,7 @@ import LinkPreviewBox from '../components/link-preview-box.astro';
 
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
-<Layout pageTitle="love" ogUrl={ogUrl}>
+<Layout pageTitle="love" ogUrl={ogUrl} ogDescription="好きなものについて">
   <Topbar />
   <div class="container">
     <h3 class="title">Love</h3>

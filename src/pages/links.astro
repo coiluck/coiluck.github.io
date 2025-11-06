@@ -8,7 +8,7 @@ import linksImage from '../assets/images/links.avif';
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<Layout pageTitle="リンク集" ogUrl={ogUrl}>
+<Layout pageTitle="リンク集" ogUrl={ogUrl} ogDescription="使用アカウントの一覧">
   <Topbar />
   <div class="links-container">
     <h3>リンク集</h3>

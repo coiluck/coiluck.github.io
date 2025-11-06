@@ -31,7 +31,7 @@ const { Content } = await render(post);
 
 const ogTitle = post.data.title || '投稿';
 const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
-const ogDescription = generateExcerpt(post, 75);
+const ogDescription = generateExcerpt(post, 30);
 ---
 <Layout
   pageTitle={post.data.title}
