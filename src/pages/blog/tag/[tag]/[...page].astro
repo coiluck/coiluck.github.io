@@ -6,6 +6,7 @@ import Topbar from '../../../../components/topbar.astro';
 import { Image } from 'astro:assets';
 import pankuzuIcon from '../../../../assets/images/pankuzu.svg';
 import BlogImage from '../../../../components/blog-image.astro';
+import Search from "../../../../components/Search.astro";
 import BlogPostCard from '../../../../components/blog-post-card.astro';
 import BlogLine from '../../../../components/blog-line.astro';
 import Pagination from '../../../../components/pagination.astro';
@@ -79,7 +80,6 @@ const ogTitle = `タグ: ${tag}`;
 const ogDescription = "書く、これしか出来ないから";
 const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 ---
-
 <Layout 
   pageTitle={`タグ: ${tag}`}
   ogTitle={ogTitle} 
@@ -89,6 +89,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
   <Topbar />
   <div class="blog-header">
     <BlogImage />
+    <Search />
   </div>
   <article>
       <div class="tag-head">

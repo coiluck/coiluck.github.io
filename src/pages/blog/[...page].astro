@@ -4,6 +4,7 @@ import { addExcerpts } from '../../utils/generateExcerpt.js';
 import Layout from '../../layouts/blogLayout.astro';
 import Topbar from '../../components/topbar.astro';
 import BlogImage from '../../components/blog-image.astro';
+import Search from "../../components/Search.astro";
 import BlogPostCard from '../../components/blog-post-card.astro';
 import BlogLine from '../../components/blog-line.astro';
 import Pagination from '../../components/pagination.astro';
@@ -53,7 +54,6 @@ const ogTitle = "blog";
 const ogDescription = "書く、これしか出来ないから";
 const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 ---
-
 <Layout 
   pageTitle="blog" 
   ogTitle={ogTitle} 
@@ -63,6 +63,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
   <Topbar />
   <div class="blog-header">
     <BlogImage />
+    <Search />
   </div>
   <article>
     <div class="blog-content">

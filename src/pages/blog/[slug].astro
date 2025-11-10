@@ -8,7 +8,6 @@ import BlogLine from '../../components/blog-line.astro';
 import { Image } from 'astro:assets';
 import backIcon from '../../assets/images/back.svg';
 import '../../styles/remark-link-card.css';
-import BlogLayout from '../../layouts/blogLayout.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => {
@@ -27,14 +26,18 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
+const title = post.data.title || '無題の投稿';
+const date = post.data.date || post.id.slice(0, 10);
+const tags = post.data.tags ?? [];
+
 const { Content } = await render(post);
 
-const ogTitle = post.data.title || '投稿';
+const ogTitle = title;
 const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const ogDescription = generateExcerpt(post, 30);
 ---
 <Layout
-  pageTitle={post.data.title}
+  pageTitle={title}
   ogTitle={ogTitle}
   ogDescription={ogDescription}
   ogUrl={ogUrl}
@@ -43,18 +46,23 @@ const ogDescription = generateExcerpt(post, 30);
   <div class="blog-header">
     <BlogImage />
   </div>
-  <article class="blog-post">
-    <h2>{post.data.title}</h2>
+  <article
+    class="blog-post"
+    data-pagefind-body
+    data-pagefind-meta={`date:${date}`}
+  >
+    <h2>{title}</h2>
     <div class="meta">
-      <p>投稿日: {post.data.date}</p>
+      <p>投稿日: {date}</p>
       <p>
         タグ:
-        {(post.data.tags ?? []).map((tag, tagIndex) => (
+        {tags.map((tag, tagIndex) => (
           <span>
             <a href={`/blog/tag/${encodeURIComponent(tag)}`}>
-              <span style="color: #ff7f7e;">#</span>{tag}
+              <span style="color: #ff7f7e;">#</span>
+              <span data-pagefind-filter="tag">{tag}</span>
             </a>
-            {tagIndex < (post.data.tags ?? []).length - 1 && ', '}
+            {tagIndex < tags.length - 1 && ', '}
           </span>
         ))}
       </p>
