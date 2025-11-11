@@ -51,9 +51,6 @@ import "@pagefind/default-ui/css/ui.css";
         searchInput.addEventListener('focusin', () => {
           searchLayer.classList.add('focusing');
           document.body.style.overflow = 'hidden';
-          const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-          document.body.style.paddingRight = `${scrollbarWidth}px`;
-
           const targetDOMRect = searchInput.getBoundingClientRect();
           const targetTop = targetDOMRect.top + window.pageYOffset - 20; // 20pxは上の余白
           window.scrollTo({
@@ -86,7 +83,6 @@ import "@pagefind/default-ui/css/ui.css";
         searchInput.blur();
       }
       document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
       searchLayer.classList.remove('focusing');
     });
 
@@ -108,17 +104,20 @@ import "@pagefind/default-ui/css/ui.css";
   :root {
     --pagefind-ui-font: inherit;
   }
-  .search-layer {
-    background: rgba(255, 255, 255, 0);
-    transition: all 0.3s ease-in-out;
-    pointer-events: none;
+  html {
+    scrollbar-gutter: stable;
   }
-  .search-layer.focusing {
+  .search-layer {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    background: rgba(255, 255, 255, 0);
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+  }
+  .search-layer.focusing {
     background: rgba(255, 243, 241, 0.5);
     backdrop-filter: blur(5px);
     pointer-events: auto;
