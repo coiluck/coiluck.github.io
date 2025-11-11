@@ -46,7 +46,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: calc(100vh - 90px);
+      min-height: calc(100vh - 180px);
       margin: 0 auto;
       padding: 90px 0;
     }
@@ -99,12 +99,15 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       .content {
         width: 80%;
       }
-      .custom-link {
+      .custom-link,
+      :root[data-theme="dark"] .custom-link {
         text-decoration: underline;
         background: none;
         transition: none;
       }
-      .custom-link:hover {
+      .custom-link:hover,
+      :root[data-theme="dark"] .custom-link:hover {
+        background: none;
         background-position: initial;
         background-size: initial;
       }
