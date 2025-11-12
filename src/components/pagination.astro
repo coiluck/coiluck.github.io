@@ -13,7 +13,7 @@ const { page } = Astro.props;
   <nav class="pagination">
     {page.url.prev ? (
       <a href={page.url.prev} class="page-link prev" rel="prev">
-        <img src={prevIcon.src} class="arrow-icon" />
+        <img src={prevIcon.src} class="arrow-icon" alt="" />
         <span>Prev</span>
       </a>
     ) : (
@@ -27,7 +27,7 @@ const { page } = Astro.props;
     {page.url.next ? (
       <a href={page.url.next} class="page-link next" rel="next">
         <span>Next</span>
-        <img src={nextIcon.src} class="arrow-icon" />
+        <img src={nextIcon.src} class="arrow-icon" alt="" />
       </a>
     ) : (
       <span class="placeholder"></span>

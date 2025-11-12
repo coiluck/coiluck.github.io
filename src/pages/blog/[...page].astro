@@ -65,7 +65,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
     <BlogImage />
     <Search />
   </div>
-  <article>
+  <main>
     <div class="blog-content">
       {page && page.data ? (
         <>
@@ -94,7 +94,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
     </div>
     <BlogLine />
     <Pagination page={page} />
-  </article>
+  </main>
 </Layout>
 
 <style>

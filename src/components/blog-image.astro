@@ -4,7 +4,7 @@ import blogImage from '../assets/images/blog-pic.avif';
 const siteTitle = import.meta.env.SITE_TITLE;
 ---
 <div class="image-container">
-  <Image src={blogImage} alt="ブログトップ画像" />
+  <Image src={blogImage} alt="ブログトップ画像" loading="eager" />
   <div class="image-text">
     <div class="main-text">{siteTitle}</div>
     <div class="sub-text">書く、これしか出来ないから。</div>
@@ -20,9 +20,9 @@ const siteTitle = import.meta.env.SITE_TITLE;
     overflow: hidden;
   }
   .image-container img {
+    display: block;
     width: 100%;
     height: 100%;
-    display: block;
     object-fit: cover;
   }
   @media (max-width: 767px) {

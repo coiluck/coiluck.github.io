@@ -9,8 +9,10 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={ogDescription} />
     <link rel="icon" href="/images/favicon.ico" />
     <link rel="alternate" type="application/rss+xml" title="革命学舎 | blog" href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{siteTitle}{pageTitle && ` | ${pageTitle}`}</title>
     <meta property="og:title" content={`${siteTitle} | ${ogTitle || pageTitle}`} />
     <meta property="og:description" content={ogDescription || '革命学舎'} />
@@ -19,6 +21,7 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
     <meta property="og:image" content={OGImage} />
     <meta property="og:site_name" content={siteTitle} />
     <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={siteTitle} />
 
     <style>
       @font-face {
