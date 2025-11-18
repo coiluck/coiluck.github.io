@@ -1,7 +1,8 @@
 ---
-const { text } = Astro.props
+const { text, isChild = false } = Astro.props
+const labelClass = isChild ? 'category-label-sub' : 'category-label';
 ---
-<div class="category-label">{text}</div>
+<div class={labelClass}>{text}</div>
 
 <style>
   .category-label {
@@ -10,8 +11,26 @@ const { text } = Astro.props
     color: var(--bg-gyaku);
     font-size: 1.1rem;
     font-weight: bold;
-    box-sizing: border-box;
     border-left: 4px solid #ff7f7e;
     box-shadow: 2px 2px 4px var(--shadow);
+  }
+  .category-label-sub {
+    position: relative;
+    width: fit-content;
+    padding-left: 1rem;
+    margin: 5px 0;
+    color: var(--bg-gyaku);
+    font-size: 1rem;
+    font-weight: bold;
+    border-bottom: 1px solid #ff7f7e;;
+  }
+  .category-label-sub::before {
+    content: '・';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 1rem;
+    color: #ff7f7e;
   }
 </style>

@@ -6,6 +6,7 @@ import VerticalLine from '../components/vertical-line.astro';
 
 import { Image } from 'astro:assets';
 import profileIcon from '../assets/images/profile-icon.avif';
+import LinkPreviewBox from '../components/link-preview-box.astro';
 
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
@@ -23,17 +24,130 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         こいらっく、ココネ、 
         <a href="/blog/handlename" class="custom-link"> etc.</a>
       </div>
+
       <LabelTitle text = "アカウント" />
       <div class="category-text">
-        <a href="https://twitter.com/RabbitGbf" target="_blank" rel="noopener noreferrer" class="custom-link">Twitter</a>、
-        <a href="https://discordlookup.com/user/611161347987734559" target="_blank" rel="noopener noreferrer" class="custom-link">Discord</a>、
-        <a href="/links" class="custom-link"> etc.</a>
+        <div class="links-box">
+          <LinkPreviewBox
+            title="GitHub"
+            description="Pages用のリポジトリしかない"
+            url="https://github.com/coiluck/"
+          />
+          <LinkPreviewBox
+            title="Discord"
+            description="あまり見ていないかも"
+            url="https://discordlookup.com/user/611161347987734559"
+          />
+          <LinkPreviewBox
+            title="Twitter"
+            description="Xではありません"
+            url="https://twitter.com/RabbitGbf"
+          />
+          <LinkPreviewBox
+            title="chichi-pui"
+            description="AIイラスト。昔はこっちに投稿していた"
+            url="https://www.chichi-pui.com/users/coiluck/"
+          />
+          <LinkPreviewBox
+            title="Aipictors"
+            description="AIイラスト。こっちに切り替えるつもり"
+            url="https://www.aipictors.com/users/6f92b753-d44f-dd7d-6c98-3bb495495278/"
+          />
+          <LinkPreviewBox
+            title="pixiv"
+            description="更新しない。ナゾノクサの絵ばかり"
+            url="https://www.pixiv.net/users/63923759"
+          />
+          <LinkPreviewBox
+            title="Truth Social"
+            description="二日で飽きた"
+            url="https://truthsocial.com/@coiluck"
+          />
+          <LinkPreviewBox
+            title="Steam"
+            description="遊ぶ"
+            url="https://steamcommunity.com/id/coiluck/"
+          />
+          <LinkPreviewBox
+            title="YouTube"
+            description="限定公開で動画を共有する時に使う"
+            url="https://www.youtube.com/@kozakurakokone"
+          />
+          <LinkPreviewBox
+            title="Misskey"
+            description="予備"
+            url="https://misskey.io/@Asiraat/"
+          />
+          <LinkPreviewBox
+            title="mixi2"
+            description="予備"
+            url="https://mixi.social/@coiluck"
+          />
+        </div>
       </div>
+
       <LabelTitle text = "Love" />
       <div class="category-text">
-        ラノベ、SF、web小説<br>
-        詳しくは<a href="/love" class="custom-link">ここ</a>に
+        <LabelTitle text = "Novel" isChild = true />
+        <div class="category-text">
+          ハヤカワ文庫JAなどを好む。<br>
+          &nbsp;&nbsp;・プロジェクトぴあの<br>
+          &nbsp;&nbsp;・同志少女よ、敵を撃て<br>
+          &nbsp;&nbsp;・ツインスターサイクロンランナウェイ<br>
+          &nbsp;&nbsp;・虐殺器官<br>
+          その他<br>
+          &nbsp;&nbsp;・妹さえいればいい<br>
+          &nbsp;&nbsp;・蝶と帝国<br>
+        </div>
+        <LabelTitle text = "Web Novel" isChild = true />
+        <div class="category-text">
+          小説家になろうをメインで読んでいる。稀にカクヨムやハーメルンには足を延ばす。<br>
+        </div>
+        <LabelTitle text = "Comic" isChild = true />
+        <div class="category-text">
+          マンガを読むことはあまりないけど。<br>
+          &nbsp;&nbsp;・ゆゆ式<br>
+          &nbsp;&nbsp;・ゆるゆり<br>
+          &nbsp;&nbsp;・児玉まりあ文学集成<br>
+        </div>
+        <LabelTitle text = "Music" isChild = true />
+        <div class="category-text">
+          &nbsp;&nbsp;・マイナーで静かなボカロ<br>
+          &nbsp;&nbsp;・作詞作曲が麻枝准かユリイカノンのもの<br>
+          &nbsp;&nbsp;・音ゲーの曲<br>
+          &nbsp;&nbsp;・Nightcore<br>
+          <br>
+          これとか、<br>
+          <LinkPreviewBox
+            title="ボカロ - 静"
+            description="playlist · coiluck · 34 items"
+            url="https://youtube.com/playlist?list=PL3MPhEsfgh10a-2zYMJOdA0BCmPeFo5b0&si=GW4LjLQDJ_akc_0Q"
+          />
+          これなど。
+          <LinkPreviewBox
+            title="ピアノ"
+            description="playlist · coiluck · 73 items"
+            url="https://youtube.com/playlist?list=PL3MPhEsfgh10TkA8w41sGFC1ChFhrP7hQ&si=09uIqqL8Mvq2zFb7"
+          />
+        </div>
+
+        <LabelTitle text = "Game" isChild = true />
+        <div class="category-text">今プレイしているもの: Delta Force（PC版）、ポケモンZA。<br>
+          過去には<br>
+          &nbsp;&nbsp;・グランブルーファンタジー<br>
+          &nbsp;&nbsp;・アークナイツ<br>
+          &nbsp;&nbsp;・ヘブンバーンズレッド<br>
+          &nbsp;&nbsp;・ポケモンユナイト<br>
+          などをやっていた。
+        </div>
+
+        <LabelTitle text = "Other" isChild = true />
+        <div class="category-text">
+          好きな色: <span style="color: #ff7f7e;">#FF7F7E</span><br>
+          好きなこと: GitHub Pagesで動作するゲームを作ること<br>
+        </div>
       </div>
+      
       <LabelTitle text = "このサイトについて" />
       <div class="category-text">
         人生暇すぎてやることがなかったから作った。<br>
@@ -70,8 +184,14 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     }
     .category-text {
       width: calc(100% - 2rem);
-      margin: 0 auto 0 2rem;
+      margin-left: 2rem;
       font-size: 1rem;
+    }
+    .links-box {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 10px 20px;
+      z-index: 2;
     }
     .custom-link {
       color: var(--text);
