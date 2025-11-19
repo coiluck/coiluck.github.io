@@ -16,6 +16,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     <div class="content-header">
       <h2>ひとつひとつでいいからね</h2>
       <p>One step at a time.</p>
+      <div class="content-header-scroll-icon"></div>
     </div>
     <div class="projects-container">
       <div class="content-inner">
@@ -99,12 +100,13 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     }
     /* かっこいいセリフ */
     .content-header {
-      height: 100vh;
-      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      position: relative;
+      height: 100vh;
+      width: 100%;
       transform: translateY(-120px);
       scroll-snap-align: start;
       scroll-snap-stop: always;
@@ -112,6 +114,30 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
+    }
+    .content-header-scroll-icon {
+      content: '';
+      position: absolute;
+      bottom: 50px;
+      mask-image: url('/images/scroll.svg');
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      background-color: var(--text);
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      animation: Blink 2.5s ease-in-out infinite;
+    }
+    @keyframes Blink {
+      0% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
     }
     .content-header h2 {
       display: flex;
@@ -187,6 +213,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // ランダムなテキスト
       if (Math.random() < 0.5) {
         document.querySelector('.content-header h2').textContent = 'ひとつひとつでいいからね';
         document.querySelector('.content-header p').textContent = 'One step at a time.';
@@ -194,6 +221,12 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         document.querySelector('.content-header h2').textContent = '限界なんて、ココにはないよ';
         document.querySelector('.content-header p').textContent = 'Here, limits fall silent.';
       }
+      // scroll-iconのイベントリスナ
+      document.querySelector('.content-header-scroll-icon').addEventListener('click', () => {
+        document.querySelector('.projects-container').scrollIntoView ({
+          block: "start", inline: "nearest", behavior: 'smooth'
+        });
+      })
     });
   </script>
 </Layout>
