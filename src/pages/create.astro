@@ -225,8 +225,9 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       }
       // scroll-iconのイベントリスナ
       document.querySelector('.content-header-scroll-icon').addEventListener('click', () => {
-        document.querySelector('.projects-container').scrollIntoView ({
-          block: "start", inline: "nearest", behavior: 'smooth'
+        document.querySelector('.content').scrollTo({
+          top: document.querySelector('.projects-container').offsetTop,
+          behavior: 'smooth'
         });
       })
     });
