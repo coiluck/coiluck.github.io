@@ -4,13 +4,22 @@ import Topbar from '../components/topbar.astro';
 import { Image } from 'astro:assets';
 import createImage from '../assets/images/create.avif';
 
+import { getCollection } from 'astro:content';
+const allCreates = await getCollection('creates');
+
+const sortedCreates = allCreates.sort((a, b) => {
+  const dateA = a.data.published_date.getTime();
+  const dateB = b.data.published_date.getTime();
+  return dateB - dateA;
+});
+
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <Layout pageTitle="制作物" ogUrl={ogUrl} ogDescription="制作物の一覧">
   <Topbar />
   <div class="image-container">
-    <Image src={createImage} alt="おにゃのこ" />
+    <Image src={createImage} alt="" />
   </div>
   <div class="content">
     <div class="content-header">
@@ -18,39 +27,44 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       <p>One step at a time.</p>
       <div class="content-header-scroll-icon"></div>
     </div>
-    <div class="projects-container">
-      <div class="content-inner">
+    <div class="creates-container">
+      <div class="creates-inner">
         <h2>制作物</h2>
         <p>つくったものなど</p>
       </div>
-      <a class="content-boxes" href="https://coiluck.github.io/nongenerate-generater/" target="_blank" rel="noopener noreferrer">
-        <h3>絶対に決める</h3>
-        <p>何か決めたいとき用</p>
-      </a>
-      <a class="content-boxes" href="https://coiluck.github.io/anya/" target="_blank" rel="noopener noreferrer">
-        <h3>アーニャのお仕事体験記</h3>
-        <p>ギャグノベルゲーム</p>
-      </a>
-      <a class="content-boxes" href="https://coiluck.github.io/truth-edokko/" target="_blank" rel="noopener noreferrer">
-        <h3>真の江戸っ子になれ！</h3>
-        <p>お金を使い切るゲーム</p>
-      </a>
-      <a class="content-boxes" href="https://coiluck.github.io/CountryChain/" target="_blank" rel="noopener noreferrer">
-        <h3>国境しりとり</h3>
-        <p>接している国を交互に言い合うゲーム</p>
-      </a>
-      <a class="content-boxes" href="https://coiluck.github.io/SinkendenSonne/" target="_blank" rel="noopener noreferrer">
-        <h3>陽の沈む場所</h3>
-        <p>月面を開発するノベルゲーム</p>
-      </a>
-      <a class="content-boxes" href="https://coiluck.github.io/history-game/" target="_blank" rel="noopener noreferrer">
-        <h3>歴史の扉</h3>
-        <p>人物の年代を比べるゲーム</p>
-      </a>
-      <a class="content-boxes" href="https://coiluck.moe/ElementResonance/" target="_blank" rel="noopener noreferrer">
-        <h3>自然共鳴</h3>
-        <p>ローグライクカードゲーム</p>
-      </a>
+      <div class="creates-boxes-container">
+        {sortedCreates.map((create) => (
+          <a class="creates-box" href={create.data.url} target="_blank" rel="noopener noreferrer">
+            <div class="creates-box-main-container">
+              <h3>{create.data.title}</h3>
+              <p class="creates-box-description">{create.data.description}</p>
+              <div class="creates-box-tags-container">
+               {create.data.tags.map((tag) => (
+                  <span class="creates-box-tag">#{tag}</span>
+                ))}
+              </div>
+            </div>
+            <div class="creates-box-date-container">
+              <span class="creates-box-date">
+                Published: {create.data.published_date.toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'short', 
+                  day: 'numeric' 
+                })}
+              </span>
+              {create.data.updated_date && (
+                <span class="creates-box-date">
+                  Updated: {create.data.updated_date.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                  })}
+                </span>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
     </div>
   </div>
   <style>
@@ -161,7 +175,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       display: inline-block;
     }
     /* 「制作物」のタイトル */
-    .content-inner {
+    .creates-inner {
       display: block;
       margin: 60px auto;
       padding: 5px 15px;
@@ -170,46 +184,102 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       border-bottom: 1px solid var(--border);
     }
     /* プロジェクト一覧のコンテナ */
-    .projects-container {
+    .creates-container {
       min-height: calc(100vh - 200px);
       scroll-snap-align: start;
       scroll-snap-stop: always;
       padding-bottom: 100px;
     }
-    .content-boxes {
-      display: block;
-      width: 70%;
-      margin: 60px auto;
-      padding: 5px 15px;
+    .creates-boxes-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+      gap: 30px;
+    }
+    .creates-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      margin: 0 auto;
       color: inherit;
       background-color: rgba(255, 243, 241, 0.5);
+      backdrop-filter: blur(3px);
       text-decoration: none;
       border: 1px solid var(--border);
       border-radius: 5px;
+      box-sizing: border-box;
     }
-    :root[data-theme="dark"] .content-boxes {
+    :root[data-theme="dark"] .creates-box {
       background-color: rgba(39, 60, 120, 0.4);
     }
-    .content-boxes h3 {
-      color: var(--bg-gyaku);
+    .creates-box-main-container {
+      width: 100%;
+      padding: 5px 15px;
+      box-sizing: border-box;
     }
-    .content-boxes p {
+    .creates-box > h3 {
+      width: 100%;
+      color: var(--bg-gyaku);
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 0;
+      padding: 5px 0;
+      border-bottom: 1.5px dashed var(--border);
+    }
+    .creates-box-description {
       color: var(--meta);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    :root[data-theme="dark"] .creates-box-description {
+      text-shadow: 0 0 3px #333;
+    }
+    .creates-box-tags-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 10px;
+      width: 100%;
+    }
+    .creates-box-tag {
+      padding: 4px 10px;
+      color: var(--accent);
+      font-size: 0.8rem;
+      background-color: rgba(255, 224, 224, 0.5);
+      border-radius: 20px;
+    }
+    :root[data-theme="dark"] .creates-box-tag {
+      background-color: rgba(82, 98, 147, 0.5);
+    }
+    .creates-box-date-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-top: 10px;
+      padding: 0 15px;
+      border-top: 1px solid var(--border);
+      background-color: rgba(103, 103, 103, 0.2);
+      box-sizing: border-box;
+    }
+    .creates-box-date {
+      padding: 5px 0;
+      color: var(--meta);
+      font-size: 0.7rem;
+    }
+    :root[data-theme="dark"] .creates-box-date {
+      text-shadow: 0 0 3px #333;
     }
     @media (max-width: 768px) {
       .content {
-        width: 80%;
-      }
-      .content-boxes {
         width: 80%;
       }
     }
     @media (max-width: 480px) {
       .content {
         width: 90%;
-      }
-      .content-boxes {
-        margin: 40px auto;
       }
     }
   </style>
@@ -226,7 +296,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       // scroll-iconのイベントリスナ
       document.querySelector('.content-header-scroll-icon').addEventListener('click', () => {
         document.querySelector('.content').scrollTo({
-          top: document.querySelector('.projects-container').offsetTop,
+          top: document.querySelector('.creates-container').offsetTop,
           behavior: 'smooth'
         });
       })
