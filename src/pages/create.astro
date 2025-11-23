@@ -25,7 +25,9 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     <div class="content-header">
       <h2>ひとつひとつでいいからね</h2>
       <p>One step at a time.</p>
-      <div class="content-header-scroll-icon"></div>
+      <div class="content-header-scroll-icon-container">
+        <div class="content-header-scroll-icon"></div>
+      </div>
     </div>
     <div class="creates-container">
       <div class="creates-inner">
@@ -131,28 +133,56 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       -moz-user-select: none;
       -ms-user-select: none;
     }
-    .content-header-scroll-icon {
+    .content-header-scroll-icon-container {
       content: '';
       position: absolute;
       bottom: 50px;
+      width: 50px;
+      height: 50px;
+      overflow: hidden;
+      filter: 
+        drop-shadow(1px 0 0 var(--bg))
+        drop-shadow(-1px 0 0 var(--bg))
+        drop-shadow(0 1px 0 var(--bg))
+        drop-shadow(0 -1px 0 var(--bg));
+      cursor: pointer;
+    }
+    :root[data-theme="dark"] .content-header-scroll-icon-container {
+      filter: none;
+    }
+    .content-header-scroll-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+      height: 60%;
       mask-image: url('/images/scroll.svg');
       mask-size: contain;
       mask-repeat: no-repeat;
       background-color: var(--text);
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      animation: Blink 2.5s ease-in-out infinite;
+      animation: arrowAnimation 1.5s ease-in-out infinite;
     }
-    @keyframes Blink {
+    @keyframes arrowAnimation {
       0% {
+        transform: translate(-50%, -50%) translateY(0);
+        opacity: 1;
+      }
+      20% {
+        transform: translate(-50%, -50%) translateY(150%);
         opacity: 0;
       }
-      50% {
+      40% {
+        transform: translate(-50%, -50%) translateY(-150%);
+        opacity: 0;
+      }
+      66% {
+        transform: translate(-50%, -50%) translateY(0);
         opacity: 1;
       }
       100% {
-        opacity: 0;
+        transform: translate(-50%, -50%) translateY(0);
+        opacity: 1;
       }
     }
     .content-header h2 {
@@ -218,14 +248,29 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       padding: 5px 15px;
       box-sizing: border-box;
     }
-    .creates-box > h3 {
+    .creates-box h3 {
+      position: relative;
       width: 100%;
+      margin: 0;
+      padding: 5px 0;
       color: var(--bg-gyaku);
       font-size: 1.2rem;
       font-weight: bold;
-      margin: 0;
-      padding: 5px 0;
-      border-bottom: 1.5px dashed var(--border);
+    }
+    .creates-box h3::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background-color: var(--text);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: all .4s ease-out;
+    }
+    .creates-box:hover h3::after {
+      transform: scaleX(1);
     }
     .creates-box-description {
       color: var(--meta);
@@ -294,7 +339,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         document.querySelector('.content-header p').textContent = 'Here, limits fall silent.';
       }
       // scroll-iconのイベントリスナ
-      document.querySelector('.content-header-scroll-icon').addEventListener('click', () => {
+      document.querySelector('.content-header-scroll-icon-container').addEventListener('click', () => {
         document.querySelector('.content').scrollTo({
           top: document.querySelector('.creates-container').offsetTop,
           behavior: 'smooth'
