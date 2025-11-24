@@ -33,9 +33,7 @@ function rehypeLinkBlank() {
 
 export default defineConfig({
   markdown: {
-    gfm: false,
     remarkPlugins: [
-      remarkGfm,
       remarkAttributes,
       [remarkLinkCardPlus, {
         cache: false,
