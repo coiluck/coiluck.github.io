@@ -1,6 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
-import { addExcerpts } from '../../../../utils/generateExcerpt.js';
+import { getSortedPosts } from '../../../../utils/getPosts.js';
 import Layout from '../../../../layouts/blogLayout.astro';
 import Topbar from '../../../../components/topbar.astro';
 import { Image } from 'astro:assets';
@@ -13,63 +12,29 @@ import Pagination from '../../../../components/pagination.astro';
 
 
 export async function getStaticPaths({ paginate }) {
-  try {
-    const allPosts = await getCollection('posts', ({ data }) => {
-      return data.published !== false;
-    });
+  const allSortedPosts = await getSortedPosts();
     
-    // すべてのタグを収集
-    const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags ?? []))];
+  // すべてのタグを収集
+  const allTags = [...new Set(allSortedPosts.flatMap((post) => post.data.tags ?? []))];
     
-    // 各タグごとにページを生成
-    const paths = [];
+  // 各タグごとにページを生成
+  const paths = [];
     
-    for (const tag of allTags) {
-      // 現在のタグが含まれる投稿のみをフィルタリング
-      const filteredPosts = allPosts.filter(post => 
-        post.data.tags?.includes(tag)
-      );
-    
-      // excerptを生成
-      const postsWithExcerpt = addExcerpts(filteredPosts);
+  for (const tag of allTags) {
+    // 現在のタグが含まれる投稿のみをフィルタリング
+    const filteredPosts = allSortedPosts.filter(post => 
+      post.data.tags?.includes(tag)
+    );
 
-      // 日付でソート
-      const sortedPosts = postsWithExcerpt.sort((a, b) => {
-        const dateA = new Date(a.data.date).getTime();
-        const dateB = new Date(b.data.date).getTime();
-        return dateB - dateA;
-      });
-      
-      // ページネーション実行
-      const paginatedPosts = paginate(sortedPosts, {
-        params: { tag },
-        pageSize: 5,
-      });
-      
-      paths.push(...paginatedPosts);
-    }
-    
-    return paths;
-    
-  } catch (error) {
-    console.error('エラーの詳細:', {
-      message: error.message,
-      stack: error.stack?.split('\n').slice(0, 5)
+    // ページネーション実行
+    const paginatedPosts = paginate(filteredPosts, {
+      params: { tag },
+      pageSize: 5,
     });
-    // エラー用投稿
-    return paginate([{
-      id: 'error',
-      data: {
-        title: 'エラー用ダミー投稿',
-        date: '1970-01-01',
-        tags: ['error']
-      },
-      excerpt: 'システムエラーが発生しました。'
-    }], { 
-      params: { tag: 'error' },
-      pageSize: 5 
-    });
+
+    paths.push(...paginatedPosts);
   }
+  return paths;
 }
 
 const { page } = Astro.props;
@@ -79,6 +44,9 @@ const { tag } = Astro.params;
 const ogTitle = `タグ: ${tag}`;
 const ogDescription = "書く、これしか出来ないから";
 const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
+
+// 記事データ用
+import getPostMetadata from '../../../../utils/postMetadata'
 ---
 <Layout 
   pageTitle={`タグ: ${tag}`}
@@ -92,16 +60,16 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
     <Search />
   </div>
   <main>
-      <div class="tag-head">
-        <div class="tag-pankuzu">
-          <a href="/blog">Top</a>
-          <Image src={pankuzuIcon} alt="" />
-          <a href={`/blog/tag/${encodeURIComponent(tag)}`}>{tag}</a>
-        </div>
-        <div class="tag-itirann">
-          <span><strong><font color="#ff7f7e">#</font>{tag} の記事の一覧</strong></span>
-        </div>
+    <div class="tag-head">
+      <div class="tag-pankuzu">
+        <a href="/blog">Top</a>
+        <Image src={pankuzuIcon} alt="" />
+        <a href={`/blog/tag/${encodeURIComponent(tag)}`}>{tag}</a>
       </div>
+      <div class="tag-itirann">
+        <span><strong><font color="#ff7f7e">#</font>{tag} の記事の一覧</strong></span>
+      </div>
+    </div>
       
       <BlogLine />
       
@@ -109,10 +77,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
       {page && page.data ? (
         <>
         {page.data.map((post, index) => {
-          const slug = post.id.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
-          const title = post.data?.title || `無題の投稿 ${index + 1}`;
-          const tags = post.data.tags ?? [];
-          const date = post.data.date;
+          const { title, date, tags, slug, excerpt } = getPostMetadata(post);
   
           return (
             <BlogPostCard 
@@ -120,7 +85,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
               title={title}
               tags={tags}
               date={date}
-              excerpt={post.excerpt}
+              excerpt={excerpt}
             />
           );
         })}

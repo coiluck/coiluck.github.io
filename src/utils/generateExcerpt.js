@@ -1,4 +1,4 @@
-// generate excerpt from markdown file
+// generateExcerpt.js
 export function generateExcerpt(entry, cut_length = 150) {
   // custom_excerptが設定されている場合はそれを優先
   if (entry.data.custom_excerpt) {
@@ -32,7 +32,7 @@ export function generateExcerpt(entry, cut_length = 150) {
     .replace(/<[^>]+>/g, '')                        // HTMLタグ
     .trim();
 
-  // <!--more-->がある場合はそこまでの全文、ない場合は150文字で切る
+  // <!--more-->がある場合はそこまでの全文、ない場合は指定文字数で切る
   if (moreIndex !== -1) {
     return plainText;
   }

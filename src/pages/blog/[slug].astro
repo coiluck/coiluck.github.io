@@ -1,6 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content';
-import { generateExcerpt } from '../../utils/generateExcerpt.js';
+import { render } from 'astro:content';
 import Layout from '../../layouts/blogLayout.astro';
 import Topbar from '../../components/topbar.astro';
 import BlogImage from '../../components/blog-image.astro';
@@ -8,15 +7,15 @@ import BlogLine from '../../components/blog-line.astro';
 import { Image } from 'astro:assets';
 import backIcon from '../../assets/images/back.svg';
 import '../../styles/remark-link-card.css';
+import { getSortedPosts } from '../../utils/getPosts.js';
+import getPostMetadata from '../../utils/postMetadata.js';
+import { generateExcerpt } from '../../utils/generateExcerpt.js';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', ({ data }) => {
-    return data.published !== false;
-  });
+  const posts = await getSortedPosts();
 
   return posts.map((post) => {
-    const filename = post.id.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
-    const slug = filename.replace(/^\d{4}-\d{2}-\d{2}-/, '');
+    const { slug } = getPostMetadata(post);
 
     return {
       params: { slug },
@@ -26,9 +25,9 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const title = post.data.title || '無題の投稿';
-const date = post.data.date || post.id.slice(0, 10);
-const tags = post.data.tags ?? [];
+
+// 記事データ用
+const {title, date, tags } = getPostMetadata(post);
 
 const { Content } = await render(post);
 
