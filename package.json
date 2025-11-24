@@ -26,5 +26,8 @@
     "remark-gfm": "^4.0.1",
     "remark-link-card-plus": "^0.7.1",
     "remark-toc": "^9.0.0"
+  },
+  "devDependencies": {
+    "unist-util-visit": "^5.0.0"
   }
 }

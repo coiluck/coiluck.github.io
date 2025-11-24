@@ -426,12 +426,6 @@ const ogDescription = generateExcerpt(post, 30);
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      saveReferrer();
-      removeBr();
-      makeLinkBlank();
-    });
-    
-    function saveReferrer() {
       const referrer = document.referrer;
       if (referrer && referrer.includes('/blog/') && referrer !== window.location.href) {
         sessionStorage.setItem('lastListPage', referrer);
@@ -446,32 +440,6 @@ const ogDescription = generateExcerpt(post, 30);
           window.location.href = '/blog/';
         }
       });
-    }
-    function removeBr() {
-      // 注意: p要素以外には適用されないので基本的に最後はbrを書かないようにすること！
-      // 脚注セクションを探す
-      let lastElement;
-      const footnotesContainer = document.querySelector('section[data-footnotes]');
-      if (!footnotesContainer) {
-        return;
-      } else {
-        lastElement = footnotesContainer.previousElementSibling;
-      }
-      // 記事の最後の要素が<p>タグかチェック
-      if (lastElement && lastElement.tagName === 'P') {
-        const pElement = lastElement;
-        // 末尾にある<br>タグを除去
-        pElement.innerHTML = pElement.innerHTML.replace(
-          /(<br\s*\/?>\s*){1,}\s*$/,
-          ''
-        );
-      }
-    }
-    function makeLinkBlank() {
-      const links = document.querySelectorAll('a.blog-link');
-      links.forEach(link => {
-        link.target = '_blank';
-      });
-    }
+    });
   </script>
 </Layout>

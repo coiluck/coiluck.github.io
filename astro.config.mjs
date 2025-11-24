@@ -15,6 +15,21 @@ import sitemap from '@astrojs/sitemap';
 // expressive-code
 import expressiveCode from "astro-expressive-code";
 
+import { visit } from 'unist-util-visit';
+
+function rehypeLinkBlank() {
+  return (tree) => {
+    visit(tree, 'element', (node) => {
+      if (node.tagName === 'a' && node.properties) {
+        const classList = node.properties.class || node.properties.className;
+        if (Array.isArray(classList) && classList.includes('blog-link')) {
+          node.properties.target = '_blank';
+          node.properties.rel = 'noopener noreferrer';
+        }
+      }
+    });
+  };
+}
 
 export default defineConfig({
   markdown: {
@@ -37,7 +52,8 @@ export default defineConfig({
       }]
     ],
     rehypePlugins: [
-      rehypeSlug
+      rehypeSlug,
+      rehypeLinkBlank
     ],
     allowHTML: true,
     syntaxHighlight: false,
