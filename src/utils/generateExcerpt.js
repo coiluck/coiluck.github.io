@@ -30,6 +30,7 @@ export function generateExcerpt(entry, cut_length = 150) {
     .replace(/\s+/g, ' ')                           // 連続空白
     .replace(/\{:\s*\.blog-link\s*\}/g, '')         // カスタムクラス
     .replace(/<[^>]+>/g, '')                        // HTMLタグ
+    .replace(/\[\^\d+\]/g, '')                      // footnote用ラベル
     .trim();
 
   // <!--more-->がある場合はそこまでの全文、ない場合は指定文字数で切る
