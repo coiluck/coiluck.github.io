@@ -1,0 +1,173 @@
+/* 記事内のスタイル */
+.prose .ff7f7e {
+  color: #ff7f7e; /* 使うときは<span class="ff7f7e"> */
+}
+.prose a.blog-link {
+  color: var(--text);
+  text-decoration-color: var(--text);
+}
+.prose img {
+  display: block;
+  width: 90%;
+  margin: 5px auto;
+}
+/* 見出しの装飾 */
+.prose .toc-heading {
+  display: none;
+}
+.prose details {
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  cursor: pointer;
+}
+.prose details {
+  /* 中身のスタイル */
+  &::details-content {
+    transition:
+      height 0.2s linear,
+      opacity 0.2s linear,
+      content-visibility 0.2s linear allow-discrete;
+    height: 0;
+    opacity: 0;
+    overflow: clip;
+  }
+  /* 中身（開いている時）*/
+  &[open]::details-content {
+    opacity: 1;
+  }
+}
+@supports (interpolate-size: allow-keywords) {
+  :root {
+    interpolate-size: allow-keywords; /* height:0（数値型） → auto（文字型） のアニメーションを可能にするための指定 */
+  }
+  .prose details[open]::details-content {
+    height: auto;
+  }
+}
+/* height:0→autoへのアニメーションが対応していない場合 */
+@supports not (interpolate-size: allow-keywords) {
+  .prose details {
+    transition: none;
+  }
+}
+.prose details a {
+  color: var(--link);
+}
+.prose h3, .prose h4 {
+  position: relative;
+  width: fit-content;
+  margin: .7rem 0;
+}
+.prose h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 0 .5rem 0 1.2rem;
+  border-bottom: 2px solid #ff7f7e;
+}
+.prose h3::before {
+  content: '#';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #ff7f7e;
+}
+.prose h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0 .5rem 0 1rem;
+}
+.prose h4::before {
+  content: '・';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #ff7f7e;
+}
+.prose .remark-link-card-plus__container img {
+  display: initial;
+  width: initial;
+  margin: initial;
+}
+.prose sup a {
+  color: #6088C6;
+  text-decoration: none;
+}
+.prose sup a:visited {
+  color: #6088C6;
+}
+.prose sup a:hover,
+.prose sup a:focus {
+  color: #6088C6;
+  text-decoration: none;
+}
+.prose a.data-footnote-backref {
+  color: #6088C6;
+  text-decoration: none;
+}
+.prose a.data-footnote-backref:visited {
+  color: #6088C6;
+}
+.prose a.data-footnote-backref:hover,
+.prose a.data-footnote-backref:focus {
+  color: #6088C6;
+  text-decoration: none;
+}
+/* 引用部分の装飾 */
+.prose blockquote {
+  padding: 10px 15px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  border-left: 4px solid #ff7f7e;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
+}
+.prose blockquote p {
+  margin: 0;
+  padding: 0;
+}
+.prose p {
+  margin: 0;
+  padding: 0;
+}
+.prose .footnotes h2 {
+  display: none;
+}
+@font-face {
+  font-family: 'JetBrainsMono';
+  src: url('/JetBrainsMono-Light.woff2') format('woff2');
+  font-display: swap;
+}
+.prose code:not(pre code) {
+  background-color: #ccc;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  font-size: .8em;
+  font-family: "JetBrainsMono", sans-serif;
+}
+:root[data-theme="dark"] .prose code:not(pre code) {
+  background-color: #484848;
+}
+.prose .expressive-code {
+  /* 「s```」で囲まれたコードの上下にスペースを追加 */
+  margin: 1.2rem 0;
+  font-size: .8em;
+}
+.prose .expressive-code .frame .header .title::after {
+  border-top: 1.5px solid #ff7f7e !important;
+}
+.prose .expressive-code .frame .header {
+  background: #1e2124 !important;
+}
+.prose .expressive-code {
+  /* コードブロックの背景色 */
+  --ec-frm-edBg: #24292e !important;
+  --ec-frm-edActTabBg: #24292e !important;
+}
