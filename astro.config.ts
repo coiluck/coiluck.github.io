@@ -2,7 +2,6 @@
 import { defineConfig } from 'astro/config';
 
 // Markdownプラグインをインポート
-import remarkGfm from 'remark-gfm';
 import remarkAttributes from 'remark-attributes';
 import remarkLinkCardPlus from 'remark-link-card-plus';
 import remarkToc from 'remark-toc';
@@ -11,6 +10,7 @@ import rehypeSlug from 'rehype-slug';
 
 // sitemap
 import sitemap from '@astrojs/sitemap';
+import markdoc from '@astrojs/markdoc';
 
 // expressive-code
 import expressiveCode from "astro-expressive-code";
@@ -34,7 +34,7 @@ function rehypeLinkBlank() {
 export default defineConfig({
   markdown: {
     remarkPlugins: [
-      remarkAttributes,
+      remarkAttributes as any,
       [remarkLinkCardPlus, {
         cache: false,
         shortenUrl: true,
@@ -53,7 +53,6 @@ export default defineConfig({
       rehypeSlug,
       rehypeLinkBlank
     ],
-    allowHTML: true,
     syntaxHighlight: false,
   },
   build: {
@@ -65,5 +64,9 @@ export default defineConfig({
     expressiveCode({
       themes: ["dark-plus"],
     }),
+    markdoc({
+      allowHTML: true,
+      ignoreIndentation: true
+    })
   ]
 });
