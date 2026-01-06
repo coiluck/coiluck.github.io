@@ -1,35 +1,21 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-// Markdownプラグインをインポート
+// Markdownプラグイン
 import remarkAttributes from 'remark-attributes';
 import remarkLinkCardPlus from 'remark-link-card-plus';
 import remarkToc from 'remark-toc';
 import remarkCollapse from 'remark-collapse';
 import rehypeSlug from 'rehype-slug';
+import rehypeLinkBlank from './src/plugins/rehype-link-blank';
 
 // sitemap
 import sitemap from '@astrojs/sitemap';
+
 import markdoc from '@astrojs/markdoc';
 
 // expressive-code
 import expressiveCode from "astro-expressive-code";
-
-import { visit } from 'unist-util-visit';
-
-function rehypeLinkBlank() {
-  return (tree) => {
-    visit(tree, 'element', (node) => {
-      if (node.tagName === 'a' && node.properties) {
-        const classList = node.properties.class || node.properties.className;
-        if (Array.isArray(classList) && classList.includes('blog-link')) {
-          node.properties.target = '_blank';
-          node.properties.rel = 'noopener noreferrer';
-        }
-      }
-    });
-  };
-}
 
 export default defineConfig({
   markdown: {
@@ -51,7 +37,7 @@ export default defineConfig({
     ],
     rehypePlugins: [
       rehypeSlug,
-      rehypeLinkBlank
+      rehypeLinkBlank('blog-link')
     ],
     syntaxHighlight: false,
   },
