@@ -1,5 +1,5 @@
 ---
-import { getSortedPosts } from '../../../../utils/getPosts.js';
+import { getSortedPosts } from '../../../../utils/getPosts';
 import Layout from '../../../../layouts/blogLayout.astro';
 import Topbar from '../../../../components/topbar.astro';
 import { Image } from 'astro:assets';
@@ -9,7 +9,6 @@ import Search from "../../../../components/Search.astro";
 import BlogPostCard from '../../../../components/blog-post-card.astro';
 import BlogLine from '../../../../components/blog-line.astro';
 import Pagination from '../../../../components/pagination.astro';
-
 
 export async function getStaticPaths({ paginate }) {
   const allSortedPosts = await getSortedPosts();
@@ -25,18 +24,22 @@ export async function getStaticPaths({ paginate }) {
     const filteredPosts = allSortedPosts.filter(post => 
       post.data.tags?.includes(tag)
     );
-
     // ページネーション実行
     const paginatedPosts = paginate(filteredPosts, {
       params: { tag },
       pageSize: 5,
     });
-
     paths.push(...paginatedPosts);
   }
   return paths;
 }
 
+import type { BlogPostWithExcerpt } from '../../../../utils/type';
+import type { Page } from 'astro';
+
+interface Props {
+  page: Page<BlogPostWithExcerpt>;
+}
 const { page } = Astro.props;
 const { tag } = Astro.params;
 
@@ -76,7 +79,7 @@ import getPostMetadata from '../../../../utils/postMetadata'
     <div class="blog-content">
       {page && page.data ? (
         <>
-        {page.data.map((post, index) => {
+        {page.data.map(post => {
           const { title, date, tags, slug, excerpt } = getPostMetadata(post);
   
           return (

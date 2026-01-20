@@ -1,17 +1,15 @@
 // getPosts.js
 import { getCollection } from 'astro:content';
 import { addExcerpts } from './generateExcerpt.js';
+import type { BlogPost, BlogPostWithExcerpt } from './type';
 
-export async function getSortedPosts() {
-  const posts = await getCollection('posts', ({ data }) => {
-    if (data.published === false) {
-      return false;
-    }
-    return true;
+export async function getSortedPosts(): Promise<BlogPostWithExcerpt[]> {
+  const posts: BlogPost[] = await getCollection('posts', ({ data }) => {
+    return data.published !== false;
   });
 
   // excerptを生成
-  const postsWithExcerpt = addExcerpts(posts);
+  const postsWithExcerpt: BlogPostWithExcerpt[] = addExcerpts(posts);
 
   // 新しい順にソートして返す
   return postsWithExcerpt.sort((a, b) => {

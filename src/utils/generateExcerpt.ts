@@ -1,5 +1,7 @@
 // generateExcerpt.js
-export function generateExcerpt(entry, cut_length = 150) {
+import type { BlogPost } from './type';
+
+export function generateExcerpt(entry: BlogPost, cut_length: number = 150) {
   // custom_excerptが設定されている場合はそれを優先
   if (entry.data.custom_excerpt) {
     return entry.data.custom_excerpt;
@@ -44,7 +46,9 @@ export function generateExcerpt(entry, cut_length = 150) {
 }
 
 // 複数の投稿にexcerptを追加
-export function addExcerpts(posts) {
+import type { BlogPostWithExcerpt } from './type';
+
+export function addExcerpts(posts: BlogPost[]): BlogPostWithExcerpt[] {
   return posts.map(post => ({
     ...post,
     excerpt: generateExcerpt(post)

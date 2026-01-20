@@ -1,5 +1,5 @@
 ---
-import { getSortedPosts } from '../../utils/getPosts.js';
+import { getSortedPosts } from '../../utils/getPosts';
 import Layout from '../../layouts/blogLayout.astro';
 import Topbar from '../../components/topbar.astro';
 import BlogImage from '../../components/blog-image.astro';
@@ -16,6 +16,12 @@ export async function getStaticPaths({ paginate }) {
   return paginatedResult;
 }
 
+import type { BlogPostWithExcerpt } from '../../utils/type';
+import type { Page } from 'astro';
+
+interface Props {
+  page: Page<BlogPostWithExcerpt>;
+}
 const { page } = Astro.props;
 
 // OGP用

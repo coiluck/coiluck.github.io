@@ -1,5 +1,7 @@
 // postMetadata.js
-function getPostMetadata(post) {
+import type { BlogPostWithExcerpt, PostMetadata } from './type';
+
+function getPostMetadata(post: BlogPostWithExcerpt): PostMetadata {
   return {
     title: post.data.title || '無題の投稿',
     date: post.data.date,
