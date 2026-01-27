@@ -37,7 +37,7 @@ export default defineConfig({
     ],
     rehypePlugins: [
       rehypeSlug,
-      rehypeLinkBlank('blog-link')
+      [rehypeLinkBlank, ['blog-link']]
     ],
     syntaxHighlight: false,
   },
