@@ -3,6 +3,7 @@ title: "たぶん夏だった"
 tags:
   - zakkan
 date: "2025-10-29"
+published: false
 ---
 ブログを書こうと思う。夏が始まった。<br>
 ブログを書こうと思った。夏が始まったから。<br>
