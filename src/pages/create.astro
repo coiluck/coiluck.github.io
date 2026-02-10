@@ -292,11 +292,8 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       padding: 4px 10px;
       color: var(--accent);
       font-size: 0.8rem;
-      background-color: rgba(255, 224, 224, 0.5);
+      background-color: rgb(from var(--accent) r g b / 0.2);
       border-radius: 20px;
-    }
-    :root[data-theme="dark"] .creates-box-tag {
-      background-color: rgba(82, 98, 147, 0.5);
     }
     .creates-box-date-container {
       display: flex;
