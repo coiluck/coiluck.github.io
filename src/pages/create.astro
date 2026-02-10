@@ -48,18 +48,18 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
             </div>
             <div class="creates-box-date-container">
               <span class="creates-box-date">
-                Published: {create.data.published_date.toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'short', 
-                  day: 'numeric' 
+                Published: {create.data.published_date.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
                 })}
               </span>
               {create.data.updated_date && (
                 <span class="creates-box-date">
-                  Updated: {create.data.updated_date.toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric' 
+                  Updated: {create.data.updated_date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
                   })}
                 </span>
               )}
@@ -98,7 +98,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       height: auto;
       max-height: 80%;
       object-fit: contain;
-      object-position: bottom right; 
+      object-position: bottom right;
     }
     .content {
       position: relative;
@@ -140,7 +140,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       width: 50px;
       height: 50px;
       overflow: hidden;
-      filter: 
+      filter:
         drop-shadow(1px 0 0 var(--bg))
         drop-shadow(-1px 0 0 var(--bg))
         drop-shadow(0 1px 0 var(--bg))
@@ -253,7 +253,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       width: 100%;
       margin: 0;
       padding: 5px 0;
-      color: var(--bg-gyaku);
+      color: var(--text);
       font-size: 1.2rem;
       font-weight: bold;
     }
@@ -340,8 +340,9 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       }
       // scroll-iconのイベントリスナ
       document.querySelector('.content-header-scroll-icon-container').addEventListener('click', () => {
+        const createsContainer = document.querySelector('.creates-container') as HTMLElement;
         document.querySelector('.content').scrollTo({
-          top: document.querySelector('.creates-container').offsetTop,
+          top: createsContainer.offsetTop,
           behavior: 'smooth'
         });
       })

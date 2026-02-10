@@ -42,11 +42,11 @@ import "@pagefind/default-ui/css/ui.css";
 
   if (searchLayer && searchContainer) {
     const observer = new MutationObserver(() => {
-      const searchInput = searchContainer.querySelector('.pagefind-ui__search-input');
-      
+      const searchInput = searchContainer.querySelector('.pagefind-ui__search-input') as HTMLInputElement;
+
       if (searchInput && !searchInput.dataset.listenerAttached) {
         searchInput.dataset.listenerAttached = 'true';
-        
+
         // フォーカスしたとき
         searchInput.addEventListener('focusin', () => {
           searchLayer.classList.add('focusing');
@@ -164,7 +164,7 @@ import "@pagefind/default-ui/css/ui.css";
     font-weight: normal;
   }
   .search .pagefind-ui__search-input[type="text"]:focus {
-    border: 2px solid var(--bg-gyaku);
+    border: 2px solid var(--text);
   }
   .search .pagefind-ui__search-clear {
     color: var(--text);
@@ -195,8 +195,8 @@ import "@pagefind/default-ui/css/ui.css";
     left: 0;
     right: 0;
     height: 150px;
-    background: linear-gradient(to bottom, 
-      transparent 0%, 
+    background: linear-gradient(to bottom,
+      transparent 0%,
       rgba(255, 243, 241, 0.7) 40%,
       rgba(255, 243, 241, 0.95) 100%
     );
@@ -204,8 +204,8 @@ import "@pagefind/default-ui/css/ui.css";
     z-index: 1;
   }
   :root[data-theme="dark"] .search .pagefind-ui__results-area:has(.pagefind-ui__button)::after {
-    background: linear-gradient(to bottom, 
-      transparent 0%, 
+    background: linear-gradient(to bottom,
+      transparent 0%,
       rgba(10, 15, 30, 0.7) 40%,
       rgba(10, 15, 30, 0.95) 100%
     );
@@ -247,7 +247,7 @@ import "@pagefind/default-ui/css/ui.css";
   .search .pagefind-ui__button,
   .search .pagefind-ui__button:hover {
     color: var(--bg);
-    background: var(--bg-gyaku);
+    background: var(--text);
     border: none;
     transition: none;
   }

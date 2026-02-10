@@ -156,7 +156,7 @@
   background-color: #484848;
 }
 .prose .expressive-code {
-  /* 「s```」で囲まれたコードの上下にスペースを追加 */
+  /* 「```」で囲まれたコードの上下にスペースを追加 */
   margin: 1.2rem 0;
   font-size: .8em;
 }

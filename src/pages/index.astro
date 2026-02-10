@@ -29,11 +29,11 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       align-items: center;
       height: 100vh;
     }
-  
+
     .container {
       position: relative;
     }
-  
+
     .circle {
       width: 300px;
       height: 300px;
@@ -51,7 +51,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     }
     .circle-path {
       fill: none;
-      stroke: var(--bg-gyaku);
+      stroke: var(--text);
       stroke-width: 2;
       stroke-dasharray: 930; /* 円周(148 * 2 * 3.14) */
       stroke-dashoffset: 930;
@@ -63,7 +63,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 
     .horizontal-line {
       height: 2px;
-      background-color: var(--bg-gyaku);
+      background-color: var(--text);
       position: absolute;
       top: 50%;
       left: 50%;
@@ -73,7 +73,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     }
     .vertical-line {
       width: 2px;
-      background-color: var(--bg-gyaku);
+      background-color: var(--text);
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
@@ -87,7 +87,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     @keyframes expandHeight {
       to { height: 50%; }
     }
-  
+
     .text-above,
     .text-lower-left,
     .text-lower-right {
@@ -124,7 +124,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 
     .custom-link {
       border-bottom: 1px solid rgba(0, 0, 0, 0);
-      color: var(--bg-gyaku);
+      color: var(--text);
       font-size: 1rem;
       text-decoration: none;
       background: linear-gradient(#f6d893, #f6d893) right 60% / 0 .8em no-repeat;
@@ -141,7 +141,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       background-position: left 60%;
       background-size: 100% .8em;
     }
-  
+
     @media (max-width: 380px) {
       .circle {
         width: 250px;

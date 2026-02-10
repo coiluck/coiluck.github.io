@@ -12,16 +12,16 @@ import Pagination from '../../../../components/pagination.astro';
 
 export async function getStaticPaths({ paginate }) {
   const allSortedPosts = await getSortedPosts();
-    
+
   // すべてのタグを収集
   const allTags = [...new Set(allSortedPosts.flatMap((post) => post.data.tags ?? []))];
-    
+
   // 各タグごとにページを生成
   const paths = [];
-    
+
   for (const tag of allTags) {
     // 現在のタグが含まれる投稿のみをフィルタリング
-    const filteredPosts = allSortedPosts.filter(post => 
+    const filteredPosts = allSortedPosts.filter(post =>
       post.data.tags?.includes(tag)
     );
     // ページネーション実行
@@ -51,10 +51,10 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 // 記事データ用
 import getPostMetadata from '../../../../utils/postMetadata'
 ---
-<Layout 
+<Layout
   pageTitle={`タグ: ${tag}`}
-  ogTitle={ogTitle} 
-  ogDescription={ogDescription} 
+  ogTitle={ogTitle}
+  ogDescription={ogDescription}
   ogUrl={ogUrl}
 >
   <Topbar />
@@ -73,17 +73,17 @@ import getPostMetadata from '../../../../utils/postMetadata'
         <span><strong><font color="#ff7f7e">#</font>{tag} の記事の一覧</strong></span>
       </div>
     </div>
-      
+
       <BlogLine />
-      
+
     <div class="blog-content">
       {page && page.data ? (
         <>
         {page.data.map(post => {
           const { title, date, tags, slug, excerpt } = getPostMetadata(post);
-  
+
           return (
-            <BlogPostCard 
+            <BlogPostCard
               slug={slug}
               title={title}
               tags={tags}
@@ -152,7 +152,7 @@ import getPostMetadata from '../../../../utils/postMetadata'
   }
   .tag-itirann {
     margin-top: 10px;
-    color: var(--bg-gyaku);
+    color: var(--text);
     font-size: 1.2rem;
   }
   .blog-content {

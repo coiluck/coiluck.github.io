@@ -14,7 +14,7 @@
   transition: all 0.3s ease-in-out;
 }
 .remark-link-card-plus__card:hover {
-  border-color: var(--bg-gyaku);
+  border-color: var(--text);
 }
 
 
@@ -46,7 +46,7 @@
 }
 .remark-link-card-plus__title {
   margin: 0;
-  color: var(--bg-gyaku);
+  color: var(--text);
   font-size: .9rem;
   font-weight: bold;
 }
