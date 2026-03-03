@@ -35,11 +35,11 @@ else {
 
 ```js
 // scenarioData.js
-{ 
+{
   text: '表示するテキスト',
-  speaker: '話者名',   // ないならこれは書かない 
+  speaker: '話者名',   // ないならこれは書かない
   choiceId: '選択肢ID',  // ないならこれは書かない
-  action: () => { /* 実行する処理 */ }   // ないならこれは書かない 
+  action: () => { /* 実行する処理 */ }   // ないならこれは書かない
 }
 ```
 
@@ -100,7 +100,7 @@ branchStack = [
     buttonText: '選択肢B',
     branch: [
       { text: 'b-1' },
-      { 
+      {
         text: 'b-2',
         choiceId: 'whereToGo'
       },
@@ -146,14 +146,21 @@ branchStack = [
 let displayHistory = [];
 
 // テキスト表示後に状態を記録
-displayHistory.push({ 
-  scenario: scenario, 
+displayHistory.push({
+  scenario: scenario,
   index: index,
   branchStack: JSON.parse(JSON.stringify(branchStack)),
   openingStoryIndex: openingStoryIndex
 });
 ```
 
-多少無理やりな方法だが、この仕組みにより、複雑にネストした分岐シナリオでも選択肢の直後まで正確に戻ることができるようになった。
+多少無理やりな方法だが、この仕組みにより、複雑にネストした分岐シナリオでも選択肢の直後まで正確に戻ることができるようになった。<br>
+<br>
+
+---
+
+<br>
+2026-03-04 追記:<br><br>
+この方法だとひとつ前に戻った時にテキスト以外が戻らない。例えば、ひとつ前に戻った時にBGMやキャラの立ち絵は変わらないままだ。差分更新のような考え方でテキストのみすべて設定していたが、ある場所の状態を再現するにはその場所におけるすべての状態を書いて一個前と違うなら更新する、という方法が必要だと思う。ただこれをするには最初に書くMarkdownのシナリオの構造とテキストからシナリオファイルを作るPythonファイルを大幅に改造しないといけない。
 
 [^1]: 前に戻る時に`choiceId`が設定されていれば`whereToGo`の最後にいることはわかるが、`whereToGo`でどの選択肢を選んだかはわからない
