@@ -1,16 +1,55 @@
 ---
-import { Image } from 'astro:assets';
 import sunImage from '../assets/images/sun.svg';
 import moonImage from '../assets/images/moon.svg';
+
 const siteTitle = import.meta.env.SITE_TITLE;
 ---
 <div class="top-bar">
-  <p class="top-bar-text">
-    <a href="/" class="custom-link">{siteTitle}</a>
-  </p>
-  <div id="top-bar-toggle">
-    <Image src={sunImage} alt="太陽のアイコン" id="sun-icon" />
-    <Image src={moonImage} alt="月のアイコン" id="moon-icon" />
+  <div class="top-bar-svg-wrapper">
+    <svg
+      class="top-bar-svg"
+      viewBox="0 0 720 240"
+      xmlns="http://www.w3.org/2000/svg"
+      preserveAspectRatio="xMinYMin meet"
+    >
+      <path
+        d="M 0,0 V 240 H 410 L 480,160 H 580 L 720,0 Z"
+        fill="var(--bg)"
+        stroke="none"
+      />
+      <path
+        id="top-bar-line"
+        d="M 0,239 H 410 L 480,160 H 580 L 720,0"
+        fill="none"
+        stroke="var(--text)"
+        stroke-width="5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+
+    {/* site name */}
+    <div class="svg-content">
+      <a href="/" class="custom-link site-name">{siteTitle}</a>
+    </div>
+  </div>
+
+  {/* 右側のテキスト */}
+  <div class="top-bar-right">
+    <div class="top-bar-toggle">
+      <span
+        class="icon sun-icon"
+        style={`--icon-url: url(${sunImage.src})`}
+        aria-label="太陽のアイコン"
+        role="img"
+      ></span>
+      <span
+        class="icon moon-icon"
+        style={`--icon-url: url(${moonImage.src})`}
+        aria-label="月のアイコン"
+        role="img"
+      ></span>
+    </div>
   </div>
 </div>
 
@@ -18,73 +57,124 @@ const siteTitle = import.meta.env.SITE_TITLE;
   .top-bar {
     position: absolute;
     top: 0;
+    left: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     width: 100%;
-    height: 2rem;
-    margin: 0;
-    padding: 10px 0;
-    background-color: #ff7f7e;
+    height: 3.5rem;
     z-index: 1000;
-    overflow: hidden;
+    overflow: visible;
   }
-  .top-bar-text {
-    margin: 0 20px;
-    text-align: left;
-  }
-  .custom-link {
-    color: var(--text-dark);
-    text-decoration: none;
-  }
-  .custom-link:hover {
-    color: var(--text-dark);
-  }
-  #top-bar-toggle {
-    position: relative;
-    width: 24px;
-    height: 24px;
-    margin: 0 20px;
-    cursor: pointer;
-  }
-  #top-bar-toggle img {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    transition: opacity 0.3s ease-in-out;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
-  }
-  #sun-icon {
-    opacity: 1;
-  }
-  #moon-icon {
-    opacity: 0;
-  }
-  :global([data-theme="dark"]) #sun-icon {
-    opacity: 0;
-  }
-  :global([data-theme="dark"]) #moon-icon {
-    opacity: 1;
-  }
+
+  /* TopBar下端のライン */
   .top-bar::after {
     content: '';
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
-    height: 1px;
-    background-color: var(--text-dark);
+    height: 1.5px;
+    background-color: var(--text);
     z-index: -1;
   }
-</style>
 
+  /* SVG: TopBarより下にはみ出す */
+  .top-bar-svg-wrapper {
+    position: relative;
+    height: 6rem;
+    flex-shrink: 0;
+  }
+
+  .top-bar-svg {
+    display: block;
+    height: 100%;
+    width: auto;
+  }
+
+  #top-bar-line {
+    stroke-dasharray: var(--path-length, 1200);
+    stroke-dashoffset: var(--path-length, 1200);
+    animation: draw-line 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  @keyframes draw-line {
+    from { stroke-dashoffset: var(--path-length); }
+    to   { stroke-dashoffset: 0; }
+  }
+
+  /* SVG内に配置するコンテンツ */
+  .svg-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* SVGの「平らな上部分」= viewBox 0〜410 / 720 ≒ 56.94% の中央に配置 */
+    width: 56.94%;
+    height: 6rem; /* svgと揃える */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+  }
+
+  @media (max-width: 768px) {
+    .top-bar-svg-wrapper {
+      height: 4.5rem;
+    }
+    .svg-content {
+      height: 4.5rem;
+    }
+  }
+
+  .site-name {
+    white-space: nowrap;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .top-bar-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 3.5rem;
+    padding-right: 2rem;
+  }
+
+  /* mode toggle */
+  .top-bar-toggle {
+    position: relative;
+    height: 100%;
+    width: 24px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .top-bar-toggle .icon {
+    position: absolute;
+    top: 50%;
+    width: 24px;
+    height: 24px;
+    transform: translateY(-50%);
+    background-color: var(--text);
+    mask-image: var(--icon-url);
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: all 0.3s ease;
+  }
+  @media (hover: hover) {
+    .top-bar-toggle:hover .icon {
+      background-color: var(--accent);
+    }
+  }
+
+  .sun-icon { opacity: 1; }
+  .moon-icon { opacity: 0; }
+
+  :global([data-theme="dark"]) .sun-icon { opacity: 0; }
+  :global([data-theme="dark"]) .moon-icon { opacity: 1; }
+</style>
 <script>
   function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
@@ -92,5 +182,14 @@ const siteTitle = import.meta.env.SITE_TITLE;
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
   }
-  document.getElementById("top-bar-toggle").addEventListener('click', toggleTheme);
+  document.querySelectorAll('.top-bar-toggle').forEach((el) => {
+    el.addEventListener('click', toggleTheme);
+  });
+
+  // svgの線
+  const line = document.getElementById('top-bar-line') as SVGPathElement | null;
+  if (line) {
+    const length = line.getTotalLength();
+    line.style.setProperty('--path-length', String(length));
+  }
 </script>
