@@ -5,9 +5,10 @@ interface Props {
   pageTitle?: string; // top のみなし
   ogUrl: string;
   ogDescription?: string;
+  isBlog?: boolean;
 }
 
-const { pageTitle, ogUrl, ogDescription } = Astro.props;
+const { pageTitle, ogUrl, ogDescription, isBlog } = Astro.props;
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://coiluck.moe';
 const OGImage = new URL("/images/ogp.png", siteUrl).toString();
 ---
@@ -17,7 +18,10 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={ogDescription} />
-    <link rel="icon" href="/images/favicon.ico" />
+    <link rel="icon" href="/images/icon_small.png" />
+    {isBlog && (
+      <link rel="alternate" type="application/rss+xml" title="革命学舎 | Blog" href="/rss.xml" />
+    )}
     <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{siteTitle}{pageTitle && ` | ${pageTitle}`}</title>
     <meta property="og:title" content={pageTitle ? `${siteTitle} | ${pageTitle}` : siteTitle} />
@@ -37,17 +41,20 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
       }
       :root {
         --primary: #1a2a4f;
-        --accent: #ff7f7e;
         --text-dark: #0a0f1e;
         /* ここから変わる部分 */
+        --accent: #ff7f7e;
         --bg: #fff3f1;
         --text: #0a0f1e;
-        --bg-mild: #d1bdbd;
+        --bg-mild: #fcd1d1;
+        --link: #0066cc;
       }
       :root[data-theme="dark"] {
+        --accent: #ff2a3d;
         --bg: #0a0f1e;
         --text: #fff3f1;
         --bg-mild: #2a3a5f;
+        --link: #6088C6;
       }
       html, body {
         margin: 0;
@@ -57,18 +64,35 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
         line-height: 1.6;
         background-color: var(--bg);
       }
-      * {
-        font-family: 'mamelon3.5', 'Noto Sans JP', sans-serif;
-      }
       html {
         min-height: 100vh;
       }
       body {
         background-color: var(--bg);
+        background-image: radial-gradient(rgb(from var(--text) r g b / .5) 1px, transparent 1px);
+        background-size: 20px 20px;
         transition: all 0.5s;
       }
       body.loading {
         transition: none !important;
+      }
+    </style>
+    <style is:global>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: 'mamelon3.5', 'Noto Sans JP', sans-serif;
+        box-sizing: border-box;
+      }
+      img {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        -moz-user-drag: none;
+        -o-user-drag: none;
       }
     </style>
   </head>
@@ -89,6 +113,8 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
     </script>
 
     <slot />
+
+    <div id="konami-command-area"></div>
 
     <script is:inline>
       window.onload = () => {

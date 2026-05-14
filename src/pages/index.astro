@@ -1,152 +1,281 @@
 ---
-import Topbar from '../components/topbar.astro';
 import Layout from '../layouts/Layout.astro';
+import Topbar from '../components/topbar.astro';
+import IconImage from '../components/icon-image.astro';
+import Image from 'astro/components/Image.astro'
+import backIcon from '../assets/images/back.svg';
+import Footer from '../components/footer.astro'
 
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <Layout ogUrl={ogUrl} ogDescription="coiluckの個人サイト">
-  <Topbar />
   <div class="container">
-    <div class="circle">
-      <svg class="circle-svg" viewBox="0 0 300 300">
-        <circle cx="150" cy="150" r="148" class="circle-path" />
-      </svg>
+    <Topbar />
 
-      <div class="horizontal-line"></div>
-      <div class="vertical-line"></div>
+    <main class="top-main-container">
 
-      <div class="text-above"><a href="./profile" class="custom-link">Profile</a></div>
-      <div class="text-lower-left"><a href="./create" class="custom-link">Create</a></div>
-      <div class="text-lower-right"><a href="./blog" class="custom-link">Blog</a></div>
-    </div>
+      <IconImage
+        imageSrc="/images/icon.png"
+        size={320}
+      />
+
+      <div class="top-description-container">
+        <h2>ひとつひとつでいいからね</h2>
+        <p>One step at a time.</p>
+      </div>
+
+      <div class="top-link-container">
+        <a href="./about" class="top-link-box">
+          <div class="top-link-text-container">
+            <p>About</p>
+            <span>自己紹介というやつです</span>
+          </div>
+          <div class="top-link-icon-container">
+            <div class="top-link-icon">
+              <div class="circle-button">
+                <Image src={backIcon} alt="" />
+              </div>
+            </div>
+          </div>
+        </a>
+        <a href="./content" class="top-link-box">
+          <div class="top-link-text-container">
+            <p>Content</p>
+            <span>作ったものとかはここから見られます</span>
+          </div>
+          <div class="top-link-icon-container">
+            <div class="top-link-icon">
+              <div class="circle-button">
+                <Image src={backIcon} alt="" />
+              </div>
+            </div>
+          </div>
+        </a>
+        <a href="./blog" class="top-link-box">
+          <div class="top-link-text-container">
+            <p>Blog</p>
+            <span>文章が置いてあります</span>
+          </div>
+          <div class="top-link-icon-container">
+            <div class="top-link-icon">
+              <div class="circle-button">
+                <Image src={backIcon} alt="" />
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div id="counter" class="loading"></div>
+    </main>
+
+    <Footer />
   </div>
 
   <style>
-    body {
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
     .container {
-      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100dvh;
+      padding-top: 5rem; /* top-bar の分 */
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    .top-main-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      width: 100%;
+      padding: 2rem;
+    }
+    @media (min-width: 768px) {
+      .top-main-container {
+        width: 80%;
+      }
     }
 
-    .circle {
-      width: 300px;
-      height: 300px;
-      position: relative;
+    .top-description-container {
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
     }
 
-    .circle-svg {
+    .top-link-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: .75rem;
+      width: 100%;
+    }
+    @media (min-width: 768px) {
+      .top-link-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .top-link-container a.top-link-box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      position: relative;
+      width: 100%;
+      padding: 1rem;
+      text-decoration: none;
+      color: var(--text);
+      background-color: rgb(from var(--bg-mild) r g b / 0.5);
+      backdrop-filter: blur(1px);
+      border-radius: .5rem;
+      overflow: hidden;
+    }
+    .top-link-container a.top-link-box::before {
+      content: '';
       position: absolute;
-      top: 0;
+      bottom: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      transform: rotate(-90deg);
-      pointer-events: none;
-    }
-    .circle-path {
-      fill: none;
-      stroke: var(--text);
-      stroke-width: 2;
-      stroke-dasharray: 930; /* 円周(148 * 2 * 3.14) */
-      stroke-dashoffset: 930;
-      animation: drawCircle 1.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-    }
-    @keyframes drawCircle {
-      to { stroke-dashoffset: 0; }
+      background-color: var(--bg);    
+      animation: revealBox .5s cubic-bezier(.5,.04, 1,.35) .5s forwards;
     }
 
-    .horizontal-line {
-      height: 2px;
-      background-color: var(--text);
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 0;
-      animation: expandWidth 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards 0.8s;
+    @keyframes revealBox {
+      from { height: 100%; }
+      to   { height: 0%; }
     }
-    .vertical-line {
-      width: 2px;
-      background-color: var(--text);
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      top: 50%;
-      height: 0;
-      animation: expandHeight 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards 1.0s;
-    }
-    @keyframes expandWidth {
-      to { width: 100%; }
-    }
-    @keyframes expandHeight {
-      to { height: 50%; }
-    }
-
-    .text-above,
-    .text-lower-left,
-    .text-lower-right {
-      position: absolute;
-      width: 100%;
-      text-align: center;
-      opacity: 0;
-    }
-
-    .text-above {
-      top: 25%;
-			animation: fadeIn 0.8s ease-out forwards;
-    }
-		@keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .text-lower-left {
-      width: 50%;
-      top: 70%;
-      left: 0;
-			animation: fadeInLower 0.8s ease-out forwards;
-    }
-    .text-lower-right {
-      width: 50%;
-      top: 70%;
-      right: 0;
-			animation: fadeInLower 0.8s ease-out forwards;
-    }
-    @keyframes fadeInLower {
-      from { opacity: 0; transform: translateY(calc(-50% + 10px)); }
-      to { opacity: 1; transform: translateY(-50%); }
-    }
-
-    .custom-link {
-      border-bottom: 1px solid rgba(0, 0, 0, 0);
-      color: var(--text);
-      font-size: 1rem;
-      text-decoration: none;
-      background: linear-gradient(#f6d893, #f6d893) right 60% / 0 .8em no-repeat;
+    
+    .top-link-text-container p {
+      width: fit-content;
+      background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
+        linear-gradient(var(--accent), var(--accent)) right 60% / 0 .8rem no-repeat;
       transition: background-size .4s cubic-bezier(0.215, 0.61, 0.355, 1);
     }
-    .custom-link:hover {
-      background-position: left 60%;
-      background-size: 100% .8em;
-    }
-		:root[data-theme="dark"] .custom-link {
-      background: linear-gradient(#6088C6, #6088C6) right 60% / 0 .8em no-repeat;
-    }
-    :root[data-theme="dark"] .custom-link:hover {
-      background-position: left 60%;
-      background-size: 100% .8em;
-    }
-
-    @media (max-width: 380px) {
-      .circle {
-        width: 250px;
-        height: 250px;
+    @media (hover: hover) {
+      .top-link-container a.top-link-box:hover .top-link-text-container p {
+        background-position: right bottom, left 60%;
+        background-size: 0 2px, 100% .8rem;
       }
     }
+    .top-link-text-container span {
+      font-size: .8rem;
+      opacity: .7;
+    }
+    .top-link-box .top-link-icon-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .top-link-box .top-link-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .top-link-container .circle-button {
+      position: relative;
+      width: 2rem;
+      height: 2rem;
+      background-color: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .top-link-container .circle-button img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(180deg); /* backをnext方向に */
+      width: 60%;
+      height: 60%;
+      object-fit: contain;
+      overflow: hidden;
+    }
+
+    @media (hover: hover) {
+      .top-link-container a.top-link-box:hover .circle-button img {
+        animation: linkArrowAnimation 0.9s ease-in-out infinite;
+      }
+    }
+
+    @keyframes linkArrowAnimation {
+      0%   { transform: translate(-50%, -50%) rotate(180deg) translateX(0);     opacity: 1; }
+      20%  { transform: translate(-50%, -50%) rotate(180deg) translateX(-150%); opacity: 0; }
+      40%  { transform: translate(-50%, -50%) rotate(180deg) translateX(150%);  opacity: 0; }
+      66%  { transform: translate(-50%, -50%) rotate(180deg) translateX(0);     opacity: 1; }
+      100% { transform: translate(-50%, -50%) rotate(180deg) translateX(0);     opacity: 1; }
+    }
+
+    #counter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 1rem 0;
+      border-top: 1px dashed var(--text);
+      border-bottom: 1px dashed var(--text);
+    }
+    #counter.loading {
+      border: none; /* accessの反映前 */
+    }
   </style>
+
+  <script>
+    import { initializeApp } from 'firebase/app';
+    import { getFirestore, doc, updateDoc, increment, getDoc } from 'firebase/firestore';
+
+    (async () => {
+      const app = initializeApp({
+        apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY,
+        authDomain: import.meta.env.PUBLIC_FIREBASE_AUTH_DOMAIN,
+        projectId: import.meta.env.PUBLIC_FIREBASE_PROJECT_ID,
+        storageBucket: import.meta.env.PUBLIC_FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: import.meta.env.PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+        appId: import.meta.env.PUBLIC_FIREBASE_APP_ID,
+        measurementId: import.meta.env.PUBLIC_FIREBASE_MEASUREMENT_ID,
+      });
+
+      try {
+        const db = getFirestore(app);
+        const ref = doc(db, 'accessTimes', 'zFZtsCWbvhtHNrLXHuqs');
+
+        // +1 して取得
+        await updateDoc(ref, { count: increment(1) });
+        const snap = await getDoc(ref);
+        if (!snap.exists()) return;
+        const count = snap.data().count as number;
+
+        // 桁ごとに画像を差し込む
+        const el = document.getElementById('counter');
+        if (!el) return;
+
+        const imageTypeArray = ["blue", "colorful"]
+        const randomImageType = imageTypeArray[Math.floor(Math.random() * imageTypeArray.length)];
+
+        el.innerHTML = String(count)
+          .split('')
+          .map(d => `<img src="/images/${randomImageType}/${d}.png" alt="${d}">`)
+          .join('');
+
+        el.classList.remove('loading');
+      } catch (e) {
+        console.error(`faild to connect db of access counter: ${e}`)
+
+        // 非表示（破線があるので）
+        const counter = document.getElementById('counter')
+
+        if (counter) {
+          counter.style.display = 'none'
+          counter.classList.remove('loading')
+        }
+      }
+    })();
+  </script>
 </Layout>

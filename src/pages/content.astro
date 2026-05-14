@@ -1,0 +1,223 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Topbar from '../components/topbar.astro';
+import Footer from '../components/footer.astro';
+import { Image } from 'astro:assets';
+import createImage from '../assets/images/create.avif';
+
+import { getCollection } from 'astro:content';
+const allCreates = await getCollection('creates');
+
+const sortedCreates = allCreates.sort((a, b) => {
+  const dateA = a.data.published_date.getTime();
+  const dateB = b.data.published_date.getTime();
+  return dateB - dateA;
+});
+
+const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<Layout pageTitle="Content" ogUrl={ogUrl} ogDescription="制作物の一覧">
+  <Topbar />
+
+  <div class="image-container">
+    <Image src={createImage} alt="" />
+  </div>
+
+  <main class="content">
+    <div class="creates-inner">
+      <h2>制作物</h2>
+      <p>つくったものなど</p>
+    </div>
+
+    <div class="creates-boxes-container">
+      {sortedCreates.map((create) => (
+        <a class="creates-box" href={create.data.url} target="_blank" rel="noopener noreferrer">
+          <div class="creates-box-main-container">
+            <h3>{create.data.title}</h3>
+            <p class="creates-box-description">{create.data.description}</p>
+            <div class="creates-box-tags-container">
+             {create.data.tags.map((tag) => (
+                <span class="creates-box-tag">#{tag}</span>
+              ))}
+            </div>
+          </div>
+          <div class="creates-box-date-container">
+            <span class="creates-box-date">
+              Published: {create.data.published_date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+              })}
+            </span>
+            {create.data.updated_date && (
+              <span class="creates-box-date">
+                Updated: {create.data.updated_date.toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric'
+                })}
+              </span>
+            )}
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <Footer />
+  </main>
+  <style>
+    .image-container {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .image-container img {
+      display: block;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      max-width: 100%;
+      height: auto;
+      max-height: 80%;
+      object-fit: contain;
+      object-position: bottom right;
+      animation: fadeIn .5s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+      position: relative;
+      height: 100dvh;
+      padding-top: 8rem;
+      text-align: center;
+      z-index: 2;
+      overflow-y: auto;
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    @media (max-width: 767px) {
+      .content {
+        padding-top: 6rem;
+      }  
+    }
+    .creates-boxes-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+      gap: 30px;
+      width: 70%;
+      margin: 0 auto;
+    }
+    .creates-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: .5rem;
+      width: 100%;
+      color: inherit;
+      background-color: rgba(255, 243, 241, 0.5);
+      backdrop-filter: blur(3px);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    :root[data-theme="dark"] .creates-box {
+      background-color: rgba(39, 60, 120, 0.4);
+    }
+    .creates-box-main-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: .5rem;
+      width: 100%;
+      padding: 5px 15px;
+      box-sizing: border-box;
+    }
+    .creates-box h3 {
+      position: relative;
+      width: 100%;
+      color: var(--text);
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .creates-box h3::after {
+      content: '';
+      position: absolute;
+      bottom: -0.25rem;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background-color: var(--text);
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: all .4s ease-out;
+    }
+    .creates-box:hover h3::after {
+      transform: scaleX(1);
+    }
+    .creates-box-description {
+      color: var(--meta);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    :root[data-theme="dark"] .creates-box-description {
+      text-shadow: 0 0 3px #333;
+    }
+    .creates-box-tags-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: 10px;
+      width: 100%;
+    }
+    .creates-box-tag {
+      padding: 4px 10px;
+      color: var(--accent);
+      font-size: 0.8rem;
+      background-color: rgb(from var(--accent) r g b / 0.1);
+      border-radius: 20px;
+    }
+    .creates-box-date-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 0 15px;
+      border-top: 1px solid rgb(from var(--text) r g b / 0.1);
+      background-color: rgba(103, 103, 103, 0.2);
+      box-sizing: border-box;
+    }
+    .creates-box-date {
+      padding: 5px 0;
+      font-size: 0.7rem;
+      opacity: .7;
+    }
+    @media (max-width: 768px) {
+      .creates-boxes-container {
+        width: 80%;
+      }
+    }
+    @media (max-width: 480px) {
+      .creates-boxes-container {
+        width: 90%;
+      }
+    }
+  </style>
+</Layout>

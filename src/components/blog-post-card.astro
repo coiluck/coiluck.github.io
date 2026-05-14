@@ -2,56 +2,70 @@
 const { slug, title, tags, date, excerpt } = Astro.props;
 ---
 
-<article class="blog-post">
-  <h2>
-    <a href={`/blog/${slug}`}>
-      {title}
-    </a>
-  </h2>
+<a href={`/blog/${slug}`} class="blog-post-item">
   <div class="meta">
     <time class="date">{date}</time>
     {tags.length > 0 && (
       <div class="tags">
-        {tags.map((tag) => (
-          <a href={`/blog/tag/${encodeURIComponent(tag)}`} class="post-tag">
+        {tags.map((tag: string) => (
+          <span
+            class="post-tag"
+            onclick={`event.preventDefault(); window.location.href='/blog/tag/${encodeURIComponent(tag)}'`}
+            role="link"
+            tabindex="0"
+          >
             {tag}
-          </a>
+          </span>
         ))}
       </div>
     )}
   </div>
+  <h3>{title}</h3>
   {excerpt && (
     <p class="excerpt">{excerpt}</p>
   )}
-  <a href={`/blog/${slug}`} class="read-more">続きを読む</a>
-</article>
+</a>
 
 <style>
-  .blog-post {
-    margin: 2rem auto;
+  .blog-post-item {
+    --cut: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+    position: relative;
     width: 100%;
+    padding: 3rem 1rem 1rem;
+    background: rgb(from var(--bg-mild) r g b / 0.5);
+    backdrop-filter: blur(1px);
+    color: var(--text);
+    text-decoration: none;
+    clip-path: polygon(
+      var(--cut) 0%,        /* 左上カット */
+      100% 0%,
+      100% calc(100% - var(--cut)),  /* 右下カット */
+      calc(100% - var(--cut)) 100%,
+      0% 100%,
+      0% var(--cut)
+    );
   }
 
-  .blog-post h2 {
-    text-align: center;
-  }
-
-  .blog-post h2 a {
-    color: var(--bg-gyaku);
+  .blog-post-item h3 {
+    width: fit-content;
+    color: var(--text);
     text-decoration: none;
     background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
       linear-gradient(#f6d893, #f6d893) right 60% / 0 .8em no-repeat;
     transition: background-size .4s cubic-bezier(0.215, 0.61, 0.355, 1);
   }
-  .blog-post h2 a:hover {
+  .blog-post-item:hover h3 {
     background-position: right bottom, left 60%;
     background-size: 0 2px, 100% .8em;
   }
-  :root[data-theme="dark"] .blog-post h2 a {
+  :root[data-theme="dark"] .blog-post-item h3 {
     background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
       linear-gradient(#6088C6, #6088C6) right 60% / 0 .8em no-repeat;
   }
-  :root[data-theme="dark"] .blog-post h2 a:hover {
+  :root[data-theme="dark"] .blog-post-item:hover h3 {
     background-position: right bottom, left 60%;
     background-size: 0 2px, 100% .8em;
   }
@@ -59,18 +73,18 @@ const { slug, title, tags, date, excerpt } = Astro.props;
   .meta {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    gap: 20px;
+    align-items: flex-end;
+    gap: 1rem;
     width: 100%;
     font-size: 0.9rem;
     text-wrap: nowrap;
-    color: var(--meta);
+    color: rgb(from var(--text) r g b / .5);
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-  }
-  .meta::-webkit-scrollbar {
-    display: none;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
   
   .tags {
@@ -86,8 +100,8 @@ const { slug, title, tags, date, excerpt } = Astro.props;
     background: rgb(from var(--accent) r g b / 0.1);
     color: var(--text);
     text-decoration: none;
+    font-style: italic;
     border: 1px solid var(--accent);
-    border-radius: 5px;
     cursor: pointer;
     transition: all 0.3s ease;
   }
@@ -103,7 +117,6 @@ const { slug, title, tags, date, excerpt } = Astro.props;
     width: 100%;
     height: 0%;
     background: rgb(from var(--accent) r g b / 0.1);
-    border-radius: 5px;
     transition: all 0.3s ease;
   }
   .tags .post-tag:hover {
@@ -118,31 +131,10 @@ const { slug, title, tags, date, excerpt } = Astro.props;
   }
   
   .excerpt {
-    margin: .5rem 0 0;
-    line-height: 1.6;
-    color: var(--text);
-  }
-
-  .read-more {
-    display: inline-block;
-    position: relative;
-    margin-top: 0.8rem;
-    color: var(--link);
-    text-decoration: none;
-  }
-  .read-more::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--link);
-    transform: scaleY(0.5);
-    transform-origin: bottom;
-    transition: width 0.3s ease;
-  }
-  .read-more:hover::before {
-    width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    opacity: .7;
   }
 </style>

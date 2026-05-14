@@ -11,8 +11,7 @@ const labelClass = isChild ? 'category-label-sub' : 'category-label';
     color: var(--text);
     font-size: 1.1rem;
     font-weight: bold;
-    border-left: 4px solid #ff7f7e;
-    box-shadow: 2px 2px 4px var(--shadow);
+    border-left: 4px solid var(--accent);
   }
   .category-label-sub {
     position: relative;
@@ -22,7 +21,7 @@ const labelClass = isChild ? 'category-label-sub' : 'category-label';
     color: var(--text);
     font-size: 1rem;
     font-weight: bold;
-    border-bottom: 1px solid #ff7f7e;;
+    border-bottom: 1px solid var(--accent);
   }
   .category-label-sub::before {
     content: '・';
@@ -31,6 +30,6 @@ const labelClass = isChild ? 'category-label-sub' : 'category-label';
     left: 0;
     transform: translateY(-50%);
     font-size: 1rem;
-    color: #ff7f7e;
+    color: var(--accent);
   }
 </style>

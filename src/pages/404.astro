@@ -721,11 +721,12 @@
         c = document.getElementById("cf-footer-ip-reveal");
 
       // Reveal button
-      if (b && "classList" in b) {
+      if (b && "classList" in b && c) {
         b.classList.remove("hidden");
-        c.addEventListener("click", function() {
-          c.classList.add("hidden");
-          document.getElementById("cf-footer-ip").classList.remove("hidden");
+        const button = c;
+        button.addEventListener("click", function() {
+          button.classList.add("hidden");
+          document.getElementById("cf-footer-ip")?.classList.remove("hidden");
         });
       }
       // Time (UTC)
@@ -756,7 +757,6 @@
         });
     }
 
-    var a = document;
-    if (document.addEventListener) a.addEventListener("DOMContentLoaded", d);
+    document.addEventListener("DOMContentLoaded", d);
   })();
 </script>

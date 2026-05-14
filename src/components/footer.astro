@@ -1,0 +1,333 @@
+---
+import { Code } from 'astro-expressive-code/components';
+
+const contactCode = `const MY_DOMAIN = 'coiluck.moe';
+const my_mail = 'hi' + '@' + MY_DOMAIN;
+`;
+---
+<div class="footer-container">
+  <div class="footer-content">
+    <a href="/rss.xml" class="footer-item">RSS</a>
+    <span> / </span>
+    <a href="/sitemap-index.xml" class="footer-item">Sitemap</a>
+    <span> / </span>
+    <div class="footer-others footer-item" id="footer-others-btn">Others</div>
+  </div>
+  <div>Powered by Astro</div>
+</div>
+
+<div id="others-menu" class="others-menu" role="menu" style="display:none;">
+  <span class="others-menu-item" id="contact-menu-item">Contact</span>
+  <a href="/" class="others-menu-item">工事予定地</a>
+  <a href="/" class="others-menu-item">工事中2</a>
+</div>
+
+<!-- Contact modal -->
+<div id="contact-modal" class="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" style="display:none;">
+  <div class="contact-modal-backdrop" data-close></div>
+  <div class="contact-modal-panel">
+    <div class="contact-modal-header">
+      <p id="contact-modal-title" class="contact-modal-title">Contact</p>
+      <button type="button" class="contact-modal-close" aria-label="Close" data-close>×</button>
+    </div>
+    <div class="contact-modal-body">
+      <Code code={contactCode} lang="ts" />
+    </div>
+  </div>
+</div>
+
+<style>
+  .footer-container {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    padding: 1rem;
+    background-color: rgb(from var(--bg-mild) r g b / 0.5);
+    border-radius: 50% 50% 10% 10% / 30px 30px 0 0;
+    text-align: center;
+    font-size: .8em;
+  }
+  .footer-container .footer-item {
+    position: relative;
+    padding-left: .8rem;
+    color: var(--text);
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font: inherit;
+  }
+  .footer-container .footer-item::before {
+    content: '#';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    color: var(--accent);
+  }
+  .footer-container .footer-item::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--text);
+    transition: all .3s ease;
+  }
+  @media (hover: hover) {
+    .footer-container .footer-item:hover::after {
+      width: 100%;
+    }
+  }
+
+  .footer-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(1rem, calc(4 * 1vw + 0rem), 2rem);
+  }
+
+  /* Others popup menu */
+  .others-menu {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    position: fixed;
+    min-width: 120px;
+    padding: 0.5rem;
+    background-color: rgb(from var(--bg-mild) r g b / 0.8);
+    border: 1px solid rgb(from var(--text) r g b / 0.1);
+    border-radius: .5rem;
+    opacity: 0;
+    transform: translateY(4px);
+    pointer-events: none;
+    z-index: 9999;
+    transition: all 0.15s ease;
+  }
+  .others-menu.is-open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  /* 吹き出しの下向き三角 */
+  .others-menu::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--bg-mild);
+  }
+  .others-menu-item {
+    display: block;
+    position: relative;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    color: var(--text);
+    text-align: left;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-family: inherit;
+    background: none;
+    border: none;
+    border-radius: .4rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .others-menu-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: calc(100% + .3rem); /* others-menu のgap / 2 */
+    left: 0;
+    width: 100%;
+    height: .5px;
+    background-color: var(--text);
+  }
+  @media (hover: hover) {
+    .others-menu-item:hover {
+      background-color: rgb(from var(--text) r g b / 0.1);
+    }
+  }
+
+  /* Contact modal */
+  .contact-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .contact-modal.is-open {
+    opacity: 1;
+  }
+  .contact-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgb(from var(--bg) r g b / 0.5);
+    backdrop-filter: blur(2px);
+  }
+  .contact-modal-panel {
+    position: relative;
+    width: min(92vw, 560px);
+    max-height: 80vh;
+    overflow: auto;
+    padding: 1rem;
+    background-color: var(--bg-mild);
+    border: 1px solid rgb(from var(--text) r g b / 0.15);
+    border-radius: .75rem;
+    transform: translateY(8px);
+    transition: transform 0.2s ease;
+  }
+  .contact-modal.is-open .contact-modal-panel {
+    transform: translateY(0);
+  }
+  .contact-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: .75rem;
+  }
+  .contact-modal-title {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--text);
+  }
+  .contact-modal-close {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: .5rem;
+    padding-top: .25rem;
+    border-radius: .25rem;
+    transition: background-color 0.2s ease;
+  }
+  @media (hover: hover) {
+    .contact-modal-close:hover {
+      background-color: rgb(from var(--text) r g b / 0.1);
+    }
+  }
+</style>
+
+<script>
+  const MARGIN = 8; // ボタンとメニューの間の余白 (px)
+
+  const btn = document.getElementById('footer-others-btn') as HTMLElement | null;
+  const menu = document.getElementById('others-menu') as HTMLElement | null;
+  const contactBtn = document.getElementById('contact-menu-item') as HTMLElement | null;
+  const modal = document.getElementById('contact-modal') as HTMLElement | null;
+
+  if (btn && menu) {
+    // body直下に移動（スタッキングコンテキストの影響を避けるため）
+    document.body.appendChild(menu);
+
+    let isOpen = false;
+
+    function calcPosition() {
+      if (!btn || !menu) return;
+      const btnRect = btn.getBoundingClientRect();
+      const menuRect = menu.getBoundingClientRect();
+
+      // 左右: ボタン中央に合わせ、画面端からはみ出さないようにクランプ
+      const idealLeft = btnRect.left + btnRect.width / 2 - menuRect.width / 2;
+      const clampedLeft = Math.max(8, Math.min(idealLeft, window.innerWidth - menuRect.width - 8));
+
+      // 上: 常にボタンの上
+      const top = btnRect.top - menuRect.height - MARGIN;
+
+      menu.style.left = `${clampedLeft}px`;
+      menu.style.top = `${top}px`;
+    }
+
+    function open() {
+      if (!menu) return;
+      menu.style.display = 'flex';
+      // display変更後に位置計算・アニメーション開始
+      requestAnimationFrame(() => {
+        calcPosition();
+        menu.classList.add('is-open');
+      });
+      isOpen = true;
+    }
+
+    function close() {
+      if (!menu) return;
+      menu.classList.remove('is-open');
+      // transitionが終わったら非表示に
+      menu.addEventListener('transitionend', () => {
+        if (!isOpen) menu.style.display = 'none';
+      }, { once: true });
+      isOpen = false;
+    }
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      isOpen ? close() : open();
+    });
+
+    // 外側クリックで閉じる
+    document.addEventListener('pointerdown', (e) => {
+      if (!isOpen) return;
+      const target = e.target as Node;
+      if (menu.contains(target) || btn.contains(target)) return;
+      close();
+    });
+
+    // Escキーで閉じる
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) close();
+    });
+
+    // リサイズ・スクロール時に位置を再計算
+    window.addEventListener('resize', () => { if (isOpen) calcPosition(); });
+    window.addEventListener('scroll', () => { if (isOpen) calcPosition(); }, true);
+
+    // Contactクリックでモーダル表示 & Othersメニュー閉じる
+    if (contactBtn && modal) {
+      let modalOpen = false;
+
+      function openModal() {
+        if (!modal) return;
+        modal.style.display = 'flex';
+        requestAnimationFrame(() => {
+          modal.classList.add('is-open');
+        });
+        modalOpen = true;
+      }
+
+      function closeModal() {
+        if (!modal) return;
+        modal.classList.remove('is-open');
+        modal.addEventListener('transitionend', () => {
+          if (!modalOpen) modal.style.display = 'none';
+        }, { once: true });
+        modalOpen = false;
+      }
+
+      contactBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        close(); // Othersメニューを閉じる
+        openModal();
+      });
+
+      // 背景や×ボタンで閉じる
+      modal.querySelectorAll('[data-close]').forEach((el) => {
+        el.addEventListener('click', closeModal);
+      });
+
+      // Escキーで閉じる
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modalOpen) closeModal();
+      });
+    }
+  }
+</script>

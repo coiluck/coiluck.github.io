@@ -1,6 +1,6 @@
 ---
 import { render } from 'astro:content';
-import Layout from '../../layouts/blogLayout.astro';
+import Layout from '../../layouts/Layout.astro';
 import Topbar from '../../components/topbar.astro';
 import BlogImage from '../../components/blog-image.astro';
 import BlogLine from '../../components/blog-line.astro';
@@ -33,13 +33,11 @@ const {title, date, tags } = getPostMetadata(post);
 
 const { Content } = await render(post);
 
-const ogTitle = title;
 const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const ogDescription = generateExcerpt(post, 30);
 ---
 <Layout
   pageTitle={title}
-  ogTitle={ogTitle}
   ogDescription={ogDescription}
   ogUrl={ogUrl}
 >
@@ -61,7 +59,7 @@ const ogDescription = generateExcerpt(post, 30);
         {tags.map((tag, tagIndex) => (
           <span>
             <a href={`/blog/tag/${encodeURIComponent(tag)}`}>
-              <span style="color: #ff7f7e;">#</span>
+              <span style="color: var(--accent);">#</span>
               <span data-pagefind-filter="tag">{tag}</span>
             </a>
             {tagIndex < tags.length - 1 && ', '}
@@ -70,14 +68,22 @@ const ogDescription = generateExcerpt(post, 30);
       </p>
     </div>
 
-    <div class="blog-tag-line"></div>
+    <BlogLine
+      pcSize={100}
+      smSize={100}
+      isNeedMargin={true}
+    />
 
     <div class="content prose">
       <Content />
     </div>
   </article>
 
-  <BlogLine />
+  <BlogLine
+    pcSize={70}
+    smSize={90}
+    isNeedMargin={true}
+  />
 
   <button class="top-button-container">
     <div class="circle-button">
@@ -86,15 +92,21 @@ const ogDescription = generateExcerpt(post, 30);
     <span class="top-text">Top</span>
   </button>
 
-  <div style="height: 80px;"></div>
+  <div style="height: 60px;"></div>
 
   <style is:global>
     .blog-header {
-      padding: 90px 0 0;
+      padding: 8rem 0 0;
+    }
+    @media (max-width: 768px) {
+      .blog-header {
+        padding-top: 6rem;
+      }  
     }
     .blog-post {
       width: 70%;
       margin: 0 auto;
+      background-color: rgb(from var(--bg) r g b / .5);
     }
     @media (max-width: 767px) {
       .blog-post {
@@ -109,14 +121,14 @@ const ogDescription = generateExcerpt(post, 30);
     .meta {
       font-size: 0.9rem;
       text-align: center;
-      color: var(--meta);
+      color: rgb(from var(--text) r g b / .5);
     }
-    .meta p{
+    .meta p {
       margin: .5rem 0 0;
     }
     .meta p span a {
       position: relative;
-      color: var(--meta);
+      color: rgb(from var(--text) r g b / .5);
       text-decoration: none;
       transition: all 0.3s ease;
     }
@@ -127,8 +139,8 @@ const ogDescription = generateExcerpt(post, 30);
       left: 0;
       width: 0;
       height: 2px;
-      background-color: var(--meta);
-       transform: scaleY(0.5);
+      background-color: rgb(from var(--text) r g b / .5);
+      transform: scaleY(0.5);
       transform-origin: bottom;
       transition: width 0.3s ease;
     }
@@ -136,22 +148,16 @@ const ogDescription = generateExcerpt(post, 30);
       width: 100%;
     }
 
-    .blog-tag-line {
-      width: 100%;
-      height: 1px;
-      background-color: var(--border);
-      margin: 30px auto;
-    }
     .content {
-      margin-bottom: 32px;
+      margin-bottom: 2rem;
       line-height: 1.5;
     }
     @media (max-width: 480px) {
       .content {
-        font-size: 14px;
+        font-size: .9rem;
       }
       .expressive-code * {
-        font-size: 13px !important;
+        font-size: .85rem !important;
       }
     }
 
@@ -164,7 +170,11 @@ const ogDescription = generateExcerpt(post, 30);
       display: none;
     }
     .footnotes ol {
-      margin: 32px 0; /* .contentについているmargin-bottomと合わせる */
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      margin: 2rem 0; /* .contentについているmargin-bottomと合わせる */
+      padding-left: 1rem; /* 数字だけはみ出しちゃうので */
     }
 
     /* 個別の記事のTopへボタン */
@@ -245,7 +255,7 @@ const ogDescription = generateExcerpt(post, 30);
       }
     }
     .top-text {
-      font-size: 18px;
+      font-size: 1.1rem;
       font-weight: bold;
     }
     @media (max-width: 767px) {
@@ -261,7 +271,7 @@ const ogDescription = generateExcerpt(post, 30);
         sessionStorage.setItem('lastListPage', referrer);
       }
       // クリック時の設定
-      document.querySelector('.top-button-container').addEventListener('click', function(e) {
+      document.querySelector('.top-button-container')?.addEventListener('click', function(e) {
         const lastPage = sessionStorage.getItem('lastListPage');
         if (lastPage && lastPage !== window.location.href) {
           window.location.href = lastPage;

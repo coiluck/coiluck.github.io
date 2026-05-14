@@ -30,7 +30,10 @@ const siteTitle = import.meta.env.SITE_TITLE;
 
     {/* site name */}
     <div class="svg-content">
-      <a href="/" class="custom-link site-name">{siteTitle}</a>
+      <a href="/" class="custom-link site-name">
+        {siteTitle}
+        <span class="site-name-inner"></span>
+      </a>
     </div>
   </div>
 
@@ -63,6 +66,7 @@ const siteTitle = import.meta.env.SITE_TITLE;
     justify-content: space-between;
     width: 100%;
     height: 3.5rem;
+    background-color: var(--bg);
     z-index: 1000;
     overflow: visible;
   }
@@ -126,9 +130,70 @@ const siteTitle = import.meta.env.SITE_TITLE;
   }
 
   .site-name {
+    position: relative;
+    padding: .5rem 1rem;
     white-space: nowrap;
     color: var(--text);
     text-decoration: none;
+    transition: all .3s ease;
+  }
+  /* 上線 */
+  .site-name::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--text);
+    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  /* 下線 */
+    .site-name::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--text);
+    transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  /* 左縦線 */
+  .site-name-inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 0;
+    background-color: var(--text);
+    transition: height 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  /* 右縦線 */
+  .site-name-inner::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 1px;
+    height: 0;
+    background-color: var(--text);
+    transition: height 1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (hover: hover) {
+    .site-name:hover::before {
+      width: 100%;
+    }
+    .site-name:hover::after {
+      width: 100%;
+    }
+    .site-name:hover .site-name-inner::before {
+      height: 100%;
+    }
+    .site-name:hover .site-name-inner::after {
+      height: 100%;
+    }
   }
 
   .top-bar-right {
@@ -139,6 +204,7 @@ const siteTitle = import.meta.env.SITE_TITLE;
     height: 3.5rem;
     padding-right: 2rem;
   }
+
 
   /* mode toggle */
   .top-bar-toggle {

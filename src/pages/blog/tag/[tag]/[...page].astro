@@ -1,16 +1,17 @@
 ---
+import type { GetStaticPathsOptions } from 'astro';
 import { getSortedPosts } from '../../../../utils/getPosts';
-import Layout from '../../../../layouts/blogLayout.astro';
+import Layout from '../../../../layouts/Layout.astro';
 import Topbar from '../../../../components/topbar.astro';
 import { Image } from 'astro:assets';
 import pankuzuIcon from '../../../../assets/images/pankuzu.svg';
 import BlogImage from '../../../../components/blog-image.astro';
+import BlogLine from '../../../../components/blog-line.astro';
 import Search from "../../../../components/Search.astro";
 import BlogPostCard from '../../../../components/blog-post-card.astro';
-import BlogLine from '../../../../components/blog-line.astro';
 import Pagination from '../../../../components/pagination.astro';
 
-export async function getStaticPaths({ paginate }) {
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const allSortedPosts = await getSortedPosts();
 
   // すべてのタグを収集
@@ -44,7 +45,6 @@ const { page } = Astro.props;
 const { tag } = Astro.params;
 
 // OGP用
-const ogTitle = `タグ: ${tag}`;
 const ogDescription = "書く、これしか出来ないから";
 const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
@@ -53,7 +53,6 @@ import getPostMetadata from '../../../../utils/postMetadata'
 ---
 <Layout
   pageTitle={`タグ: ${tag}`}
-  ogTitle={ogTitle}
   ogDescription={ogDescription}
   ogUrl={ogUrl}
 >
@@ -74,7 +73,11 @@ import getPostMetadata from '../../../../utils/postMetadata'
       </div>
     </div>
 
-      <BlogLine />
+    <BlogLine
+      pcSize={70}
+      smSize={90}
+      isNeedMargin={false}
+    />
 
     <div class="blog-content">
       {page && page.data ? (
@@ -99,27 +102,38 @@ import getPostMetadata from '../../../../utils/postMetadata'
         </div>
       )}
     </div>
-    <BlogLine />
+
+    <BlogLine
+      pcSize={70}
+      smSize={90}
+      isNeedMargin={false}
+    />
+
     <Pagination page={page} />
   </main>
 </Layout>
 
 <style>
   .blog-header {
-    padding: 90px 0 0;
+    padding-top: 8rem;
+  }
+  @media (max-width: 768px) {
+    .blog-header {
+      padding-top: 6rem;
+    }  
   }
   .tag-head {
-    margin: 30px auto;
+    margin: 0 auto;
     width: 70%;
   }
   .tag-pankuzu {
     font-size: 1rem;
-    color: var(--meta);
+    color: rgb(from var(--text) r g b / 0.5);
   }
   .tag-pankuzu a {
     position: relative;
     padding: 2px 4px;
-    color: var(--meta);
+    color: rgb(from var(--text) r g b / 0.5);
     text-decoration: none;
     transition: all 0.3s ease;
   }
@@ -130,7 +144,7 @@ import getPostMetadata from '../../../../utils/postMetadata'
     left: 0;
     width: 0;
     height: 2px;
-    background-color: var(--meta);
+    background-color: rgb(from var(--text) r g b / 0.5);
     transform: scaleY(0.5);
     transform-origin: bottom;
     transition: width 0.3s ease;
@@ -155,7 +169,15 @@ import getPostMetadata from '../../../../utils/postMetadata'
     color: var(--text);
     font-size: 1.2rem;
   }
+  main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
   .blog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
     margin: 0 auto;
     width: 70%;
   }

@@ -1,14 +1,24 @@
-<div class="blog-line"></div>
+---
+interface Props {
+  pcSize: number; // 90 -> 90%
+  smSize: number;
+  isNeedMargin?: boolean
+}
+
+const { pcSize, smSize, isNeedMargin } = Astro.props;
+---
+<div class="blog-line" style={`--pc-size: ${pcSize}%; --sm-size: ${smSize}%; --margin: ${isNeedMargin ? '30px' : '0'}`}></div>
+
 <style>
   .blog-line {
-    width: 70%;
+    width: var(--pc-size);
     height: 1px;
-    background-color: var(--border);
-    margin: 30px auto;
+    background-color: rgb(from var(--text) r g b / .7);
+    margin: var(--margin) auto;
   }
   @media (max-width: 767px) {
     .blog-line {
-      width: 90%;
+      width: var(--sm-size);
     }
   }
 </style>

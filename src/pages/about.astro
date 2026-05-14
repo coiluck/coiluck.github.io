@@ -2,21 +2,23 @@
 import Layout from '../layouts/Layout.astro';
 import Topbar from '../components/topbar.astro';
 import LabelTitle from '../components/label-title.astro';
-import VerticalLine from '../components/vertical-line.astro';
 
-import { Image } from 'astro:assets';
-import profileIcon from '../assets/images/profile-icon.avif';
+import IconImage from '../components/icon-image.astro';
 import LinkPreviewBox from '../components/link-preview-box.astro';
+
+import Footer from '../components/footer.astro'
 
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<Layout pageTitle="profile" ogUrl={ogUrl} ogDescription="自己紹介">
+<Layout pageTitle="About" ogUrl={ogUrl} ogDescription="自己紹介">
 	<Topbar />
   <div class="container">
-    <Image class="profile-picture" src={profileIcon} alt="アイコン" />
 
-    <VerticalLine />
+    <IconImage
+      imageSrc="/images/icon.png"
+      size={320}
+    />
 
     <div class="content">
       <LabelTitle text = "よく使うアカウント名" />
@@ -29,7 +31,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         <div class="links-box">
           <LinkPreviewBox
             title="GitHub"
-            description="Pages用のリポジトリしかない"
+            description=""
             url="https://github.com/coiluck/"
           />
           <LinkPreviewBox
@@ -39,12 +41,12 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
           />
           <LinkPreviewBox
             title="chichi-pui"
-            description="AIイラスト。昔はこっちに投稿していた"
+            description="AIイラスト1"
             url="https://www.chichi-pui.com/users/coiluck/"
           />
           <LinkPreviewBox
             title="Aipictors"
-            description="AIイラスト。こっちに切り替えるつもり"
+            description="AIイラスト2"
             url="https://www.aipictors.com/users/6f92b753-d44f-dd7d-6c98-3bb495495278/"
           />
           <LinkPreviewBox
@@ -142,28 +144,44 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         </div>
       </div>
 
-      <LabelTitle text = "このサイトについて" />
+      <LabelTitle text = "感謝" />
       <div class="category-text">
-        人生暇すぎてやることがなかったから作った。<br>
-        <a href="/" class="custom-link">トップページ</a>は<a href="https://en.wikipedia.org/wiki/T_and_O_map" target="_blank" rel="noopener noreferrer" class="custom-link">T-O Map</a>をイメージしている。
+        <div class="category-text-table">
+          <div class="category-text-table-item">
+            <span><a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a></span>
+            <span>これで作っている</span>
+          </div>
+          <div class="category-text-table-item">
+            <span>GitHub Pages</span>
+            <span>ホストしてくれている</span>
+          </div>
+          <div class="category-text-table-item">
+            <span><a href="https://github.com/3846masa/kauntah-svg" target="_blank" rel="noopener noreferrer">kauntah-svg</a></span>
+            <span>かわいいアクセスカウンタ</span>
+          </div>
+          <div class="category-text-table-item">
+            <span>Me</span>
+            <span>つくったので</span>
+          </div>
+        </div>
       </div>
     </div>
+
+    <Footer />
   </div>
   <style>
     .container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: calc(100vh - 180px);
+      height: 100dvh;
       margin: 0 auto;
-      padding: 90px 0;
-    }
-    .profile-picture {
-      width: 150px;
-      height: 150px;
-      border-radius: 30%;
-      border: 1px solid var(--text);
-      box-shadow: 2px 2px 10px 0px var(--shadow);
+      padding-top: 90px;
+      overflow-y: auto;
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
     .title {
       width: 70%;
@@ -175,6 +193,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       flex: 1;
       width: 70%;
       margin: 0 auto;
+      margin-bottom: 1rem;
     }
     .category-text {
       width: calc(100% - 2rem);
@@ -187,52 +206,38 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       gap: 10px 20px;
       z-index: 2;
     }
-    .custom-link {
-      color: var(--text);
-      text-decoration: none;
-      background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
-		linear-gradient(#f6d893, #f6d893) right 60% / 0 .8em no-repeat;
-      transition: background-size .4s cubic-bezier(0.215, 0.61, 0.355, 1);
-    }
-    .custom-link:hover {
-      background-position: right bottom, left 60%;
-      background-size: 0 1px, 100% .8em;
-    }
-    :root[data-theme="dark"] .custom-link {
-      background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
-        linear-gradient(#6088C6, #6088C6) right 60% / 0 .8em no-repeat;
-    }
-    :root[data-theme="dark"] .custom-link:hover {
-      background-position: right bottom, left 60%;
-      background-size: 0 2px, 100% .8em;
-    }
     @media (max-width: 767px) {
-      .title {
+      .title, .content {
         width: 80%;
-      }
-      .content {
-        width: 80%;
-      }
-      .custom-link,
-      :root[data-theme="dark"] .custom-link {
-        text-decoration: underline;
-        background: none;
-        transition: none;
-      }
-      .custom-link:hover,
-      :root[data-theme="dark"] .custom-link:hover {
-        background: none;
-        background-position: initial;
-        background-size: initial;
       }
     }
     @media (max-width: 480px) {
-      .title {
-        width: 90%;
-      }
-      .content {
+      .title, .content {
         width: 90%;
       }
     }
+
+    .category-text-table {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      row-gap: .5rem;
+    }
+    .category-text-table-item {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: subgrid;
+    }
+
+    .category-text-table-item span {
+      border-bottom: 1px solid var(--text);
+      padding: 0.4rem 0;
+    }
+
+    .category-text-table-item span:last-child {
+      padding-left: 1rem;
+    }
+    .category-text-table-item span a {
+      color: var(--link);
+    }
   </style>
-</Layout>
+</Layout> 

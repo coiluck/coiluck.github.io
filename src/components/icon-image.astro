@@ -1,0 +1,169 @@
+---
+// CharacterFrame.astro
+interface Props {
+  imageSrc: string;
+  size?: number;
+}
+
+const { imageSrc, size = 320 } = Astro.props;
+
+// SVGのviewBoxは0〜100で固定。表示サイズだけ可変にする
+const uid = Math.random().toString(36).slice(2, 9); // 複数配置時のID衝突回避
+---
+
+<div class="character-frame" style={`--frame-size: ${size}px;`}>
+  <svg
+    viewBox="0 0 100 100"
+    xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <defs>
+      <clipPath id={`clip-${uid}`}>
+        <polygon points="50,2 98,50 50,98 2,50" />
+      </clipPath>
+
+      <!-- 各辺用のグラデーション：中央が濃く、端に向かって透明 -->
+      <!-- 上辺（左上 → 右上）-->
+      <linearGradient id={`grad-top-${uid}`} x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="#ff2a3d" stop-opacity="0" />
+        <stop offset="50%"  stop-color="#ff2a3d" stop-opacity="1" />
+        <stop offset="100%" stop-color="#ff2a3d" stop-opacity="0" />
+      </linearGradient>
+      <!-- 右辺（右上 → 右下）-->
+      <linearGradient id={`grad-right-${uid}`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#ff2a3d" stop-opacity="0" />
+        <stop offset="50%"  stop-color="#ff2a3d" stop-opacity="1" />
+        <stop offset="100%" stop-color="#ff2a3d" stop-opacity="0" />
+      </linearGradient>
+      <!-- 下辺（右下 → 左下）-->
+      <linearGradient id={`grad-bottom-${uid}`} x1="1" y1="0" x2="0" y2="0">
+        <stop offset="0%"   stop-color="#ff2a3d" stop-opacity="0" />
+        <stop offset="50%"  stop-color="#ff2a3d" stop-opacity="1" />
+        <stop offset="100%" stop-color="#ff2a3d" stop-opacity="0" />
+      </linearGradient>
+      <!-- 左辺（左下 → 左上）-->
+      <linearGradient id={`grad-left-${uid}`} x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%"   stop-color="#ff2a3d" stop-opacity="0" />
+        <stop offset="50%"  stop-color="#ff2a3d" stop-opacity="1" />
+        <stop offset="100%" stop-color="#ff2a3d" stop-opacity="0" />
+      </linearGradient>
+    </defs>
+
+    <!-- 切り抜いた画像 -->
+    <image
+      href={imageSrc}
+      x="0"
+      y="0"
+      width="100"
+      height="100"
+      preserveAspectRatio="xMidYMid slice"
+      clip-path={`url(#clip-${uid})`}
+    />
+
+    <!-- 枠線の4辺。各辺の中央(midX, midY)から両端に向けて伸びる -->
+    <g class="borders" stroke-width="1.2" stroke-linecap="round" fill="none">
+      <!-- 上辺: (2,50)左頂点ではなく、菱形の上辺は (50,2) → 各頂点  
+           菱形の辺は (50,2)-(98,50), (98,50)-(50,98), (50,98)-(2,50), (2,50)-(50,2)
+           → 各辺の「中点」から両端に伸ばすため、中点を始点・終点の中央にする  
+           SVGの<line>は中央から伸ばす機能はないので、
+           stroke-dasharray のトリックで「中央から外側へ」見せる -->
+
+      <!-- 右上の辺: (50,2) → (98,50) -->
+      <line
+        x1="50" y1="2" x2="98" y2="50"
+        stroke={`url(#grad-top-${uid})`}
+        pathLength="100"
+        stroke-dasharray="50 50"
+        stroke-dashoffset="50"
+        style="--delay: 0s;"
+      />
+      <!-- 右下の辺: (98,50) → (50,98) -->
+      <line
+        x1="98" y1="50" x2="50" y2="98"
+        stroke={`url(#grad-right-${uid})`}
+        pathLength="100"
+        stroke-dasharray="50 50"
+        stroke-dashoffset="50"
+        style="--delay: 0.05s;"
+      />
+      <!-- 左下の辺: (50,98) → (2,50) -->
+      <line
+        x1="50" y1="98" x2="2" y2="50"
+        stroke={`url(#grad-bottom-${uid})`}
+        pathLength="100"
+        stroke-dasharray="50 50"
+        stroke-dashoffset="50"
+        style="--delay: 0.1s;"
+      />
+      <!-- 左上の辺: (2,50) → (50,2) -->
+      <line
+        x1="2" y1="50" x2="50" y2="2"
+        stroke={`url(#grad-left-${uid})`}
+        pathLength="100"
+        stroke-dasharray="50 50"
+        stroke-dashoffset="50"
+        style="--delay: 0.15s;"
+      />
+    </g>
+
+    <polygon
+      class="hit-area"
+      points="50,2 98,50 50,98 2,50"
+      fill="transparent"
+    />
+  </svg>
+</div>
+
+<style>
+  .character-frame {
+    width: var(--frame-size, 320px);
+    aspect-ratio: 1 / 1;
+    display: inline-block;
+  }
+
+  .character-frame svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* 枠線を中央から両端に伸ばす */
+  .borders line {
+    stroke-dasharray: 0 100;
+    stroke-dashoffset: 0;
+    transform-origin: center;
+    animation: draw-from-center 1.2s ease-out forwards;
+    animation-delay: var(--delay, 0s);
+  }
+
+  @keyframes draw-from-center {
+    0% {
+      stroke-dasharray: 0 100;
+      /* dashoffset で、見える区間の開始位置を線の中央(50)に持ってくる */
+      stroke-dashoffset: 50;
+    }
+    100% {
+      stroke-dasharray: 100 0;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* hover用 */
+  @media (hover: hover) {
+    .character-frame svg:has(.hit-area:hover) .borders line {
+      animation: draw-from-center-hover 1.2s ease-out forwards;
+      animation-delay: var(--delay, 0s);
+    }
+  }
+
+  @keyframes draw-from-center-hover {
+    0% {
+      stroke-dasharray: 0 100;
+      stroke-dashoffset: 50;
+    }
+    100% {
+      stroke-dasharray: 100 0;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
