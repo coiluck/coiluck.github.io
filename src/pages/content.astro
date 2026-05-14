@@ -109,10 +109,15 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         display: none;
       }
     }
+    @media (hover: hover) {
+      .content {
+        height: auto; /* 100dvhだと下部にスペースができちゃう */
+      }
+    }
     @media (max-width: 767px) {
       .content {
         padding-top: 6rem;
-      }  
+      }
     }
     .creates-boxes-container {
       display: grid;

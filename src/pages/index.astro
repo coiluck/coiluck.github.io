@@ -15,7 +15,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     <main class="top-main-container">
 
       <IconImage
-        imageSrc="/images/icon.png"
+        imageSrc="/images/icon.avif"
         size={320}
       />
 
@@ -86,6 +86,11 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         display: none;
       }
     }
+    @media (hover: hover) {
+      .container {
+        height: auto; /* 100dvhだと下部にスペースができちゃう */
+      }
+    }
     .top-main-container {
       display: flex;
       flex-direction: column;
@@ -139,7 +144,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: var(--bg);    
+      background-color: var(--bg);
       animation: revealBox .5s cubic-bezier(.5,.04, 1,.35) .5s forwards;
     }
 
@@ -147,7 +152,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       from { height: 100%; }
       to   { height: 0%; }
     }
-    
+
     .top-link-text-container p {
       width: fit-content;
       background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,

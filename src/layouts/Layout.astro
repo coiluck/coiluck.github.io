@@ -18,13 +18,13 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={ogDescription} />
-    <link rel="icon" href="/images/icon_small.png" />
+    <link rel="icon" href="/images/favicon.ico" />
     {isBlog && (
       <link rel="alternate" type="application/rss+xml" title="革命学舎 | Blog" href="/rss.xml" />
     )}
     <link rel="sitemap" href="/sitemap-index.xml" />
     <title>{siteTitle}{pageTitle && ` | ${pageTitle}`}</title>
-    <meta property="og:title" content={pageTitle ? `${siteTitle} | ${pageTitle}` : siteTitle} />
+    <meta property="og:title" content={pageTitle ?? siteTitle} />
     <meta property="og:description" content={ogDescription} />
     <meta property="og:url" content={ogUrl || Astro.url.toString()} />
     <meta property="og:type" content="website" />
@@ -83,6 +83,7 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
         padding: 0;
         font-family: 'mamelon3.5', 'Noto Sans JP', sans-serif;
         box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
       }
       img {
         user-select: none;

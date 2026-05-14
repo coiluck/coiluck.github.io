@@ -16,7 +16,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
   <div class="container">
 
     <IconImage
-      imageSrc="/images/icon.png"
+      imageSrc="/images/icon.avif"
       size={320}
     />
 
@@ -31,7 +31,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         <div class="links-box">
           <LinkPreviewBox
             title="GitHub"
-            description=""
+            description="最近はTauriとかが好き"
             url="https://github.com/coiluck/"
           />
           <LinkPreviewBox
@@ -183,6 +183,11 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         display: none;
       }
     }
+    @media (hover: hover) {
+      .container {
+        height: auto; /* 100dvhだと下部にスペースができちゃう */
+      }
+    }
     .title {
       width: 70%;
       font-size: 1.3rem;
@@ -240,4 +245,4 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       color: var(--link);
     }
   </style>
-</Layout> 
+</Layout>
