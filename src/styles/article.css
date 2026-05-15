@@ -6,6 +6,10 @@
   color: var(--text);
   text-decoration-color: var(--text);
 }
+.prose a {
+  color: var(--text);
+  text-decoration-color: var(--text);
+}
 .prose img {
   display: block;
   width: 90%;
@@ -17,7 +21,7 @@
 }
 .prose details {
   padding: 10px 20px;
-  border: 1px solid var(--border);
+  border: 1px solid rgb(from var(--text) r g b / .5);
   border-radius: 8px;
   user-select: none;
   -webkit-user-select: none;
@@ -57,6 +61,7 @@
 }
 .prose details a {
   color: var(--link);
+  text-decoration: none;
 }
 .prose h3, .prose h4 {
   position: relative;
