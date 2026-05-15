@@ -1,10 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Topbar from '../components/topbar.astro';
-import LabelTitle from '../components/label-title.astro';
 
 import IconImage from '../components/icon-image.astro';
+import LabelTitle from '../components/label-title.astro';
 import LinkPreviewBox from '../components/link-preview-box.astro';
+import { Code } from 'astro-expressive-code/components';
 
 import Footer from '../components/footer.astro'
 
@@ -165,8 +166,15 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
           </div>
         </div>
       </div>
-    </div>
 
+      <LabelTitle text = "サイトバナー" />
+      <div class="category-text">
+          <img src="/images/banner.png" alt="サイトバナー" width="200" class="free">
+          <p>持ち帰り・直リンクご自由にどうぞ。使用時は以下のように:</p>
+          <Code code={`<a href="https://coiluck.moe/" target="_blank" rel="noopener noreferrer"><img src="https://coiluck.moe/images/banner.png" width="200" alt="革命学舎 | coiluckのwebサイト"></a>`} lang="html" />
+          <p>相互リンクをしたい方はお問い合わせください</p>
+      </div>
+    </div>
     <Footer />
   </div>
   <style>

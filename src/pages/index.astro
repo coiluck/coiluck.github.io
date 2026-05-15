@@ -6,6 +6,26 @@ import Image from 'astro/components/Image.astro'
 import backIcon from '../assets/images/back.svg';
 import Footer from '../components/footer.astro'
 
+interface Link {
+  name?: string;
+  link: string;
+  banner: string;
+}
+
+import { getCollection } from 'astro:content';
+
+const linksEntry = await getCollection('links');
+const links: Link[] = linksEntry.flatMap(entry => entry.data);
+
+const linkRows: (Link[])[] = [];
+let i = 0, odd = true;
+while (i < links.length) {
+  const size = odd ? 4 : 3;
+  linkRows.push(links.slice(i, i + size));
+  i += size;
+  odd = !odd;
+}
+
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <Layout ogUrl={ogUrl} ogDescription="coiluckの個人サイト">
@@ -66,6 +86,24 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         </a>
       </div>
 
+      {linkRows.length !== 0 &&
+        <div class="top-banner-container">
+          <div class="top-banner-title"><span></span><p>すてきなサイトたち</p><span></span></div>
+          <div class="top-banner-content" id="top-banner-content">
+            {linkRows.map((row) => (
+              <div class="top-banner-row">
+                {row.map((linkItem) => (
+                  <a href={linkItem.link} target="_blank" rel="noopener noreferrer">
+                    <img src={linkItem.banner} alt={linkItem.name || linkItem.link} width="200" />
+                  </a>
+                ))}
+              </div>
+            ))}
+          </div>
+          <p class="top-banner-foot">当サイトのバナーは<a href="/about#サイトバナー">こちら</a></p>
+        </div>
+      }
+
       <div id="counter" class="loading"></div>
     </main>
 
@@ -111,6 +149,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       text-align: center;
     }
 
+    /* navi */
     .top-link-container {
       display: grid;
       grid-template-columns: 1fr;
@@ -218,6 +257,46 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       100% { transform: translate(-50%, -50%) rotate(180deg) translateX(0);     opacity: 1; }
     }
 
+    /* 相互リンク */
+    .top-banner-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
+    .top-banner-container .top-banner-title {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+    .top-banner-container .top-banner-title span {
+      height: 1px;
+      background-color: var(--text);
+    }
+    .top-banner-container .top-banner-title p {
+      font-size: 1.2rem;
+    }
+    .top-banner-container .top-banner-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    :global(.top-banner-row) {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+    }
+    .top-banner-foot {
+      text-align: center;
+      font-size: .8rem;
+    }
+    .top-banner-foot a {
+      color: var(--link);
+    }
+
+    /* アクセスカウンタ */
     #counter {
       display: flex;
       align-items: center;
@@ -282,5 +361,31 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         }
       }
     })();
+    
+    const container = document.getElementById('top-banner-content');
+    const GAP = 16;
+    const ITEM = 200;
+
+    const ro = new ResizeObserver(entries => {
+      const width = entries[0].contentRect.width;
+      const cols = Math.max(1, Math.floor((width + GAP) / (ITEM + GAP)));
+
+      // linkRowsをJS側で再構成してDOMを書き直す
+      const anchors = [...container.querySelectorAll('a')];
+      container.innerHTML = '';
+
+      let i = 0, odd = true;
+      while (i < anchors.length) {
+        const size = odd ? cols : Math.max(1, cols - 1);
+        const row = document.createElement('div');
+        row.className = 'top-banner-row';
+        anchors.slice(i, i + size).forEach(a => row.appendChild(a));
+        container.appendChild(row);
+        i += size;
+        odd = !odd;
+      }
+    });
+
+    ro.observe(container);
   </script>
 </Layout>

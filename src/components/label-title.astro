@@ -2,7 +2,7 @@
 const { text, isChild = false } = Astro.props
 const labelClass = isChild ? 'category-label-sub' : 'category-label';
 ---
-<div class={labelClass}>{text}</div>
+<div class={labelClass} id={text}>{text}</div>
 
 <style>
   .category-label {

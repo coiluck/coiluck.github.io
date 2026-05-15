@@ -30,4 +30,16 @@ const creates = defineCollection({
   }),
 });
 
-export const collections = { posts, creates };
+const links = defineCollection({
+  loader: glob({
+    pattern: "**/*.{yaml,yml}",
+    base: "./src/content/links"
+  }),
+  schema: z.array(z.object({
+    name: z.string().optional(),
+    link: z.string().url(),
+    banner: z.string(),
+  })),
+});
+
+export const collections = { posts, creates, links };

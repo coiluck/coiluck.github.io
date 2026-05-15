@@ -65,7 +65,7 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
         background-color: var(--bg);
       }
       html {
-        min-height: 100vh;
+        height: 100dvh;
       }
       body {
         background-color: var(--bg);
@@ -85,7 +85,7 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
       }
-      img {
+      img:not(.free) {
         user-select: none;
         -webkit-user-select: none;
         -moz-user-select: none;
