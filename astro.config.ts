@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 // Markdownプラグイン
 import remarkAttributes from 'remark-attributes';
 import remarkLinkCardPlus from 'remark-link-card-plus';
+import remarkBreaks from 'remark-breaks';
 import remarkToc from 'remark-toc';
 import remarkCollapse from 'remark-collapse';
 import rehypeSlug from 'rehype-slug';
@@ -26,6 +27,7 @@ export default defineConfig({
         shortenUrl: true,
         thumbnailPosition: "left"
       }],
+      remarkBreaks,
       [remarkToc, {
         heading: "目次|Contents",
         maxDepth: 4

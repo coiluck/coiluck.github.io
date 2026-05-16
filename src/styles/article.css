@@ -139,11 +139,14 @@
   padding: 0;
 }
 .prose p {
-  margin: 0;
+  margin-bottom: 1rem;
   padding: 0;
 }
 .prose .footnotes h2 {
   display: none;
+}
+.prose .footnotes p {
+  margin-bottom: 0;
 }
 @font-face {
   font-family: 'JetBrainsMono';
