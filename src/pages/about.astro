@@ -18,7 +18,8 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
   <div class="container">
 
     <IconImage
-      imageSrc="/images/icon.avif"
+      imageSrc="/images/icon_base.avif"
+      hoverImageSrc="/images/icon_hover.avif"
       size={320}
     />
 
@@ -114,13 +115,20 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         </div>
 
         <LabelTitle text = "Game" headStep = {2} />
-        <div class="category-text">今プレイしているもの: Delta Force（PC版）<br>
-          過去には<br>
-          &nbsp;&nbsp;・グランブルーファンタジー<br>
-          &nbsp;&nbsp;・アークナイツ<br>
-          &nbsp;&nbsp;・ヘブンバーンズレッド<br>
-          &nbsp;&nbsp;・Hoi4<br>
-          などをやっていた。
+        <div class="category-text">
+          <LabelTitle text = "今プレイしているもの" headStep = {3} />
+          <div class="category-text">
+            特になし
+          </div>
+          <LabelTitle text = "過去" headStep = {3} />
+          <div class="category-text">
+          ・グランブルーファンタジー<br>
+          ・アークナイツ<br>
+          ・ヘブンバーンズレッド<br>
+          ・Hoi4<br>
+          ・Delta Force（PC版）<br>
+            などをやっていた。
+          </div>
         </div>
 
         <LabelTitle text = "Other" headStep = {2} />
@@ -200,7 +208,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       gap: 10px 20px;
       z-index: 2;
     }
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
       .title, .content {
         width: 80%;
       }

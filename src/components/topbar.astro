@@ -149,7 +149,7 @@ const siteTitle = import.meta.env.SITE_TITLE;
     transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
   }
   /* 下線 */
-    .site-name::after {
+  .site-name::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -253,7 +253,7 @@ const siteTitle = import.meta.env.SITE_TITLE;
   });
 
   // svgの線
-  const line = document.getElementById('top-bar-line') as SVGPathElement | null;
+  const line = document.querySelector<SVGPathElement>('#top-bar-line');
   if (line) {
     const length = line.getTotalLength();
     line.style.setProperty('--path-length', String(length));
