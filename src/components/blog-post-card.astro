@@ -1,8 +1,8 @@
 ---
-const { slug, title, tags, date, excerpt } = Astro.props;
+const { slug, title, tags, date, excerpt, index = 0 } = Astro.props;
 ---
 
-<a href={`/blog/${slug}`} class="blog-post-item">
+<a href={`/blog/${slug}`} class="blog-post-item" style={`--animation-delay: ${index * 0.3}s`}>
   <div class="meta">
     <time class="date">{date}</time>
     {tags.length > 0 && (
@@ -47,6 +47,27 @@ const { slug, title, tags, date, excerpt } = Astro.props;
       0% 100%,
       0% var(--cut)
     );
+    opacity: 0;
+    transform: translateX(-5px);
+    animation: blog-card-in 0.6s ease-out forwards;
+    animation-delay: var(--animation-delay, 0s);
+  }
+  @keyframes blog-card-in {
+    from {
+      opacity: 0;
+      transform: translateX(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .blog-post-item {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
   }
 
   .blog-post-item h3 {

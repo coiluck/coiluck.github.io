@@ -169,16 +169,12 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       align-items: center;
       height: 100dvh;
       margin: 0 auto;
-      padding-top: 90px;
+      padding-top: 7rem; /* top-bar の分 */
       overflow-y: auto;
       scrollbar-width: none;
+      -ms-overflow-style: none;
       &::-webkit-scrollbar {
         display: none;
-      }
-    }
-    @media (hover: hover) {
-      .container {
-        height: auto; /* 100dvhだと下部にスペースができちゃう */
       }
     }
     .title {

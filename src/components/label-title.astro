@@ -1,27 +1,27 @@
 ---
 interface Props {
   text: string;
-  headStep: number;
+  headStep: 1 | 2 | 3;
 }
 const { text, headStep = 1 } = Astro.props
 
 let labelClass = '';
 switch (headStep) {
   case 1:
-    labelClass = 'category-label-first';
+    labelClass = 'head-label label-first';
     break;
   case 2:
-    labelClass = 'category-label-second';
+    labelClass = 'head-label label-second';
     break;
   case 3:
-    labelClass = 'category-label-third';
+    labelClass = 'head-label label-third';
     break;
 }
 ---
 <div class={labelClass} id={text}>{text}</div>
 
 <style>
-  .category-label-first {
+  .head-label.label-first {
     position: relative;
     padding-left: 1rem;
     padding-bottom: 0.5rem;
@@ -29,7 +29,7 @@ switch (headStep) {
     font-size: 1.1rem;
     font-weight: bold;
   }
-  .category-label-first::before {
+  .head-label.label-first::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -39,8 +39,25 @@ switch (headStep) {
     mask-position: left center;
     background-color: var(--accent);
     pointer-events: none;
+    clip-path: inset(0 100% 100% 0);
   }
-  .category-label-second {
+  /* アニメーション */
+  .head-label.label-first.is-visible::before {
+    animation: label-first-reveal 1.2s ease-in-out forwards;
+  }
+  @keyframes label-first-reveal {
+    0% {
+      clip-path: inset(0 100% 100% 0);
+    }
+    35% {
+      clip-path: inset(0 calc(100% - 15px) 0 0);
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  .head-label.label-second {
     padding: 5px 10px;
     margin: 10px 0;
     color: var(--text);
@@ -48,7 +65,22 @@ switch (headStep) {
     font-weight: bold;
     border-left: 4px solid var(--accent);
   }
-  .category-label-third {
+  /* アニメーション */
+  .head-label.label-second.is-visible {
+    animation: fadeIn 0.8s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .head-label.label-third {
     position: relative;
     width: fit-content;
     padding-left: 1rem;
@@ -56,9 +88,8 @@ switch (headStep) {
     color: var(--text);
     font-size: 1rem;
     font-weight: bold;
-    border-bottom: 1px solid var(--accent);
   }
-  .category-label-third::before {
+  .head-label.label-third::before {
     content: '・';
     position: absolute;
     top: 50%;
@@ -67,4 +98,65 @@ switch (headStep) {
     font-size: 1rem;
     color: var(--accent);
   }
+  .head-label.label-third::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--accent);
+    transition: width 0.8s ease-in-out;
+  }
+  /* アニメーション */
+  .head-label.label-third.is-visible::after {
+    width: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .head-label.label-first::before {
+      animation: none;
+      clip-path: inset(0 0 0 0);
+    }
+    .head-label.label-second {
+      animation: none;
+    }
+    .head-label.label-third::after {
+      width: 100%;
+      transition: none;
+      animation: none;
+    }
+  }
 </style>
+<script>
+  const oneOffObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        oneOffObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.2,
+  });
+
+  const eternalObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+      } else {
+        entry.target.classList.remove('is-visible');
+      }
+    });
+  }, {
+    threshold: 0.2,
+  });
+
+  document.querySelectorAll('.head-label').forEach((el) => {
+    if (el.classList.contains('label-first')) {
+      eternalObserver.observe(el);
+    } else {
+      oneOffObserver.observe(el);
+    }
+  })
+</script>

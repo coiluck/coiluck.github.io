@@ -11,7 +11,7 @@ import Pagination from '../../components/pagination.astro';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const allSortedPosts = await getSortedPosts();
-    
+
   // ページネーション実行
   const paginatedResult = paginate(allSortedPosts, { pageSize: 5 });
   return paginatedResult;
@@ -32,9 +32,9 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 // 記事データ用
 import getPostMetadata from '../../utils/postMetadata'
 ---
-<Layout 
+<Layout
   pageTitle="Blog"
-  ogDescription={ogDescription} 
+  ogDescription={ogDescription}
   ogUrl={ogUrl}
 >
   <Topbar />
@@ -46,16 +46,17 @@ import getPostMetadata from '../../utils/postMetadata'
     <div class="blog-content">
       {page && page.data ? (
         <>
-        {page.data.map((post) => {
+        {page.data.map((post, index) => {
           const { title, date, tags, slug, excerpt } = getPostMetadata(post);
-  
+
           return (
-            <BlogPostCard 
+            <BlogPostCard
               slug={slug}
               title={title}
               tags={tags}
               date={date}
               excerpt={excerpt}
+              index={index}
             />
           );
         })}
@@ -84,7 +85,7 @@ import getPostMetadata from '../../utils/postMetadata'
   @media (max-width: 767px) {
     .blog-header {
       padding-top: 6rem;
-    }  
+    }
   }
   main {
     display: flex;

@@ -46,6 +46,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 
       <div class="top-link-container">
         <a href="./about" class="top-link-box">
+          <div class="top-link-box-animation" style="--animation-delay: .2s"></div>
           <div class="top-link-text-container">
             <p>About</p>
             <span>自己紹介というやつです</span>
@@ -59,6 +60,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
           </div>
         </a>
         <a href="./content" class="top-link-box">
+          <div class="top-link-box-animation" style="--animation-delay: .4s"></div>
           <div class="top-link-text-container">
             <p>Content</p>
             <span>作ったものとかはここから見られます</span>
@@ -72,6 +74,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
           </div>
         </a>
         <a href="./blog" class="top-link-box">
+          <div class="top-link-box-animation" style="--animation-delay: .6s"></div>
           <div class="top-link-text-container">
             <p>Blog</p>
             <span>文章が置いてあります</span>
@@ -124,11 +127,6 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         display: none;
       }
     }
-    @media (hover: hover) {
-      .container {
-        height: auto; /* 100dvhだと下部にスペースができちゃう */
-      }
-    }
     .top-main-container {
       display: flex;
       flex-direction: column;
@@ -176,20 +174,39 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       border-radius: .5rem;
       overflow: hidden;
     }
-    .top-link-container a.top-link-box::before {
-      content: '';
+    .top-link-box-animation {
       position: absolute;
-      bottom: 0;
+      top: 0;
       left: 0;
-      width: 100%;
+      width: 0;
       height: 100%;
       background-color: var(--bg);
-      animation: revealBox .5s cubic-bezier(.5,.04, 1,.35) .5s forwards;
+      animation: revealBox 1.2s ease var(--animation-delay, 0s) forwards;
+      z-index: 1;
+      pointer-events: none;
     }
 
     @keyframes revealBox {
-      from { height: 100%; }
-      to   { height: 0%; }
+    0% {
+      width: 0;
+      left: 0;
+    }
+    50% {
+      width: 100%;
+      left: 0;
+    }
+    100% {
+      width: 0;
+      left: 100%;
+    }
+  }
+
+    @media (prefers-reduced-motion: reduce) {
+      .top-link-box-animation {
+        width: 0;
+        left: 100%;
+        animation: none;
+      }
     }
 
     .top-link-text-container p {
@@ -361,7 +378,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
         }
       }
     })();
-    
+
     const container = document.getElementById('top-banner-content');
     const GAP = 16;
     const ITEM = 200;

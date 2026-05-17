@@ -82,7 +82,7 @@ import getPostMetadata from '../../../../utils/postMetadata'
     <div class="blog-content">
       {page && page.data ? (
         <>
-        {page.data.map(post => {
+        {page.data.map((post, index) => {
           const { title, date, tags, slug, excerpt } = getPostMetadata(post);
 
           return (
@@ -92,6 +92,7 @@ import getPostMetadata from '../../../../utils/postMetadata'
               tags={tags}
               date={date}
               excerpt={excerpt}
+              index={index}
             />
           );
         })}
@@ -120,7 +121,7 @@ import getPostMetadata from '../../../../utils/postMetadata'
   @media (max-width: 768px) {
     .blog-header {
       padding-top: 6rem;
-    }  
+    }
   }
   .tag-head {
     margin: 0 auto;
