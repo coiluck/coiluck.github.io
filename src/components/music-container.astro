@@ -1,0 +1,285 @@
+---
+import LabelTitle from './label-title.astro';
+const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
+---
+
+<div id="music-recent-trend-container">
+  <LabelTitle text = "Top tracks from the past 30 days" headStep = {3} />
+  <div id="music-recent-trend-content"></div>
+</div>
+
+<div id="music-last-played-container">
+  <LabelTitle text = "Recently played tracks" headStep = {3} />
+  <div id="music-last-played-content"></div>
+</div>
+
+<style is:global>
+  #music-recent-trend-container, #music-last-played-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    margin: 1rem 0;
+  }
+  #music-recent-trend-content, #music-last-played-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-left: 2rem;
+  }
+
+  .music-play-item.top {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    text-decoration: none;
+    border: 1px solid rgb(from var(--text) r g b / 0.8);
+    background-color: rgb(from var(--bg-mild) r g b / 0.5);
+    backdrop-filter: blur(2px);
+  }
+  .music-play-item.recent {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    text-decoration: none;
+    color: var(--text);
+    border-bottom: 1px solid rgb(from var(--text) r g b / 0.8);
+    background-color: rgb(from var(--bg) r g b / 0.5);
+    backdrop-filter: blur(2px);
+  }
+  .music-thumb-container.top {
+    width: 80px;
+    height: 80px;
+  }
+  .music-thumb-container.top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .music-thumb-container.recent {
+    width: 50px;
+    height: 50px;
+  }
+  .music-thumb-container.recent img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .music-text-container {
+    display: flex;
+    flex-direction: column;
+    padding: .625rem;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .music-text-container .music-title {
+    font-size: .9rem;
+    font-weight: bold;
+    color: var(--text);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .music-text-container .music-artist {
+    font-size: 0.7rem;
+    color: var(--text);
+  }
+  .music-text-container .music-url {
+    font-size: 0.7rem;
+    color: rgb(from var(--text) r g b / 0.5);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .music-text-container .music-time {
+    font-size: 0.7rem;
+    color: rgb(from var(--text) r g b / 0.5);
+  }
+
+  .music-text-sub-container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+  .music-text-sub-container-left {
+    display: flex;
+    flex-direction: column;
+  }
+  .music-play-top-index {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(1.4rem * 1.6); /* left の高さ */
+    height: calc(1.4rem * 1.6);
+    position: relative;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--text);
+  }
+  .music-play-top-index::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    background-color: var(--accent);
+    z-index: -1;
+  }
+</style>
+
+<script define:vars={{ WORKER_URL }}>
+  const RECENT_LIMIT = 3
+  const TOP_LIMIT = 5
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadInto({
+      el: document.getElementById('music-last-played-content'),
+      elParent: document.getElementById('music-last-played-container'),
+      url: `${WORKER_URL}/?mode=recent&limit=${RECENT_LIMIT}`,
+      render: renderRecent,
+    })
+
+    loadInto({
+      el: document.getElementById('music-recent-trend-content'),
+      elParent: document.getElementById('music-recent-trend-container'),
+      url: `${WORKER_URL}/?mode=top&limit=${TOP_LIMIT}`,
+      render: renderTop,
+    })
+  })
+
+  async function loadInto({ el, elParent, url, render }) {
+    if (!el) return
+    el.innerHTML = '<p class="loading">読み込み中…</p>'
+    try {
+      const res = await fetch(url)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const items = await res.json()
+      if (!Array.isArray(items) || items.length === 0) {
+        elParent.style.display = 'none'
+        return
+      }
+      el.innerHTML = `${items.map(render).join('')}`
+    } catch (e) {
+      console.error('Failed to load: ', url, e)
+      elParent.style.display = 'none'
+    }
+  }
+
+  function renderTop(item, index) {
+    const { title, artist, youtube_video_id, warning_sign, play_count } = item
+
+    const rank = String(index + 1).padStart(2, '0');
+
+    return `
+      <a
+        href="https://www.youtube.com/watch?v=${youtube_video_id}"
+        target="_blank" rel="noopener noreferrer"
+        class="music-play-item top" aria-label="${escapeHtml(title)} をYouTubeで開く"
+      >
+        <div class="music-thumb-container top">
+          ${thumb(youtube_video_id, warning_sign)}
+        </div>
+        <div class="music-text-container">
+          <p class="music-title">${escapeHtml(title)}</p>
+          <div class="music-text-sub-container">
+            <div class="music-text-sub-container-left">
+              <p class="music-artist">${escapeHtml(artist)}</p>
+              <p class="music-url">🔗 www.youtube.com</p>
+            </div>
+            <div class="music-text-sub-container-right">
+              <div class="music-play-top-index">${rank}</div>
+            </div>
+          </div>
+        </div>
+      </a>
+    `
+  }
+
+  function renderRecent(item) {
+    const { title, artist, played_at, youtube_video_id, warning_sign } = item
+    return `
+      <a
+        href="https://www.youtube.com/watch?v=${youtube_video_id}"
+        target="_blank" rel="noopener noreferrer"
+        class="music-play-item recent" aria-label="${escapeHtml(title)} をYouTubeで開く"
+      >
+        <div class="music-thumb-container recent">
+          ${thumb(youtube_video_id, warning_sign)}
+        </div>
+        <div class="music-text-container">
+          <p class="music-title">${escapeHtml(title)}</p>
+          <p class="music-artist">${escapeHtml(artist)}</p>
+        </div>
+        <p class="music-time">${formatDate(played_at)}</p>
+      </a>
+    `
+  }
+
+  function thumb(videoId, warningSign) {
+    if (!videoId) {
+      return `<div class="thumb-placeholder" aria-hidden="true">♪</div>`
+    }
+    const warnAttr = warningSign ? ' data-warning="1"' : ''
+    return `
+        <img
+          src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
+          alt="" loading="lazy"${warnAttr}
+          onload="
+            if (this.naturalWidth <= 120) {
+              if (this.dataset.fallback === 'hq') {
+                this.onload = null;
+                this.src = '/images/youtube.jpg';
+              } else {
+                this.dataset.fallback = 'hq';
+                this.src = 'https://i.ytimg.com/vi/${videoId}/hqdefault.jpg';
+              }
+            }
+          "
+          onerror="
+            this.onerror = null;
+            this.onload = null;
+            this.src = '/images/youtube.jpg';
+          "
+        />
+    `
+  }
+
+  function formatDate(iso) {
+    try {
+      const date = new Date(iso)
+      const diffMs = date.getTime() - Date.now()
+      const diffSec = Math.round(diffMs / 1000)
+
+      const units = [
+        ['year', 60 * 60 * 24 * 365],
+        ['month', 60 * 60 * 24 * 30],
+        ['week', 60 * 60 * 24 * 7],
+        ['day', 60 * 60 * 24],
+        ['hour', 60 * 60],
+      ]
+
+      for (const [unit, secondsInUnit] of units) {
+        const value = Math.round(diffSec / secondsInUnit)
+        if (Math.abs(value) >= 1) {
+          const absValue = Math.abs(value)
+          const label = absValue === 1 ? unit : `${unit}s`
+          return value < 0 ? `${absValue} ${label} ago` : `in ${absValue} ${label}`
+        }
+      }
+
+      return diffSec <= 0 ? '1 hour ago' : 'in 1 hour'
+    } catch {
+      return iso
+    }
+  }
+
+  function escapeHtml(s) {
+    if (s == null) return ''
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+  }
+</script>

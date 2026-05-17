@@ -1,19 +1,54 @@
 ---
-const { text, isChild = false } = Astro.props
-const labelClass = isChild ? 'category-label-sub' : 'category-label';
+interface Props {
+  text: string;
+  headStep: number;
+}
+const { text, headStep = 1 } = Astro.props
+
+let labelClass = '';
+switch (headStep) {
+  case 1:
+    labelClass = 'category-label-first';
+    break;
+  case 2:
+    labelClass = 'category-label-second';
+    break;
+  case 3:
+    labelClass = 'category-label-third';
+    break;
+}
 ---
 <div class={labelClass} id={text}>{text}</div>
 
 <style>
-  .category-label {
-    padding: 7px 11px;
+  .category-label-first {
+    position: relative;
+    padding-left: 1rem;
+    padding-bottom: 0.5rem;
+    margin: 10px 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  .category-label-first::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    mask-image: url("/images/h2.svg");
+    mask-repeat: no-repeat;
+    mask-size: auto 100%;
+    mask-position: left center;
+    background-color: var(--accent);
+    pointer-events: none;
+  }
+  .category-label-second {
+    padding: 5px 10px;
     margin: 10px 0;
     color: var(--text);
     font-size: 1.1rem;
     font-weight: bold;
     border-left: 4px solid var(--accent);
   }
-  .category-label-sub {
+  .category-label-third {
     position: relative;
     width: fit-content;
     padding-left: 1rem;
@@ -23,7 +58,7 @@ const labelClass = isChild ? 'category-label-sub' : 'category-label';
     font-weight: bold;
     border-bottom: 1px solid var(--accent);
   }
-  .category-label-sub::before {
+  .category-label-third::before {
     content: '・';
     position: absolute;
     top: 50%;
