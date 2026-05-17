@@ -101,12 +101,13 @@ const ogDescription = generateExcerpt(post, 30);
     @media (max-width: 768px) {
       .blog-header {
         padding-top: 6rem;
-      }  
+      }
     }
     .blog-post {
       width: 70%;
       margin: 0 auto;
       background-color: rgb(from var(--bg) r g b / .5);
+      backdrop-filter: blur(1px);
     }
     @media (max-width: 767px) {
       .blog-post {
@@ -267,16 +268,25 @@ const ogDescription = generateExcerpt(post, 30);
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const referrer = document.referrer;
-      if (referrer && referrer.includes('/blog/') && referrer !== window.location.href) {
-        sessionStorage.setItem('lastListPage', referrer);
+      if (referrer) {
+        const referrerUrl = new URL(referrer);
+        const path = referrerUrl.pathname;
+        // 一覧系だけ保存する
+        // 一覧: /blog/, /blog/2, /blog/3 ... , /blog/tag/xxx/
+        const isListPage =
+          path === '/blog/' ||
+          /^\/blog\/\d+\/?$/.test(path) ||
+          path.startsWith('/blog/tag/');
+        if (isListPage) {
+          sessionStorage.setItem('lastListPage', referrer);
+        }
       }
-      // クリック時の設定
-      document.querySelector('.top-button-container')?.addEventListener('click', function(e) {
+
+      document.querySelector('.top-button-container')?.addEventListener('click', function() {
         const lastPage = sessionStorage.getItem('lastListPage');
-        if (lastPage && lastPage !== window.location.href) {
+        if (lastPage) {
           window.location.href = lastPage;
         } else {
-          // 外部からの人は1ページ目へ
           window.location.href = '/blog/';
         }
       });
