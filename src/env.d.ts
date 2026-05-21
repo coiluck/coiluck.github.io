@@ -21,3 +21,13 @@ declare module "@pagefind/default-ui" {
     })
   }
 }
+
+declare module "remark-collapse" {
+  interface RemarkCollapseOptions {
+    test: string | RegExp;
+    summary?: string | ((str: string) => string);
+  }
+
+  function remarkCollapse(opts: RemarkCollapseOptions): void;
+  export = remarkCollapse;
+}

@@ -2,7 +2,6 @@
 import LabelTitle from './label-title.astro';
 const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
 ---
-
 <div id="music-recent-trend-container">
   <LabelTitle text = "Top tracks from the past 30 days" headStep = {3} />
   <div id="music-recent-trend-content"></div>
@@ -84,6 +83,9 @@ const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
   .music-text-container .music-artist {
     font-size: 0.7rem;
     color: var(--text);
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
   .music-text-container .music-url {
     font-size: 0.7rem;
@@ -100,6 +102,7 @@ const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
   .music-text-sub-container {
     display: grid;
     grid-template-columns: 1fr auto;
+    gap: .625rem;
   }
   .music-text-sub-container-left {
     display: flex;
