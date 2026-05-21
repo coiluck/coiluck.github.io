@@ -26,6 +26,12 @@ while (i < links.length) {
   odd = !odd;
 }
 
+const navLinks = [
+  { href: './about', title: 'About', description: '自己紹介というやつです' },
+  { href: './content', title: 'Content', description: '作ったものたちがいます' },
+  { href: './blog', title: 'Blog', description: '文章が置いてあります' },
+] as const;
+
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <Layout ogUrl={ogUrl} ogDescription="coiluckの個人サイト">
@@ -46,45 +52,21 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       </div>
 
       <div class="top-link-container">
-        <a href="./about" class="top-link-box">
-          <div class="top-link-text-container">
-            <p>About</p>
-            <span>自己紹介というやつです</span>
-          </div>
-          <div class="top-link-icon-container">
-            <div class="top-link-icon">
-              <div class="circle-button">
-                <Image src={backIcon} alt="" />
+        {navLinks.map((item) => (
+          <a href={item.href} class="top-link-box">
+            <div class="top-link-text-container">
+              <p>{item.title}</p>
+              <span>{item.description}</span>
+            </div>
+            <div class="top-link-icon-container">
+              <div class="top-link-icon">
+                <div class="circle-button">
+                  <Image src={backIcon} alt="" />
+                </div>
               </div>
             </div>
-          </div>
-        </a>
-        <a href="./content" class="top-link-box">
-          <div class="top-link-text-container">
-            <p>Content</p>
-            <span>作ったものとかはここから見られます</span>
-          </div>
-          <div class="top-link-icon-container">
-            <div class="top-link-icon">
-              <div class="circle-button">
-                <Image src={backIcon} alt="" />
-              </div>
-            </div>
-          </div>
-        </a>
-        <a href="./blog" class="top-link-box">
-          <div class="top-link-text-container">
-            <p>Blog</p>
-            <span>文章が置いてあります</span>
-          </div>
-          <div class="top-link-icon-container">
-            <div class="top-link-icon">
-              <div class="circle-button">
-                <Image src={backIcon} alt="" />
-              </div>
-            </div>
-          </div>
-        </a>
+          </a>
+        ))}
       </div>
 
       {linkRows.length !== 0 &&
@@ -286,9 +268,12 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       padding: 1rem 0;
       border-top: 1px dashed var(--text);
       border-bottom: 1px dashed var(--text);
+      max-height: 100vh; /* 実際より大きければいい */
+      transition: all .3s ease-out;
     }
     #counter.loading {
       border: none; /* accessの反映前 */
+      max-height: 0;
     }
   </style>
 
@@ -296,6 +281,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     import { initializeApp } from 'firebase/app';
     import { getFirestore, doc, updateDoc, increment, getDoc } from 'firebase/firestore';
 
+    // access counter
     (async () => {
       const app = initializeApp({
         apiKey: import.meta.env.PUBLIC_FIREBASE_API_KEY,
@@ -343,30 +329,33 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       }
     })();
 
+    // banner
     const container = document.getElementById('top-banner-content');
-    const GAP = 16;
-    const ITEM = 200;
 
-    const ro = new ResizeObserver(entries => {
-      const width = entries[0].contentRect.width;
-      const cols = Math.max(1, Math.floor((width + GAP) / (ITEM + GAP)));
+    if (container) {
+      const GAP = 16;
+      const ITEM = 200;
 
-      // linkRowsをJS側で再構成してDOMを書き直す
-      const anchors = [...container.querySelectorAll('a')];
-      container.innerHTML = '';
+      const ro = new ResizeObserver(entries => {
+        const width = entries[0].contentRect.width;
+        const cols = Math.max(1, Math.floor((width + GAP) / (ITEM + GAP)));
 
-      let i = 0, odd = true;
-      while (i < anchors.length) {
-        const size = odd ? cols : Math.max(1, cols - 1);
-        const row = document.createElement('div');
-        row.className = 'top-banner-row';
-        anchors.slice(i, i + size).forEach(a => row.appendChild(a));
-        container.appendChild(row);
-        i += size;
-        odd = !odd;
-      }
-    });
+        const anchors = [...container.querySelectorAll('a')];
+        container.innerHTML = '';
 
-    ro.observe(container);
+        let i = 0, odd = true;
+        while (i < anchors.length) {
+          const size = odd ? cols : Math.max(1, cols - 1);
+          const row = document.createElement('div');
+          row.className = 'top-banner-row';
+          anchors.slice(i, i + size).forEach(a => row.appendChild(a));
+          container.appendChild(row);
+          i += size;
+          odd = !odd;
+        }
+      });
+
+      ro.observe(container);
+    }
   </script>
 </Layout>

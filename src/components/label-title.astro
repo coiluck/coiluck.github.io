@@ -129,34 +129,7 @@ switch (headStep) {
   }
 </style>
 <script>
-  const oneOffObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        oneOffObserver.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.2,
-  });
-
-  const eternalObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-      } else {
-        entry.target.classList.remove('is-visible');
-      }
-    });
-  }, {
-    threshold: 0.2,
-  });
-
-  document.querySelectorAll('.head-label').forEach((el) => {
-    if (el.classList.contains('label-first')) {
-      eternalObserver.observe(el);
-    } else {
-      oneOffObserver.observe(el);
-    }
-  })
+  import { observeVisibility } from '../utils/observer';
+  observeVisibility('.label-first', { once: false });
+  observeVisibility('.label-second, .label-third', { once: true });
 </script>
