@@ -2,7 +2,7 @@
 title: "歩く理由"
 tags:
   - zakkan
-  - tech
+  - game
   - memory
 date: "2025-10-30"
 ---

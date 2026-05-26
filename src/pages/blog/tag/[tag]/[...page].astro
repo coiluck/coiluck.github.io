@@ -1,9 +1,9 @@
 ---
 import type { GetStaticPathsOptions } from 'astro';
-import { getSortedPosts } from '../../../../utils/getPosts';
+import { Image } from 'astro:assets';
+import { getSortedPosts, getListedPosts } from '../../../../utils/getPosts';
 import Layout from '../../../../layouts/Layout.astro';
 import Topbar from '../../../../components/topbar.astro';
-import { Image } from 'astro:assets';
 import pankuzuIcon from '../../../../assets/images/pankuzu.svg';
 import BlogImage from '../../../../components/blog-image.astro';
 import BlogLine from '../../../../components/blog-line.astro';
@@ -13,16 +13,17 @@ import Pagination from '../../../../components/pagination.astro';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const allSortedPosts = await getSortedPosts();
+  const listedPosts = getListedPosts(allSortedPosts);
 
   // すべてのタグを収集
-  const allTags = [...new Set(allSortedPosts.flatMap((post) => post.data.tags ?? []))];
+  const allTags = [...new Set(listedPosts.flatMap((post) => post.data.tags ?? []))];
 
   // 各タグごとにページを生成
   const paths = [];
 
   for (const tag of allTags) {
     // 現在のタグが含まれる投稿のみをフィルタリング
-    const filteredPosts = allSortedPosts.filter(post =>
+    const filteredPosts = listedPosts.filter(post =>
       post.data.tags?.includes(tag)
     );
     // ページネーション実行

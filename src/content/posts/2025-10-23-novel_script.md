@@ -2,6 +2,7 @@
 title: "積み重なる痕跡"
 tags:
   - tech
+  - game
 date: "2025-10-23"
 ---
 ### 現状

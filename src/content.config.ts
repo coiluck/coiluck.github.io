@@ -10,7 +10,7 @@ const posts = defineCollection({
     title: z.string(),
     date: z.string(),
     tags: z.array(z.string()).optional(),
-    published: z.boolean().optional().default(true),
+    status: z.enum(['public', 'unlisted', 'unpublished']).optional().default('public'),
     custom_excerpt: z.string().optional(),
   }),
 });

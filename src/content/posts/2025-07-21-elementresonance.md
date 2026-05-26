@@ -2,8 +2,10 @@
 title: "自然共鳴"
 tags:
   - tech
+  - game
 date: "2025-07-21"
 custom_excerpt: "ローグライクカードゲームを作った。"
+status: "unlisted"
 ---
 ### ゲーム概要
 [ローグライクカードゲーム](https://coiluck.moe/ElementResonance/){: .blog-link }を作った。

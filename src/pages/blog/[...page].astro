@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPathsOptions } from 'astro';
-import { getSortedPosts } from '../../utils/getPosts';
+import { getSortedPosts, getListedPosts } from '../../utils/getPosts';
 import Layout from '../../layouts/Layout.astro';
 import Topbar from '../../components/topbar.astro';
 import BlogImage from '../../components/blog-image.astro';
@@ -11,9 +11,9 @@ import Pagination from '../../components/pagination.astro';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const allSortedPosts = await getSortedPosts();
+  const listedPosts = getListedPosts(allSortedPosts);
 
-  // ページネーション実行
-  const paginatedResult = paginate(allSortedPosts, { pageSize: 5 });
+  const paginatedResult = paginate(listedPosts, { pageSize: 5 });
   return paginatedResult;
 }
 
