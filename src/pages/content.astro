@@ -94,6 +94,9 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       to { opacity: 1; }
     }
 
+    .creates-inner {
+      text-align: center;
+    }
     .content {
       display: flex;
       flex-direction: column;
@@ -101,17 +104,11 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       position: relative;
       height: 100dvh;
       padding-top: 8rem;
-      text-align: center;
       z-index: 2;
       overflow-y: auto;
       scrollbar-width: none;
       &::-webkit-scrollbar {
         display: none;
-      }
-    }
-    @media (hover: hover) {
-      .content {
-        height: auto; /* 100dvhだと下部にスペースができちゃう */
       }
     }
     @media (max-width: 768px) {
@@ -152,6 +149,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       gap: .5rem;
       width: 100%;
       padding: 5px 15px;
+      text-align: center;
       box-sizing: border-box;
     }
     .creates-box h3 {

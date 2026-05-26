@@ -63,15 +63,19 @@ import getPostMetadata from '../../../../utils/postMetadata'
     <Search />
   </div>
   <main>
-    <div class="tag-head">
-      <div class="tag-pankuzu">
+    <div class="tag-header">
+      <div class="tag-header-breadcrumb">
         <a href="/blog">Top</a>
-        <Image src={pankuzuIcon} alt="" />
+        <div
+          class="tag-header-breadcrumb-separator"
+          style={`--icon-url: url(${pankuzuIcon.src})`}
+          role="img"
+        />
         <a href={`/blog/tag/${encodeURIComponent(tag)}`}>{tag}</a>
       </div>
-      <div class="tag-itirann">
-        <span><strong><font color="#ff7f7e">#</font>{tag} の記事の一覧</strong></span>
-      </div>
+      <span class="tag-header-query">
+        WHERE tag = <span class="tag-header-query-value">{tag}</span>
+      </span>
     </div>
 
     <BlogLine
@@ -123,52 +127,65 @@ import getPostMetadata from '../../../../utils/postMetadata'
       padding-top: 6rem;
     }
   }
-  .tag-head {
+  .tag-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     margin: 0 auto;
     width: 70%;
   }
-  .tag-pankuzu {
+  .tag-header-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
     font-size: 1rem;
-    color: rgb(from var(--text) r g b / 0.5);
   }
-  .tag-pankuzu a {
+  .tag-header-breadcrumb a {
     position: relative;
-    padding: 2px 4px;
-    color: rgb(from var(--text) r g b / 0.5);
+    color: var(--text);
     text-decoration: none;
     transition: all 0.3s ease;
   }
-  .tag-pankuzu a::before {
+  .tag-header-breadcrumb a::before {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
     width: 0;
     height: 2px;
-    background-color: rgb(from var(--text) r g b / 0.5);
+    background-color: var(--text);
     transform: scaleY(0.5);
     transform-origin: bottom;
     transition: width 0.3s ease;
   }
-  .tag-pankuzu a:hover::before {
+  .tag-header-breadcrumb a:hover::before {
     width: 100%;
   }
-  .tag-pankuzu img {
-    width: 10px;
-    height: 10px;
+  .tag-header-breadcrumb-separator {
+    width: .8rem;
+    height: .8rem;
+    background-color: var(--text);
+    mask-image: var(--icon-url);
+    mask-repeat: no-repeat;
+    mask-position: center;
+    mask-size: contain;
     user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-drag: none;
-    -khtml-user-drag: none;
-    -moz-user-drag: none;
-    -o-user-drag: none;
   }
-  .tag-itirann {
-    margin-top: 10px;
-    color: var(--text);
+  .tag-header-query {
     font-size: 1.2rem;
+  }
+  .tag-header-query-value {
+    position: relative;
+    padding: .25rem .75rem;
+    background: rgb(from var(--accent) r g b / 0.1);
+    color: var(--text);
+    text-decoration: none;
+    font-style: italic;
+    border: 1px solid var(--accent);
+  }
+  .tag-header-query-value::before {
+    content: '#';
+    color: var(--accent);
   }
   main {
     display: flex;
