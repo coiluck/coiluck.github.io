@@ -36,9 +36,9 @@ const links = defineCollection({
     base: "./src/content/links"
   }),
   schema: z.array(z.object({
-    name: z.string().optional(),
-    link: z.string().url(),
-    banner: z.string(),
+    name: z.string(),
+    link: z.url(),
+    banner: z.string().optional(),
   })),
 });
 
