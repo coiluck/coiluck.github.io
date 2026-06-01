@@ -225,26 +225,11 @@ const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
     }
     const warnAttr = warningSign ? ' data-warning="1"' : ''
     return `
-        <img
-          src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
-          alt="" loading="lazy"${warnAttr}
-          onload="
-            if (this.naturalWidth <= 120) {
-              if (this.dataset.fallback === 'hq') {
-                this.onload = null;
-                this.src = '/images/youtube.jpg';
-              } else {
-                this.dataset.fallback = 'hq';
-                this.src = 'https://i.ytimg.com/vi/${videoId}/hqdefault.jpg';
-              }
-            }
-          "
-          onerror="
-            this.onerror = null;
-            this.onload = null;
-            this.src = '/images/youtube.jpg';
-          "
-        />
+      <img
+        src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg"
+        alt="" loading="lazy"${warnAttr}
+        onerror="this.onerror=null; this.src='/images/youtube.jpg';"
+      />
     `
   }
 
