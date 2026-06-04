@@ -1,5 +1,5 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 
 // Markdownプラグイン
 import remarkAttributes from 'remark-attributes';
@@ -20,27 +20,29 @@ import expressiveCode from "astro-expressive-code";
 
 export default defineConfig({
   markdown: {
-    remarkPlugins: [
-      remarkAttributes as any,
-      [remarkLinkCardPlus, {
-        cache: false,
-        shortenUrl: true,
-        thumbnailPosition: "left"
-      }],
-      remarkBreaks,
-      [remarkToc, {
-        heading: "目次|Contents",
-        maxDepth: 4
-      }],
-      [remarkCollapse, {
-        test: "目次|Contents",
-        summary: "目次",
-      }]
-    ],
-    rehypePlugins: [
-      rehypeSlug,
-      [rehypeLinkBlank, ['blog-link']]
-    ],
+    processor: unified({
+      remarkPlugins: [
+        remarkAttributes as any,
+        [remarkLinkCardPlus, {
+          cache: false,
+          shortenUrl: true,
+          thumbnailPosition: "left"
+        }],
+        remarkBreaks,
+        [remarkToc, {
+          heading: "目次|Contents",
+          maxDepth: 4
+        }],
+        [remarkCollapse, {
+          test: "目次|Contents",
+          summary: "目次",
+        }]
+      ],
+      rehypePlugins: [
+        rehypeSlug,
+        [rehypeLinkBlank, ['blog-link']]
+      ],
+    }),
     syntaxHighlight: false,
   },
   build: {
