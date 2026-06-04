@@ -36,7 +36,7 @@ export default defineConfig({
         [remarkCollapse, {
           test: "目次|Contents",
           summary: "目次",
-        }]
+        }],
       ],
       rehypePlugins: [
         rehypeSlug,
