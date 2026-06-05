@@ -9,6 +9,7 @@ import remarkToc from 'remark-toc';
 import remarkCollapse from 'remark-collapse';
 import rehypeSlug from 'rehype-slug';
 import rehypeLinkBlank from './src/plugins/rehype-link-blank';
+import rehypeFootnoteHover from './src/plugins/rehype-footnote-hover';
 
 // sitemap
 import sitemap from '@astrojs/sitemap';
@@ -40,7 +41,8 @@ export default defineConfig({
       ],
       rehypePlugins: [
         rehypeSlug,
-        [rehypeLinkBlank, ['blog-link']]
+        [rehypeLinkBlank, ['blog-link']],
+        rehypeFootnoteHover
       ],
     }),
     syntaxHighlight: false,
