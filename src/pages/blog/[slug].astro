@@ -295,32 +295,42 @@ const ogDescription = generateExcerpt(post, 30);
 
       // Tooltipの配置
       const handleTooltipPosition = (el: HTMLElement) => {
-        const bounds = el.getBoundingClientRect();
-        const targetXStart = bounds.left;
-        const targetXEnd = bounds.right;
+        const sup = el.closest('sup');
+        if (!sup) return;
 
-        const browserWidth = document.body.clientWidth;
+        const supRect = sup.getBoundingClientRect();
+        const supCenter = supRect.left + supRect.width / 2;
+        const browserWidth = document.documentElement.clientWidth;
 
-        console.log(targetXStart, targetXEnd)
-        
-        if (targetXStart < 0) {
-          // 左に出ちゃう
-          el.style.left = '0'
-        } else if (targetXEnd > browserWidth) {
-          // 右に出ちゃう
-          el.style.right = '0'
+        // 中央寄せした場合の tooltip の左右端を予測する
+        const tooltipWidth = el.offsetWidth;
+        const half = tooltipWidth / 2;
+        const predictedLeft = supCenter - half;
+        const predictedRight = supCenter + half;
+
+        // 一旦リセット
+        el.style.left = '';
+        el.style.right = '';
+        el.style.transform = '';
+
+        if (predictedLeft < 0) {
+          // 左にはみ出す -> tooltip の左を数字に合わせる
+          el.style.left = '0';
+        } else if (predictedRight > browserWidth) {
+          // 右にはみ出す -> tooltip の右を数字に合わせる
+          el.style.right = '0';
         } else {
-          // でない -> 真ん中
-          el.style.left = '50%'
-          el.style.transform = 'translateX(-50%)'
+          // はみ出さない -> 真ん中
+          el.style.left = '50%';
+          el.style.transform = 'translateX(-50%)';
         }
-      }
+      };
 
       const allTooltip: NodeListOf<HTMLElement> = document.querySelectorAll('sup .footnote-hover-tooltip');
       allTooltip.forEach(element => {
         handleTooltipPosition(element);
 
-        document.addEventListener('resize', () => {
+        window.addEventListener('resize', () => {
           handleTooltipPosition(element);
         })
       });

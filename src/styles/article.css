@@ -154,16 +154,12 @@
 .prose .footnote-hover-tooltip {
   position: absolute;
   top: calc(100% + .5rem);
-  left: 50%;
-  /* これはjsで付ける
-  transform: translateX(-50%);
-  */
   width: max-content;
   max-width: min(20rem, 80vw);
   padding: .5rem;
   background-color: var(--bg-mild);
   color: var(--text);
-  border-radius: .4px;
+  border-radius: .4rem;
   font-size: 0.8rem;
   opacity: 0;
   visibility: hidden;
