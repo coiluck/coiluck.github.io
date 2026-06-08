@@ -129,7 +129,7 @@
   color: #6088C6;
   text-decoration: none;
 }
-/* 引用部分の装飾 */
+/* 引用 */
 .prose blockquote {
   padding: 10px 15px;
   margin: 10px 0;
@@ -163,7 +163,8 @@
   font-size: 0.8rem;
   opacity: 0;
   visibility: hidden;
-  transition: all .3s ease;
+  z-index: 2; /* expressive-codeのheaderに1が付いているため */
+  transition: opacity .3s ease, visibility .3s ease; /* allだと計算中のtransformがずれる */
 }
 .prose sup:hover .footnote-hover-tooltip {
   opacity: 1;
