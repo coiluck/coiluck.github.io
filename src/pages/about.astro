@@ -164,7 +164,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
       <div class="category-text">
           <img src="/images/banner.png" alt="サイトバナー" width="200" class="free">
           <p>持ち帰り・直リンクご自由にどうぞ。使用時は以下のように:</p>
-          <Code code={`<a href="https://coiluck.moe/" target="_blank" rel="noopener noreferrer"><img src="https://coiluck.moe/images/banner.png" width="200" alt="革命学舎 | coiluckのwebサイト"></a>`} lang="html" />
+          <Code code={`<a href="https://coiluck.moe/" target="_blank" rel="noopener noreferrer"><img src="https://coiluck.moe/images/banner.png" width="200" alt="革命学舎"></a>`} lang="html" />
           <p>相互リンクをしたい方はお問い合わせください</p>
       </div>
     </div>
@@ -236,7 +236,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
     }
 
     .category-text-table-item span:last-child {
-      padding-left: 1rem;
+      padding-left: clamp(1rem, 4vw, 3rem); /* 400 ~ 1200 */
     }
     .category-text-table-item span a {
       color: var(--link);
