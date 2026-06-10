@@ -74,7 +74,10 @@ import getPostMetadata from '../../../../utils/postMetadata'
         <a href={`/blog/tag/${encodeURIComponent(tag)}`}>{tag}</a>
       </div>
       <span class="tag-header-query">
-        WHERE tag = <span class="tag-header-query-value">{tag}</span>
+        <span>WHERE</span>
+        <span>tag</span>
+        <span>=</span>
+        <span class="tag-header-query-value">{tag}</span>
       </span>
     </div>
 
@@ -177,11 +180,14 @@ import getPostMetadata from '../../../../utils/postMetadata'
     user-select: none;
   }
   .tag-header-query {
-    font-size: 1.2rem;
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    font-size: 1.1rem;
   }
   .tag-header-query-value {
     position: relative;
-    padding: .25rem .75rem;
+    padding: .15rem .5rem;
     background: rgb(from var(--accent) r g b / 0.1);
     color: var(--text);
     text-decoration: none;
