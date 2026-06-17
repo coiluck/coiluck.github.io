@@ -242,11 +242,19 @@ const siteTitle = import.meta.env.SITE_TITLE;
   :global([data-theme="dark"]) .moon-icon { opacity: 1; }
 </style>
 <script>
+  declare global {
+    interface Window {
+      clearKonamiColors?: () => void;
+    }
+  }
+
   function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
+    // コナミの隠しカラーを解除して通常テーマに戻す
+    window.clearKonamiColors?.();
   }
   document.querySelectorAll('.top-bar-toggle').forEach((el) => {
     el.addEventListener('click', toggleTheme);
@@ -258,4 +266,6 @@ const siteTitle = import.meta.env.SITE_TITLE;
     const length = line.getTotalLength();
     line.style.setProperty('--path-length', String(length));
   }
+
+  export {};
 </script>

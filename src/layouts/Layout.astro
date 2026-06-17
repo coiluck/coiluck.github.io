@@ -109,21 +109,72 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
           document.documentElement.setAttribute('data-theme', storedTheme);
         } else {
           const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          console.log(prefersDark)
           document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
         }
       };
       setTheme();
+
+      // コナミの隠しカラー
+      const konamiPalette = {
+        '--accent': '#4d82f5',
+        '--bg': '#ffb868',
+        '--text': '#2a1215',
+        '--bg-mild': '#ff8802',
+        '--link': '#0066cc',
+      };
+      window.applyKonamiColors = () => {
+        const root = document.documentElement;
+        for (const name in konamiPalette) root.style.setProperty(name, konamiPalette[name]);
+      };
+      window.clearKonamiColors = () => {
+        const root = document.documentElement;
+        for (const name in konamiPalette) root.style.removeProperty(name);
+        sessionStorage.removeItem('konami');
+      };
+      // ページをまたいでも残す
+      if (sessionStorage.getItem('konami') === 'on') {
+        window.applyKonamiColors();
+      }
     </script>
 
     <slot />
-
-    <div id="konami-command-area"></div>
 
     <script is:inline>
       window.onload = () => {
         document.body.classList.remove('loading');
       };
+    </script>
+
+    <script is:inline>
+      (() => {
+        const sequence = [
+          'ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown',
+          'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight',
+          'b', 'a'
+        ];
+        let position = 0;
+
+        document.addEventListener('keydown', (e) => {
+          const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+          if (key === sequence[position]) {
+            position++;
+            if (position === sequence.length) {
+              // 全部あった
+              position = 0;
+              document.dispatchEvent(new CustomEvent('konami'));
+            }
+          } else {
+            // やり直し
+            position = 0;
+          }
+        });
+      })();
+
+      document.addEventListener('konami', () => {
+        // カラーチェンジ ＋ ページをまたいでも残すよう保存
+        window.applyKonamiColors();
+        sessionStorage.setItem('konami', 'on');
+      })
     </script>
   </body>
 </html>
