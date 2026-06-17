@@ -256,7 +256,7 @@ const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
         }
       }
 
-      return diffSec <= 0 ? '1 hour ago' : 'in 1 hour'
+      return 'just now' // 30分未満ならこれが返るはず
     } catch {
       return iso
     }
