@@ -1,51 +1,41 @@
 import { defineConfig } from 'astro/config';
-import { unified } from '@astrojs/markdown-remark';
+import { satteri } from '@astrojs/markdown-satteri';
 
 // Markdownプラグイン
 import remarkAttributes from 'remark-attributes';
-import remarkLinkCardPlus from 'remark-link-card-plus';
-import remarkBreaks from 'remark-breaks';
-import remarkToc from 'remark-toc';
-import remarkCollapse from 'remark-collapse';
-import rehypeSlug from 'rehype-slug';
-import rehypeLinkBlank from './src/plugins/rehype-link-blank';
-import rehypeFootnoteHover from './src/plugins/rehype-footnote-hover';
+
+// Sätteri plugin
+import mdastTocCollapse from './src/plugins/mdast-toc-collapse';
+import mdastLinkCard from './src/plugins/mdast-link-card';
+import hastLinkBlank from './src/plugins/hast-link-blank'
 
 // sitemap
 import sitemap from '@astrojs/sitemap';
 
 import markdoc from '@astrojs/markdoc';
 
-// expressive-code
-import expressiveCode from "astro-expressive-code";
+// syntax highlight
+import expressiveCode from "satteri-expressive-code";
+import astroExpressiveCode from "astro-expressive-code";
 
 export default defineConfig({
   markdown: {
-    processor: unified({
-      remarkPlugins: [
-        remarkAttributes as any,
-        [remarkLinkCardPlus, {
-          cache: false,
-          shortenUrl: true,
-          thumbnailPosition: "left"
-        }],
-        remarkBreaks,
-        [remarkToc, {
-          heading: "目次|Contents",
-          maxDepth: 4
-        }],
-        [remarkCollapse, {
-          test: "目次|Contents",
-          summary: "目次",
-        }],
+    syntaxHighlight: false,
+    processor: satteri({
+      features: {
+        directive: true,
+        math: true,
+        headingAttributes: true,
+      },
+      mdastPlugins: [
+        mdastTocCollapse,
+        mdastLinkCard
       ],
-      rehypePlugins: [
-        rehypeSlug,
-        [rehypeLinkBlank, ['blog-link']],
-        rehypeFootnoteHover
+      hastPlugins: [
+        hastLinkBlank,
+        expressiveCode({ themes: ["dark-plus"] }),
       ],
     }),
-    syntaxHighlight: false,
   },
   build: {
     format: 'directory'
@@ -53,9 +43,7 @@ export default defineConfig({
   site: 'https://coiluck.moe',
   integrations: [
     sitemap(),
-    expressiveCode({
-      themes: ["dark-plus"],
-    }),
+    astroExpressiveCode({ themes: ["dark-plus"] }), // codeコンポーネント用
     markdoc({
       allowHTML: true,
       ignoreIndentation: true

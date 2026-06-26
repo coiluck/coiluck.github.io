@@ -1,7 +1,4 @@
 /* 記事内のスタイル */
-.prose .ff7f7e {
-  color: #ff7f7e; /* 使うときは<span class="ff7f7e"> */
-}
 .prose a.blog-link {
   color: var(--text);
   text-decoration-color: var(--text);
@@ -59,6 +56,11 @@
     transition: none;
   }
 }
+.prose details ul {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin: 0;
+}
 .prose details a {
   color: var(--link);
   text-decoration: none;
@@ -97,7 +99,7 @@
   height: 100%;
   color: var(--accent);
 }
-.prose .remark-link-card-plus__container img {
+.prose .link-card img {
   display: initial;
   width: initial;
   margin: initial;
