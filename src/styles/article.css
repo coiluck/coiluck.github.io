@@ -195,10 +195,10 @@
 .prose .expressive-code .frame .header .title::after {
   border-top: 1.5px solid var(--accent) !important;
 }
-.prose .expressive-code .frame .header {
+[data-theme="dark"] .prose .expressive-code .frame .header {
   background: #1e2124 !important;
 }
-.prose .expressive-code {
+[data-theme="dark"] .prose .expressive-code {
   /* コードブロックの背景色 */
   --ec-frm-edBg: #24292e !important;
   --ec-frm-edActTabBg: #24292e !important;

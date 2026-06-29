@@ -33,7 +33,11 @@ export default defineConfig({
       ],
       hastPlugins: [
         hastLinkBlank,
-        expressiveCode({ themes: ["dark-plus"] }),
+        expressiveCode({
+          themes: ["light-plus", "dark-plus"],
+          themeCssSelector: (theme) => `[data-theme='${theme.type}']`,
+          useDarkModeMediaQuery: false,
+        }),
       ],
     }),
   },
@@ -43,7 +47,7 @@ export default defineConfig({
   site: 'https://coiluck.moe',
   integrations: [
     sitemap(),
-    astroExpressiveCode({ themes: ["dark-plus"] }), // codeコンポーネント用
+    astroExpressiveCode(), // codeコンポーネント用（設定は ec.config.mjs）
     markdoc({
       allowHTML: true,
       ignoreIndentation: true
