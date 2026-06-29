@@ -28,7 +28,6 @@
     "github-slugger": "^2.0.0",
     "open-graph-scraper": "^6.11.0",
     "pagefind": "^1.5.2",
-    "remark-attributes": "^0.3.2",
     "satteri": "^0.9.1",
     "satteri-expressive-code": "^0.1.15",
     "typescript": "^6.0.3"

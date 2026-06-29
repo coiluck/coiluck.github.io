@@ -1,9 +1,6 @@
 import { defineConfig } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 
-// Markdownプラグイン
-import remarkAttributes from 'remark-attributes';
-
 // Sätteri plugin
 import mdastTocCollapse from './src/plugins/mdast-toc-collapse';
 import mdastLinkCard from './src/plugins/mdast-link-card';
@@ -29,7 +26,7 @@ export default defineConfig({
       },
       mdastPlugins: [
         mdastTocCollapse,
-        mdastLinkCard
+       mdastLinkCard({ thumbnailPosition: "left" })
       ],
       hastPlugins: [
         hastLinkBlank,

@@ -8,7 +8,7 @@ custom_excerpt: "月面実験ゲームをリリースした"
 status: "unpublished"
 ---
 ### ゲーム概要
-[月面実験ゲーム](https://coiluck.moe/SinkendenSonne){: .blog-link }を作った。
+[月面実験ゲーム](https://coiluck.moe/SinkendenSonne)を作った。
 
 <!--more-->
 

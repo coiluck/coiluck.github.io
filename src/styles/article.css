@@ -1,8 +1,4 @@
 /* 記事内のスタイル */
-.prose a.blog-link {
-  color: var(--text);
-  text-decoration-color: var(--text);
-}
 .prose a {
   color: var(--text);
   text-decoration-color: var(--text);
@@ -13,9 +9,6 @@
   margin: 5px auto;
 }
 /* 見出しの装飾 */
-.prose .toc-heading {
-  display: none;
-}
 .prose details {
   padding: 10px 20px;
   border: 1px solid rgb(from var(--text) r g b / .5);

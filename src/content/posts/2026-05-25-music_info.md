@@ -6,7 +6,7 @@ tags:
 date: "2026-05-25"
 custom_excerpt: "普段の音楽再生履歴をCloudflare Workers経由でD1に保存し、AboutページにTop TracksとRecent Tracksを表示できるようにした。 "
 ---
-### 目次{: .toc-heading}
+<!-- headings -->
 
 ### まえがき
 Spotifyを使っているだろうか。
@@ -37,7 +37,7 @@ Cloudflare D1
 ```
 
 ### 再生プレーヤー
-まず、再生履歴を送信する必要がある。今回は[自作の音楽再生アプリ](https://github.com/coiluck/kokone-music-for-mobile/releases/){: .blog-link}にCloudflare D1かFirebaseに履歴を送信する機能を追加した。
+まず、再生履歴を送信する必要がある。今回は[自作の音楽再生アプリ](https://github.com/coiluck/kokone-music-for-mobile/releases/)にCloudflare D1かFirebaseに履歴を送信する機能を追加した。
 
 曲の再生時に、設定に従ってFirebaseかCloudflare Workers経由でD1へ保存するだけだ。送る内容は曲のタイトル、アーティスト名、送信時間の3つで十分だろう。
 

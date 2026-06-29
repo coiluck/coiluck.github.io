@@ -30,7 +30,6 @@ export function generateExcerpt(entry: BlogPost, cut_length: number = 150) {
     .replace(/`/g, '')                              // コード
     .replace(/\*|_/g, '')                           // 強調
     .replace(/\s+/g, ' ')                           // 連続空白
-    .replace(/\{:\s*\.blog-link\s*\}/g, '')         // カスタムクラス
     .replace(/<[^>]+>/g, '')                        // HTMLタグ
     .replace(/\[\^\d+\]/g, '')                      // footnote用ラベル
     .trim();
