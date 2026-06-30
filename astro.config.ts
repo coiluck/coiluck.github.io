@@ -5,6 +5,7 @@ import { satteri } from '@astrojs/markdown-satteri';
 import mdastTocCollapse from './src/plugins/mdast-toc-collapse';
 import mdastLinkCard from './src/plugins/mdast-link-card';
 import hastLinkBlank from './src/plugins/hast-link-blank'
+import hastFootnoteHover from './src/plugins/hast-footnote-hover';
 
 // sitemap
 import sitemap from '@astrojs/sitemap';
@@ -26,10 +27,11 @@ export default defineConfig({
       },
       mdastPlugins: [
         mdastTocCollapse,
-       mdastLinkCard({ thumbnailPosition: "left" })
+        mdastLinkCard({ thumbnailPosition: "left" })
       ],
       hastPlugins: [
         hastLinkBlank,
+        hastFootnoteHover,
         expressiveCode({
           themes: ["light-plus", "dark-plus"],
           themeCssSelector: (theme) => `[data-theme='${theme.type}']`,
