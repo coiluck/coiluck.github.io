@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, passthroughImageService } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 
 // Sätteri plugin
@@ -39,6 +39,9 @@ export default defineConfig({
         }),
       ],
     }),
+  },
+  image: {
+    service: passthroughImageService(),
   },
   build: {
     format: 'directory'
