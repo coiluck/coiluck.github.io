@@ -40,7 +40,7 @@
 }
 
 #waifu.waifu-hidden {
-	display: none;
+	visibility: hidden;
 }
 
 #waifu:hover {
