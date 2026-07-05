@@ -1,0 +1,33 @@
+---
+// stevenjoezhang/live2d-widget
+// 表情を出すためindex2.jsをパッチ
+---
+<link rel="stylesheet" href="/live2d/widget/waifu.css" />
+<script is:inline>
+  // 初期状態では出現させない。フッターの「萌え萌え召喚！」から呼ばれる。
+  // ページ遷移では消える（永続化はしない）。
+  window.summonLive2D = function () {
+    // 既にロード済み（quitで隠れている等）なら再表示するだけ
+    const el = document.getElementById('waifu');
+    if (el) {
+      el.classList.remove('waifu-hidden');
+      requestAnimationFrame(() => el.classList.add('waifu-active'));
+      return;
+    }
+    if (window.__live2dLoading) return; // ロード中の二重起動を防ぐ
+    window.__live2dLoading = true;
+    // 過去のquit痕跡を消してモデルを表示
+    localStorage.removeItem('waifu-disabled');
+    localStorage.removeItem('waifu-display');
+    import('/live2d/widget/waifu-tips.js').then(() => {
+      initWidget({
+        waifuPath: '/live2d/waifu-tips.json',
+        tools: ['quit'],
+        showToggleAfterQuit: false, // quit後のフローティングボタンは出さない
+        cubism5Path: 'https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js',
+        logLevel: 'warn',
+        drag: false,
+      });
+    });
+  };
+</script>

@@ -1,0 +1,50 @@
+{
+  "models": [
+    {
+      "name": "yukiguma",
+      "paths": ["/live2d/model/【雪熊企划】雪熊少女/【雪熊企划】雪熊少女.model3.json"],
+      "message": "雪熊少女です！"
+    }
+  ],
+  "mouseover": [
+    { "selector": "#waifu-tool-hitokoto", "text": ["なにか一言つぶやきます", "耳を澄ませてね"] },
+    { "selector": "#waifu-tool-photo", "text": ["写真を撮る？　はい、チーズ！"] },
+    { "selector": "#waifu-tool-info", "text": ["このウィジェットについて知りたい？"] },
+    { "selector": "#waifu-tool-quit", "text": ["お別れの時間…？"] },
+    { "selector": "#contact-menu-item", "text": ["お話しよ～"] },
+    { "selector": ".post-tag, .tags", "text": ["タグで記事を探せるよ"] },
+    { "selector": ".top-bar-toggle", "text": ["テーマを切り替える？"] },
+    { "selector": ".music-play-item", "text": ["好きな曲だよ！"] },
+    { "selector": "a", "text": ["リンクへ飛ぶ？"] },
+    { "selector": "p", "text": ["頑張って書いたんだから！"] },
+    { "selector": "span", "text": ["頑張って書いたんだから！"] },
+    { "selector": "svg", "text": ["ココネちゃんかわいいね"] }
+  ],
+  "click": [],
+  "seasons": [
+    { "date": "01/01", "text": "<span>{year} 年だね、あけましておめでとう</span>！今年もよろしくね。" },
+    { "date": "02/14", "text": "はい、チョコ…なんてね。<span>バレンタイン</span>だよ。" },
+    { "date": "07/07", "text": "七夕だね。願いごとは決まった？" },
+    { "date": "10/31", "text": "<span>ハッピーハロウィン！</span>お菓子くれなきゃ…" },
+    { "date": "12/24-12/25", "text": "<span>メリークリスマス</span>！" },
+    { "date": "12/31", "text": "今年ももう終わり。来年もここで待ってるね。" }
+  ],
+  "time": [
+    { "hour": "2-5",  "text": "こんな時間まで…無理しないでね。" },
+    { "hour": "6-11", "text": "おはよう！朝の空気は気持ちいいね。" },
+    { "hour": "11-14", "text": "お昼だよ。ちゃんとごはん食べた？" },
+    { "hour": "14-18", "text": "こんにちは。おやつの時間かな？" },
+    { "hour": "18-22", "text": "こんばんは。今日もおつかれさま。" },
+    { "hour": "22-24,0-6", "text": "もう遅いよ、そろそろ寝よ？" }
+  ],
+  "message": {
+    "default": ["ようこそ、革命学舎へ！", "ゆっくりしていってね。"],
+    "console": ["コンソール開いたね？　何かお探し？", "デベロッパーツール…エンジニアさんかな？"],
+    "copy": "コピーしたテキストは大切にね。",
+    "visibilitychange": ["おかえり！待ってたよ。", "戻ってきた！さみしかったんだから。"],
+    "changeSuccess": "似合ってるかな？",
+    "goodbye": "また会おうね、バイバイ！",
+    "hoverBody": "なにするの…？",
+    "tapBody": ["わっ、びっくりした！", "なでなでしてくれるの？", "くすぐったいよ〜", "わっ、くすぐったい！"]
+  }
+}

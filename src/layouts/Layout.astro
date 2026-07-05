@@ -1,4 +1,6 @@
 ---
+import Live2D from '../components/Live2D.astro';
+
 const siteTitle = import.meta.env.SITE_TITLE;
 
 interface Props {
@@ -138,6 +140,8 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
     </script>
 
     <slot />
+
+    <Live2D />
 
     <script is:inline>
       window.onload = () => {

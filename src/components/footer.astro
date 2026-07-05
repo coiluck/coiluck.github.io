@@ -19,7 +19,7 @@ const MY_MAIL = 'hi' + '@' + MY_DOMAIN;
 <div id="others-menu" class="others-menu" role="menu" style="display:none;">
   <span class="others-menu-item" id="contact-menu-item">Contact</span>
   <a href="/" class="others-menu-item">工事予定地</a>
-  <a href="/" class="others-menu-item">工事中2</a>
+  <span class="others-menu-item" id="summon-menu-item">萌え萌え召喚！</span>
 </div>
 
 <!-- Contact modal -->
@@ -219,6 +219,12 @@ const MY_MAIL = 'hi' + '@' + MY_DOMAIN;
 </style>
 
 <script>
+  declare global {
+    interface Window {
+      summonLive2D?: () => void;
+    }
+  }
+
   const MARGIN = 8; // ボタンとメニューの間の余白 (px)
 
   const btn = document.getElementById('footer-others-btn') as HTMLElement | null;
@@ -327,6 +333,16 @@ const MY_MAIL = 'hi' + '@' + MY_DOMAIN;
       // Escキーで閉じる
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modalOpen) closeModal();
+      });
+    }
+
+    // Live2Dを出現
+    const summonBtn = document.getElementById('summon-menu-item') as HTMLElement | null;
+    if (summonBtn) {
+      summonBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        close();
+        window.summonLive2D?.();
       });
     }
   }
