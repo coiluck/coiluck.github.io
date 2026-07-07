@@ -1,7 +1,8 @@
 ---
 title: "はてなブログを収益化した"
 tags:
-  - blog
+  - site
+  - nikki
 date: "2025-04-26"
 custom_excerpt: "以前からちょこっと書いていたはてなブログがGoogleAdsenseの審査に通過した。"
 ---

@@ -1,8 +1,8 @@
 ---
 title: "自然共鳴"
 tags:
-  - tech
   - game
+  - tech
 date: "2025-07-21"
 custom_excerpt: "ローグライクカードゲームを作った。"
 status: "unlisted"

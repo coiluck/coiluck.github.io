@@ -1,7 +1,8 @@
 ---
 title: "粗く刻む"
 tags:
-  - zakkan
+  - kousatu
+  - hobby
 date: "2025-05-16"
 status: "unlisted"
 ---

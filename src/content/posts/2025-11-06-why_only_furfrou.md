@@ -1,7 +1,8 @@
 ---
 title: "なぜトリミアンはヘアカット出来てルージュラは出来ないのか【ポケモン解説】"
 tags:
-  - zakkan
+  - kousatu
+  - hobby
 date: "2025-11-06"
 status: "unpublished"
 ---

@@ -2,6 +2,7 @@
 title: "大学卒業のパラドックス"
 tags:
   - zakkan
+  - kousatu
 date: "2025-11-28"
 status: "unlisted"
 ---

@@ -1,9 +1,8 @@
 ---
 title: "歩く理由"
 tags:
-  - zakkan
-  - game
   - memory
+  - game
 date: "2025-10-30"
 ---
 ゲームを作っている。私の怠惰が原因でまだ追加していないいくつかの最新の作品を除いて、[ここ](https://coiluck.moe/content)からプレイできる。

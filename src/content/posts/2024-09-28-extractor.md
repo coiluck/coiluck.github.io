@@ -1,7 +1,6 @@
 ---
 title: "APK Extractorは君を救う（かも）"
 tags:
-  - tech
   - nikki
 date: "2024-09-28"
 custom_excerpt: "アプリの古いバージョンをAPK Extractorを使って別端末に移行しようとした話"

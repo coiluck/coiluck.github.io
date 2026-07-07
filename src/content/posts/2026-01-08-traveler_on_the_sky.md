@@ -1,6 +1,7 @@
 ---
 title: "空の旅人"
 tags:
+  - hobby
   - memory
 date: "2026-01-08"
 custom_excerpt: "昔やりこんでいたグラブルについて、僕が好きだったマルチバトルなどの懐かしい話"

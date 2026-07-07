@@ -1,8 +1,8 @@
 ---
 title: "Aboutページに音楽情報を載せる"
 tags:
+  - site
   - tech
-  - blog
 date: "2026-05-25"
 custom_excerpt: "普段の音楽再生履歴をCloudflare Workers経由でD1に保存し、AboutページにTop TracksとRecent Tracksを表示できるようにした。 "
 ---

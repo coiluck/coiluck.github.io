@@ -3,6 +3,7 @@ title: "やはり俺の大掃除はまちがっている"
 tags:
   - nikki
   - memory
+  - hobby
 date: "2026-01-16"
 custom_excerpt: "大掃除の最中、押し入れの棚から発掘されたものとそれに関する記憶について"
 ---

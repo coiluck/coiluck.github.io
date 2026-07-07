@@ -1,8 +1,8 @@
 ---
 title: "ハンネについて"
 tags:
-  - zakkan
   - memory
+  - zakkan
 date: "2024-09-22"
 custom_excerpt: "これまでのハンドルネーム備忘録"
 ---

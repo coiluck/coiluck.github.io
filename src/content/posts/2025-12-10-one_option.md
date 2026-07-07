@@ -1,7 +1,7 @@
 ---
 title: "ひとつだけの選択肢"
 tags:
-  - zakkan
+  - kousatu
   - game
 date: "2025-12-10"
 custom_excerpt: "僕がノベルゲームでひとつしかない選択肢を作成するたった一つの理由について"

@@ -1,8 +1,8 @@
 ---
 title: "Blogページを分割した"
 tags:
+  - site
   - tech
-  - blog
 date: "2024-11-05"
 custom_excerpt: "Blogトップは最新の5つの記事のみ表示されるように変更し、前へ・次へボタンを付けるなどした"
 ---

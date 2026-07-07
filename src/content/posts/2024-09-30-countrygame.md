@@ -1,9 +1,8 @@
 ---
 title: "国境ゲーム"
 tags:
-  - tech
-  - zakkan
   - game
+  - kousatu
 date: "2024-09-30"
 status: "unlisted"
 ---

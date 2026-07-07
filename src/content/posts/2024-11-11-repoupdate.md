@@ -1,8 +1,7 @@
 ---
 title: "リポジトリの変更"
 tags:
-  - tech
-  - blog
+  - site
 date: "2024-11-11"
 custom_excerpt: "サイトURLなどをすべて変更した"
 ---

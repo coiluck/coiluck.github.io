@@ -1,8 +1,8 @@
 ---
 title: "記憶の補助線"
 tags:
-  - nikki
   - tech
+  - nikki
 date: "2026-01-20"
 ---
 TypeScriptを使い始めた。

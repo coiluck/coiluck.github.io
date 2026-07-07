@@ -1,7 +1,7 @@
 ---
 title: "ファイル形式は何でもいいです"
 tags:
-  - zakkan
+  - kousatu
 date: "2024-11-27"
 custom_excerpt: "大学の教授を理解らせたい"
 ---
