@@ -8,9 +8,10 @@ interface Props {
   ogUrl: string;
   ogDescription?: string;
   isBlog?: boolean;
+  noindex?: boolean;
 }
 
-const { pageTitle, ogUrl, ogDescription, isBlog } = Astro.props;
+const { pageTitle, ogUrl, ogDescription, isBlog, noindex } = Astro.props;
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://coiluck.moe';
 const OGImage = new URL("/images/ogp.png", siteUrl).toString();
 ---
@@ -20,11 +21,12 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={ogDescription} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" href="/images/favicon.ico" />
     {isBlog && (
       <link rel="alternate" type="application/rss+xml" title="革命学舎 | Blog" href="/rss.xml" />
     )}
-    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="sitemap" href="/sitemap.xml" />
     <title>{siteTitle}{pageTitle && ` | ${pageTitle}`}</title>
     <meta property="og:title" content={pageTitle ?? siteTitle} />
     <meta property="og:description" content={ogDescription} />

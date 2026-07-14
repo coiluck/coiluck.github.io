@@ -7,9 +7,6 @@ import mdastLinkCard from './src/plugins/mdast-link-card';
 import hastLinkBlank from './src/plugins/hast-link-blank'
 import hastFootnoteHover from './src/plugins/hast-footnote-hover';
 
-// sitemap
-import sitemap from '@astrojs/sitemap';
-
 import markdoc from '@astrojs/markdoc';
 
 // syntax highlight
@@ -48,7 +45,6 @@ export default defineConfig({
   },
   site: 'https://coiluck.moe',
   integrations: [
-    sitemap(),
     astroExpressiveCode(), // codeコンポーネント用（設定は ec.config.mjs）
     markdoc({
       allowHTML: true,

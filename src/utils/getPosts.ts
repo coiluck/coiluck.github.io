@@ -3,6 +3,9 @@ import { getCollection } from 'astro:content';
 import { addExcerpts } from './generateExcerpt.js';
 import type { BlogPost, BlogPostWithExcerpt } from './type';
 
+// 1ページのpost数
+export const POSTS_PER_PAGE = 5;
+
 // slug生成用
 export async function getSortedPosts(): Promise<BlogPostWithExcerpt[]> {
   const posts: BlogPost[] = await getCollection('posts', ({ data }) => {

@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPathsOptions } from 'astro';
-import { getSortedPosts, getListedPosts } from '../../utils/getPosts';
+import { getSortedPosts, getListedPosts, POSTS_PER_PAGE } from '../../utils/getPosts';
 import Layout from '../../layouts/Layout.astro';
 import Topbar from '../../components/topbar.astro';
 import BlogImage from '../../components/blog-image.astro';
@@ -13,7 +13,7 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const allSortedPosts = await getSortedPosts();
   const listedPosts = getListedPosts(allSortedPosts);
 
-  const paginatedResult = paginate(listedPosts, { pageSize: 5 });
+  const paginatedResult = paginate(listedPosts, { pageSize: POSTS_PER_PAGE });
   return paginatedResult;
 }
 
