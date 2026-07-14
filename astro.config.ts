@@ -43,6 +43,7 @@ export default defineConfig({
   build: {
     format: 'directory'
   },
+  trailingSlash: 'always',
   site: 'https://coiluck.moe',
   integrations: [
     astroExpressiveCode(), // codeコンポーネント用（設定は ec.config.mjs）

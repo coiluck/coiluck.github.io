@@ -66,13 +66,13 @@ import getPostMetadata from '../../../../utils/postMetadata'
   <main>
     <div class="tag-header">
       <div class="tag-header-breadcrumb">
-        <a href="/blog">Top</a>
+        <a href="/blog/">Top</a>
         <div
           class="tag-header-breadcrumb-separator"
           style={`--icon-url: url(${pankuzuIcon.src})`}
           role="img"
         />
-        <a href={`/blog/tag/${encodeURIComponent(tag)}`}>{tag}</a>
+        <a href={`/blog/tag/${encodeURIComponent(tag)}/`}>{tag}</a>
       </div>
       <span class="tag-header-query">
         <span>WHERE</span>

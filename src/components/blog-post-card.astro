@@ -2,7 +2,7 @@
 const { slug, title, tags, date, excerpt } = Astro.props;
 ---
 
-<a href={`/blog/${slug}`} class="blog-post-item">
+<a href={`/blog/${slug}/`} class="blog-post-item">
   <div class="meta">
     <time class="date">{date}</time>
     {tags.length > 0 && (
@@ -10,7 +10,7 @@ const { slug, title, tags, date, excerpt } = Astro.props;
         {tags.map((tag: string) => (
           <span
             class="post-tag"
-            onclick={`event.preventDefault(); window.location.href='/blog/tag/${encodeURIComponent(tag)}'`}
+            onclick={`event.preventDefault(); window.location.href='/blog/tag/${encodeURIComponent(tag)}/'`}
             role="link"
             tabindex="0"
           >

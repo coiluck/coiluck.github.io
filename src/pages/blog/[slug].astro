@@ -61,7 +61,7 @@ const ogDescription = generateExcerpt(post, 30);
         タグ:
         {tags.map((tag, tagIndex) => (
           <span>
-            <a href={`/blog/tag/${encodeURIComponent(tag)}`}>
+            <a href={`/blog/tag/${encodeURIComponent(tag)}/`}>
               <span style="color: var(--accent);">#</span>
               <span data-pagefind-filter="tag">{tag}</span>
             </a>

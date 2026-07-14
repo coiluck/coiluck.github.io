@@ -27,9 +27,9 @@ while (i < links.length) {
 }
 
 const navLinks = [
-  { href: './about', title: 'About', description: '自己紹介というやつです' },
-  { href: './content', title: 'Content', description: '作ったものたちがいます' },
-  { href: './blog', title: 'Blog', description: '文章が置いてあります' },
+  { href: '/about/', title: 'About', description: '自己紹介というやつです' },
+  { href: '/content/', title: 'Content', description: '作ったものたちがいます' },
+  { href: '/blog/', title: 'Blog', description: '文章が置いてあります' },
 ] as const;
 
 const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
@@ -87,7 +87,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
               </div>
             ))}
           </div>
-          <p class="top-banner-foot">当サイトのバナーは<a href="/about#サイトバナー">こちら</a></p>
+          <p class="top-banner-foot">当サイトのバナーは<a href="/about/#サイトバナー">こちら</a></p>
         </div>
       }
 
