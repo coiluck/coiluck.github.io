@@ -16,7 +16,6 @@
   "dependencies": {
     "@astrojs/check": "^0.9.9",
     "@astrojs/markdoc": "^2.0.0",
-    "@astrojs/markdown-remark": "^7.2.0",
     "@astrojs/markdown-satteri": "^0.3.1",
     "@astrojs/rss": "^4.0.18",
     "@pagefind/default-ui": "^1.5.2",
@@ -33,7 +32,6 @@
   },
   "devDependencies": {
     "@types/hast": "^3.0.4",
-    "@types/mdast": "^4.0.4",
-    "unist-util-visit": "^5.1.0"
+    "@types/mdast": "^4.0.4"
   }
 }
