@@ -1,20 +1,12 @@
 import { defineMdastPlugin } from "satteri";
 import type { Root, RootContent, Heading, List, ListItem, Html } from "mdast";
+import GithubSlugger from "github-slugger";
 
 const HEADINGS_MARKER = "<!-- headings -->";
 
 interface TocOptions {
   maxDepth?: number;
   summary?: string;
-}
-
-
-function slugify(text: string): string {
-  return text
-    .trim()
-    .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s-]/gu, "") // 記号を除去（日本語などの文字は残す）
-    .replace(/\s+/g, "-");
 }
 
 // 空の子リストを取り除く
@@ -33,7 +25,7 @@ function pruneEmptyLists(list: List): List {
 }
 
 // 見出しから入れ子リストを組む（remark-toc 相当）
-function buildTocList(headings: Heading[], texts: string[], maxDepth: number): List {
+function buildTocList(headings: Heading[], texts: string[], slugs: string[], maxDepth: number): List {
   const root: List = { type: "list", ordered: false, spread: false, children: [] };
   // depth ごとに「いま追記すべき list」をスタックで保持
   const stack: { depth: number; list: List }[] = [{ depth: 0, list: root }];
@@ -42,7 +34,7 @@ function buildTocList(headings: Heading[], texts: string[], maxDepth: number): L
     if (h.depth > maxDepth) return;
 
     const text = texts[i];
-    const slug = slugify(text);
+    const slug = slugs[i];
     const item: ListItem = {
       type: "listItem",
       spread: false,
@@ -72,7 +64,7 @@ function buildTocList(headings: Heading[], texts: string[], maxDepth: number): L
   return pruneEmptyLists(root);
 }
 
-// 1) MDAST: マーカーコメントを <details> でラップした TOC に置換する
+
 export default function mdastHeadingsToc(opts: TocOptions = {}) {
   const maxDepth = opts.maxDepth ?? 4;
   const summary = opts.summary ?? "目次";
@@ -92,14 +84,14 @@ export default function mdastHeadingsToc(opts: TocOptions = {}) {
       const root = parent as Root;
       const children = root.children as RootContent[];
 
-      // 1. マーカーコメントの位置を探す
+      // マーカーコメントを探す
       const markerIndex = children.findIndex(
         (c) => c.type === "html" && (c as Html).value.trim() === HEADINGS_MARKER,
       );
       if (markerIndex === -1) return;
       const markerNode = children[markerIndex];
 
-      // 2. 文書中の見出しを収集（テキストは textContent で取得）
+      // 文書中の見出しを収集
       const headings: Heading[] = [];
       const texts: string[] = [];
       for (const c of children) {
@@ -109,12 +101,15 @@ export default function mdastHeadingsToc(opts: TocOptions = {}) {
         }
       }
 
-      // 3. TOC リスト生成 → <details> でラップ
-      const list = buildTocList(headings, texts, maxDepth);
+      // slugを生成
+      const slugger = new GithubSlugger();
+      const slugs = texts.map((text) => slugger.slug(text));
+
+      const list = buildTocList(headings, texts, slugs, maxDepth);
       const open: Html = { type: "html", value: `<details>\n<summary>${summary}</summary>` };
       const closing: Html = { type: "html", value: "</details>" };
 
-      // 4. マーカーを details ブロックで置換（= コメントは消える）
+      // 置換（コメントは消える）
       ctx.insertBefore(markerNode, [open, list as RootContent]);
       ctx.insertAfter(markerNode, closing);
       ctx.removeNode(markerNode);
