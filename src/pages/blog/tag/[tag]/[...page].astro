@@ -10,6 +10,7 @@ import BlogLine from '../../../../components/blog-line.astro';
 import Search from "../../../../components/Search.astro";
 import BlogPostCard from '../../../../components/blog-post-card.astro';
 import Pagination from '../../../../components/pagination.astro';
+import Footer from '../../../../components/footer.astro';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const allSortedPosts = await getSortedPosts();
@@ -120,6 +121,8 @@ import getPostMetadata from '../../../../utils/postMetadata'
 
     <Pagination page={page} />
   </main>
+
+  <Footer />
 </Layout>
 
 <style>

@@ -10,6 +10,7 @@ import '../../styles/link-card.css';
 import { getSortedPosts } from '../../utils/getPosts';
 import getPostMetadata from '../../utils/postMetadata';
 import { generateExcerpt } from '../../utils/generateExcerpt';
+import Footer from '../../components/footer.astro';
 
 import '../../styles/article.css';
 
@@ -96,6 +97,8 @@ const ogDescription = generateExcerpt(post, 30);
   </button>
 
   <div style="height: 60px;"></div>
+
+  <Footer />
 
   <style is:global>
     .blog-header {
