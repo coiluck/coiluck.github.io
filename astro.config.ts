@@ -7,6 +7,7 @@ import mdastLinkCard from './src/plugins/mdast-link-card';
 import hastLinkBlank from './src/plugins/hast-link-blank'
 import hastFootnoteHover from './src/plugins/hast-footnote-hover';
 import mdastNote from './src/plugins/mdast-note';
+import mdastFigureCaption from './src/plugins/mdast-figure-caption';
 
 import markdoc from '@astrojs/markdoc';
 
@@ -26,6 +27,7 @@ export default defineConfig({
       mdastPlugins: [
         mdastTocCollapse,
         mdastNote,
+        mdastFigureCaption,
         mdastLinkCard({ thumbnailPosition: "left" })
       ],
       hastPlugins: [
