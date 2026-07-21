@@ -210,3 +210,51 @@
   padding-left: 1.5rem;
   margin-bottom: 1rem;
 }
+/* :::でのaside */
+aside.note {
+  position: relative;
+  width: 100%;
+  padding: 12px;
+  padding-left: 48px;
+  border-radius: 8px;
+}
+aside.note::before {
+  content: '!';
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border-radius: 50%;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+aside.note.note--info {
+  background-color: rgb(from #aeee6f r g b / 0.5);
+}
+aside.note.note--warn {
+  background-color: rgb(from #ffba70 r g b / 0.5);
+}
+aside.note.note--alert {
+  background-color: rgb(from #ff5959 r g b / 0.5);
+}
+aside.note.note--info::before {
+  background-color: rgb(from #aeee6f r g b / 0.7);
+}
+aside.note.note--warn::before {
+  background-color: rgb(from #ffba70 r g b / 0.7);
+}
+aside.note.note--alert::before {
+  background-color: rgb(from #ff5959 r g b / 0.7);
+}
+
+aside.note {
+  margin-bottom: 1rem;
+}
+aside.note p {
+  margin-bottom: 0;
+}
