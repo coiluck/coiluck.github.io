@@ -257,6 +257,7 @@
 }
 .prose aside.note p {
   margin-bottom: 0;
+  font-size: .9rem;
 }
 
 /* キャプション */
