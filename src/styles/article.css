@@ -140,6 +140,9 @@
   margin-bottom: 1rem;
   padding: 0;
 }
+.prose aside ul {
+  margin-bottom: 0;
+}
 .prose .footnotes h2 {
   display: none;
 }
