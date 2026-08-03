@@ -20,6 +20,7 @@ export function generateExcerpt(entry: BlogPost, cut_length: number = 150) {
 
   // マークダウン記法を除去してプレーンテキスト化
   const plainText = textToProcess
+    .replace(/^:::.*\r?\n[\s\S]*?^:::[ \t]*$/gm, '') // ディレクティブ(figure, note)
     .replace(/#{2,}[\s\S]*?\{\:\s*\.toc-heading\}/g, '') // 目次用
     .replace(/#+\s/g, '')                           // 見出し
     .replace(/<rt>.*?<\/rt>/gi, '')                 // ルビタグ
