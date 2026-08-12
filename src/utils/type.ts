@@ -13,5 +13,4 @@ export interface PostMetadata {
   date: string;
   tags: string[];
   slug: string;
-  excerpt: string;
 }

@@ -1,6 +1,7 @@
 ---
 import type { GetStaticPathsOptions } from 'astro';
 import { getSortedPosts, getListedPosts, POSTS_PER_PAGE } from '../../utils/getPosts';
+import { addExcerpts } from '../../utils/generateExcerpt';
 import Layout from '../../layouts/Layout.astro';
 import Topbar from '../../components/topbar.astro';
 import BlogImage from '../../components/blog-image.astro';
@@ -12,7 +13,7 @@ import Footer from '../../components/footer.astro';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const allSortedPosts = await getSortedPosts();
-  const listedPosts = getListedPosts(allSortedPosts);
+  const listedPosts = addExcerpts(getListedPosts(allSortedPosts));
 
   const paginatedResult = paginate(listedPosts, { pageSize: POSTS_PER_PAGE });
   return paginatedResult;
@@ -47,7 +48,7 @@ import getPostMetadata from '../../utils/postMetadata'
       {page.data.length > 0 ? (
         <>
         {page.data.map((post) => {
-          const { title, date, tags, slug, excerpt } = getPostMetadata(post);
+          const { title, date, tags, slug } = getPostMetadata(post);
 
           return (
             <BlogPostCard
@@ -55,7 +56,7 @@ import getPostMetadata from '../../utils/postMetadata'
               title={title}
               tags={tags}
               date={date}
-              excerpt={excerpt}
+              excerpt={post.excerpt}
             />
           );
         })}
