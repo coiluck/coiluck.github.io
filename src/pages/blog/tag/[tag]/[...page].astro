@@ -1,6 +1,5 @@
 ---
 import type { GetStaticPathsOptions } from 'astro';
-import { Image } from 'astro:assets';
 import { getSortedPosts, getListedPosts, POSTS_PER_PAGE } from '../../../../utils/getPosts';
 import Layout from '../../../../layouts/Layout.astro';
 import Topbar from '../../../../components/topbar.astro';
@@ -48,7 +47,6 @@ const { tag } = Astro.params;
 
 // OGP用
 const ogDescription = "書く、これしか出来ないから";
-const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
 // 記事データ用
 import getPostMetadata from '../../../../utils/postMetadata'
@@ -56,7 +54,6 @@ import getPostMetadata from '../../../../utils/postMetadata'
 <Layout
   pageTitle={`タグ: ${tag}`}
   ogDescription={ogDescription}
-  ogUrl={ogUrl}
   isBlog
 >
   <Topbar />
@@ -90,7 +87,7 @@ import getPostMetadata from '../../../../utils/postMetadata'
     />
 
     <div class="blog-content">
-      {page && page.data ? (
+      {page.data.length > 0 ? (
         <>
         {page.data.map((post) => {
           const { title, date, tags, slug, excerpt } = getPostMetadata(post);
@@ -215,7 +212,7 @@ import getPostMetadata from '../../../../utils/postMetadata'
     width: 70%;
   }
   @media (max-width: 768px) {
-    .tag-head, .blog-content {
+    .blog-content {
       width: 90%;
     }
   }

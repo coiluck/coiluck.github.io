@@ -28,7 +28,6 @@ const { page } = Astro.props;
 
 // OGP用
 const ogDescription = "書く、これしか出来ないから";
-const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
 // 記事データ用
 import getPostMetadata from '../../utils/postMetadata'
@@ -36,7 +35,6 @@ import getPostMetadata from '../../utils/postMetadata'
 <Layout
   pageTitle="Blog"
   ogDescription={ogDescription}
-  ogUrl={ogUrl}
   isBlog
 >
   <Topbar />
@@ -46,7 +44,7 @@ import getPostMetadata from '../../utils/postMetadata'
   </div>
   <main>
     <div class="blog-content">
-      {page && page.data ? (
+      {page.data.length > 0 ? (
         <>
         {page.data.map((post) => {
           const { title, date, tags, slug, excerpt } = getPostMetadata(post);

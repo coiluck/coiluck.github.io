@@ -9,11 +9,9 @@ import MusicContainer from '../components/music-container.astro';
 import { Code } from 'astro-expressive-code/components';
 
 import Footer from '../components/footer.astro'
-
-const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<Layout pageTitle="About" ogUrl={ogUrl} ogDescription="自己紹介">
+<Layout pageTitle="About" ogDescription="自己紹介">
 	<Topbar />
   <div class="container">
 

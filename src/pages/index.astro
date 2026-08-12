@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Topbar from '../components/topbar.astro';
 import IconImage from '../components/icon-image.astro';
-import Image from 'astro/components/Image.astro'
+import { Image } from 'astro:assets';
 import backIcon from '../assets/images/back.svg';
 import Footer from '../components/footer.astro'
 
@@ -31,10 +31,8 @@ const navLinks = [
   { href: '/content/', title: 'Content', description: '作ったものたちがいます' },
   { href: '/blog/', title: 'Blog', description: '文章が置いてあります' },
 ] as const;
-
-const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
-<Layout ogUrl={ogUrl} ogDescription="coiluckの個人サイト">
+<Layout ogDescription="coiluckの個人サイト">
   <div class="container">
     <Topbar />
 

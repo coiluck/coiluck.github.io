@@ -5,15 +5,15 @@ const siteTitle = import.meta.env.SITE_TITLE;
 
 interface Props {
   pageTitle?: string; // top のみなし
-  ogUrl: string;
   ogDescription?: string;
   isBlog?: boolean;
   noindex?: boolean;
 }
 
-const { pageTitle, ogUrl, ogDescription, isBlog, noindex } = Astro.props;
+const { pageTitle, ogDescription, isBlog, noindex } = Astro.props;
 const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://coiluck.moe';
 const OGImage = new URL("/images/ogp.png", siteUrl).toString();
+const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
 ---
 <!DOCTYPE html>
 <html lang="ja">
@@ -30,7 +30,7 @@ const OGImage = new URL("/images/ogp.png", siteUrl).toString();
     <title>{siteTitle}{pageTitle && ` | ${pageTitle}`}</title>
     <meta property="og:title" content={pageTitle ?? siteTitle} />
     <meta property="og:description" content={ogDescription} />
-    <meta property="og:url" content={ogUrl || Astro.url.toString()} />
+    <meta property="og:url" content={ogUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:image" content={OGImage} />
     <meta property="og:site_name" content={siteTitle} />

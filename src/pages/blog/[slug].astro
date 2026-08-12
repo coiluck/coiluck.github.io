@@ -35,13 +35,11 @@ const {title, date, tags } = getPostMetadata(post);
 
 const { Content } = await render(post);
 
-const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const ogDescription = generateExcerpt(post, 30);
 ---
 <Layout
   pageTitle={title}
   ogDescription={ogDescription}
-  ogUrl={ogUrl}
   isBlog
   noindex={isUnlisted}
 >
@@ -320,7 +318,7 @@ const ogDescription = generateExcerpt(post, 30);
           el.style.transform = `translateX(calc(-50% + ${shift}px))`;
         }
       };
-      
+
       const allTooltip: NodeListOf<HTMLElement> = document.querySelectorAll('sup .footnote-hover-tooltip');
       const positionAll = () => allTooltip.forEach(handleTooltipPosition);
 

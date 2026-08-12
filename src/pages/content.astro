@@ -13,11 +13,9 @@ const sortedCreates = allCreates.sort((a, b) => {
   const dateB = b.data.published_date.getTime();
   return dateB - dateA;
 });
-
-const ogUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<Layout pageTitle="Content" ogUrl={ogUrl} ogDescription="制作物の一覧">
+<Layout pageTitle="Content" ogDescription="制作物の一覧">
   <Topbar />
 
   <div class="image-container">
