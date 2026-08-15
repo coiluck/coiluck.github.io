@@ -26,8 +26,8 @@ export function generateExcerpt(entry: BlogPost, cut_length: number = 150) {
     .replace(/<rt>.*?<\/rt>/gi, '')                 // ルビタグ
     .replace(/<br\s*\/?>/gi, ' ')                   // 改行タグ
     .replace(/\r\n|\n|\r/g, ' ')                    // 改行
-    .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')       // リンク
     .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')        // 画像
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')       // リンク
     .replace(/`/g, '')                              // コード
     .replace(/\*|_/g, '')                           // 強調
     .replace(/\s+/g, ' ')                           // 連続空白
