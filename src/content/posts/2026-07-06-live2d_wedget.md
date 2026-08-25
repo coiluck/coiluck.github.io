@@ -1,4 +1,3 @@
-
 ---
 title: "Live2dキャラクターをサイトに出す"
 tags:
@@ -14,6 +13,10 @@ date: "2026-07-06"
 <!--more-->
 
 気になって画面内でマウスをぐるぐるすると、少女の視線もぐるぐるした。また、クリックによって専用のモーションを再生したり、吹き出しによって喋っているようにするなど、反応が可愛くてしばらく遊んでいた。
+
+:::fig{src="/images/for_blog/live2d_jinzhao.png" alt="ロリっ娘魔法少女のLive2dモデルが右下を見ている画像"}
+かわいい
+:::
 
 詳しく見てみたところ、[stevenjoezhang/live2d-widget](https://github.com/stevenjoezhang/live2d-widget)というリポジトリを使っているようだった――自分も導入したい！
 
