@@ -24,7 +24,7 @@ const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" href="/images/favicon.ico" />
     {isBlog && (
-      <link rel="alternate" type="application/rss+xml" title="革命学舎 | Blog" href="/rss.xml" />
+      <link rel="alternate" type="application/rss+xml" title={`${siteTitle} | Blog`} href="/rss.xml" />
     )}
     <link rel="sitemap" href="/sitemap.xml" />
     <title>{siteTitle}{pageTitle && ` | ${pageTitle}`}</title>

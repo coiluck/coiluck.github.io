@@ -1,4 +1,4 @@
-// getPosts.js
+// getPosts.ts
 import { getCollection } from 'astro:content';
 import type { BlogPost } from './type';
 

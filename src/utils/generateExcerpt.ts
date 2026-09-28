@@ -1,4 +1,4 @@
-// generateExcerpt.js
+// generateExcerpt.ts
 import type { BlogPost } from './type';
 
 export function generateExcerpt(entry: BlogPost, cut_length: number = 150) {

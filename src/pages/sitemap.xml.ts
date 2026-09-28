@@ -1,6 +1,6 @@
 import type { APIContext } from 'astro';
-import { getSortedPosts, getListedPosts, POSTS_PER_PAGE } from '../utils/getPosts.js';
-import getPostMetadata from '../utils/postMetadata.js';
+import { getSortedPosts, getListedPosts, POSTS_PER_PAGE } from '../utils/getPosts';
+import getPostMetadata from '../utils/postMetadata';
 
 // 1ページ目は `/blog/`、2ページ目以降は `/blog/2/`
 function paginatedPaths(basePath: string, postCount: number): string[] {

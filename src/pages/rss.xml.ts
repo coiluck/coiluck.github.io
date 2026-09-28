@@ -1,8 +1,8 @@
 import rss from '@astrojs/rss';
 import type { APIContext } from 'astro';
-import { getSortedPosts, getListedPosts } from '../utils/getPosts.js';
-import { generateExcerpt } from '../utils/generateExcerpt.js';
-import getPostMetadata from '../utils/postMetadata.js';
+import { getSortedPosts, getListedPosts } from '../utils/getPosts';
+import { generateExcerpt } from '../utils/generateExcerpt';
+import getPostMetadata from '../utils/postMetadata';
 
 export async function GET(context: APIContext) {
   if (!context.site) throw new Error('site is not configured in astro.config.ts');
@@ -11,7 +11,7 @@ export async function GET(context: APIContext) {
   const publicPosts = getListedPosts(posts);
 
   return rss({
-    title: '革命学舎',
+    title: import.meta.env.SITE_TITLE,
     description: 'こいらっくのwebサイト',
     site: context.site,
     items: publicPosts.map((post) => {

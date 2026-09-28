@@ -1,4 +1,4 @@
-// postMetadata.js
+// postMetadata.ts
 import type { BlogPost, PostMetadata } from './type';
 
 function getPostMetadata(post: BlogPost): PostMetadata {
