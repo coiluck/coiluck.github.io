@@ -1,4 +1,12 @@
 /* 記事内のスタイル */
+.prose {
+  line-height: 1.5;
+}
+@media (max-width: 480px) {
+  .prose {
+    font-size: .95rem;
+  }
+}
 .prose a {
   color: var(--text);
   text-decoration-color: var(--text);
@@ -143,8 +151,20 @@
 .prose aside ul {
   margin-bottom: 0;
 }
-.prose .footnotes h2 {
+.prose .footnotes {
+  margin-top: 32px;
+  border-top: 1px dashed #888;
+}
+/* 勝手に出てくる装飾を無効化 */
+.prose .footnotes h2, .prose #footnote-label {
   display: none;
+}
+.prose .footnotes ol {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin: 2rem 0; /* .contentについているmargin-bottomと合わせる */
+  padding-left: 1rem; /* 数字だけはみ出しちゃうので */
 }
 .prose .footnotes p {
   margin-bottom: 0;
@@ -187,6 +207,11 @@
   /* 「```」で囲まれたコードの上下にスペースを追加 */
   margin: 1.2rem 0;
   font-size: .8em;
+}
+@media (max-width: 480px) {
+  .prose .expressive-code * {
+    font-size: .85rem !important;
+  }
 }
 .prose .expressive-code .frame .header .title::after {
   border-top: 1.5px solid var(--accent) !important;
