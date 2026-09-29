@@ -13,153 +13,144 @@ import Footer from '../components/Footer.astro'
 
 <Layout pageTitle="About" ogDescription="自己紹介">
 	<Topbar />
+
   <div class="container">
 
-    <IconImage
-      imageSrc="/images/icon_base.avif"
-      hoverImageSrc="/images/icon_hover.avif"
-      size={320}
-    />
-
     <div class="content">
-      <LabelTitle text = "よく使うアカウント名" headStep = {1} />
-      <div class="category-text">
-        こいらっく、ココネ
-      </div>
+      <header class="about-head">
+        <IconImage
+          imageSrc="/images/icon_base.avif"
+          hoverImageSrc="/images/icon_hover.avif"
+          size={240}
+        />
+        <div class="about-head-text">
+          <h1 class="about-title">About</h1>
+          <p class="about-sub">自己紹介というやつです</p>
+          <dl class="profile">
+            <dt>Name</dt><dd>こいらっく、ココネ</dd>
+            <dt>Color</dt><dd><span class="swatch"></span>#FF7F7E</dd>
+            <dt>Like</dt><dd>ゲームを作ること</dd>
+          </dl>
+        </div>
+      </header>
 
       <LabelTitle text = "アカウント" headStep = {1} />
-      <div class="category-text">
-        <div class="links-box">
-          <LinkPreviewBox
-            title="GitHub"
-            description="最近はTauriとかが好き"
-            url="https://github.com/coiluck/"
-          />
-          <LinkPreviewBox
-            title="Twitter"
-            description="Xではありません"
-            url="https://twitter.com/RabbitGbf"
-          />
-          <LinkPreviewBox
-            title="chichi-pui"
-            description="AIイラスト1"
-            url="https://www.chichi-pui.com/users/coiluck/"
-          />
-          <LinkPreviewBox
-            title="Aipictors"
-            description="AIイラスト2"
-            url="https://www.aipictors.com/users/6f92b753-d44f-dd7d-6c98-3bb495495278/"
-          />
-          <LinkPreviewBox
-            title="pixiv"
-            description="更新しない。ナゾノクサの絵ばかり"
-            url="https://www.pixiv.net/users/63923759"
-          />
-          <LinkPreviewBox
-            title="Truth Social"
-            description="二日で飽きた"
-            url="https://truthsocial.com/@coiluck"
-          />
-          <LinkPreviewBox
-            title="Steam"
-            description="遊ぶ"
-            url="https://steamcommunity.com/id/coiluck/"
-          />
-          <LinkPreviewBox
-            title="YouTube"
-            description="限定公開で動画を共有する時に使う"
-            url="https://www.youtube.com/@kozakurakokone"
-          />
-          <LinkPreviewBox
-            title="Misskey"
-            description="予備"
-            url="https://misskey.io/@Asiraat/"
-          />
-          <LinkPreviewBox
-            title="mixi2"
-            description="予備"
-            url="https://mixi.social/@coiluck"
-          />
-        </div>
+      <div class="links-box">
+        <LinkPreviewBox
+          title="GitHub"
+          description="最近はTauriとかが好き"
+          url="https://github.com/coiluck/"
+        />
+        <LinkPreviewBox
+          title="Twitter"
+          description="Xではありません"
+          url="https://twitter.com/RabbitGbf"
+        />
+        <LinkPreviewBox
+          title="chichi-pui"
+          description="AIイラスト1"
+          url="https://www.chichi-pui.com/users/coiluck/"
+        />
+        <LinkPreviewBox
+          title="Aipictors"
+          description="AIイラスト2"
+          url="https://www.aipictors.com/users/6f92b753-d44f-dd7d-6c98-3bb495495278/"
+        />
+        <LinkPreviewBox
+          title="pixiv"
+          description="更新しない。ナゾノクサの絵ばかり"
+          url="https://www.pixiv.net/users/63923759"
+        />
+        <LinkPreviewBox
+          title="Truth Social"
+          description="二日で飽きた"
+          url="https://truthsocial.com/@coiluck"
+        />
+        <LinkPreviewBox
+          title="Steam"
+          description="遊ぶ"
+          url="https://steamcommunity.com/id/coiluck/"
+        />
+        <LinkPreviewBox
+          title="YouTube"
+          description="限定公開で動画を共有する時に使う"
+          url="https://www.youtube.com/@kozakurakokone"
+        />
+        <LinkPreviewBox
+          title="Misskey"
+          description="予備"
+          url="https://misskey.io/@Asiraat/"
+        />
+        <LinkPreviewBox
+          title="mixi2"
+          description="予備"
+          url="https://mixi.social/@coiluck"
+        />
       </div>
 
       <LabelTitle text = "Love" headStep = {1} />
+      <LabelTitle text = "Novel" headStep = {2} />
       <div class="category-text">
-        <LabelTitle text = "Novel" headStep = {2} />
-        <div class="category-text">
-          ハヤカワ文庫JAなどを好む。<br>
-          &nbsp;&nbsp;・プロジェクトぴあの<br>
-          &nbsp;&nbsp;・同志少女よ、敵を撃て<br>
-          &nbsp;&nbsp;・ツインスターサイクロンランナウェイ<br>
-          &nbsp;&nbsp;・虐殺器官<br>
-          その他<br>
-          &nbsp;&nbsp;・妹さえいればいい<br>
-          &nbsp;&nbsp;・蝶と帝国<br>
-        </div>
-        <LabelTitle text = "Web Novel" headStep = {2} />
-        <div class="category-text">
-          小説家になろうをメインで読んでいる。稀にカクヨムやハーメルンには足を延ばす。<br>
-        </div>
-        <LabelTitle text = "Comic" headStep = {2} />
-        <div class="category-text">
-          マンガを読むことはあまりないけど。<br>
-          &nbsp;&nbsp;・ゆゆ式<br>
-          &nbsp;&nbsp;・ゆるゆり<br>
-          &nbsp;&nbsp;・児玉まりあ文学集成<br>
-        </div>
-        <LabelTitle text = "Music" headStep = {2} />
-        <div class="category-text">
-          <MusicContainer />
-        </div>
+        <p class="list-caption">ハヤカワ文庫JAなどを好む</p>
+        <ul class="item-list">
+          <li>プロジェクトぴあの</li>
+          <li>同志少女よ、敵を撃て</li>
+          <li>ツインスターサイクロンランナウェイ</li>
+          <li>虐殺器官</li>
+        </ul>
+        <p class="list-caption">その他</p>
+        <ul class="item-list">
+          <li>妹さえいればいい</li>
+          <li>蝶と帝国</li>
+        </ul>
+      </div>
 
-        <LabelTitle text = "Game" headStep = {2} />
-        <div class="category-text">
-          <LabelTitle text = "今プレイしているもの" headStep = {3} />
-          <div class="category-text">
-            特になし
-          </div>
-          <LabelTitle text = "過去" headStep = {3} />
-          <div class="category-text">
-          ・グランブルーファンタジー<br>
-          ・アークナイツ<br>
-          ・ヘブンバーンズレッド<br>
-          ・Hoi4<br>
-          ・Delta Force（PC版）<br>
-            などをやっていた。
-          </div>
-        </div>
+      <LabelTitle text = "Web Novel" headStep = {2} />
+      <div class="category-text">
+        小説家になろうをメインで読んでいる。稀にカクヨムやハーメルンには足を延ばす。
+      </div>
 
-        <LabelTitle text = "Other" headStep = {2} />
-        <div class="category-text">
-          好きな色: <span style="color: #ff7f7e;">#FF7F7E</span><br>
-          好きなこと: ゲームを作ること<br>
-        </div>
+      <LabelTitle text = "Comic" headStep = {2} />
+      <div class="category-text">
+        <p class="list-caption">マンガを読むことはあまりないけど</p>
+        <ul class="item-list">
+          <li>ゆゆ式</li>
+          <li>ゆるゆり</li>
+          <li>児玉まりあ文学集成</li>
+        </ul>
+      </div>
+
+      <LabelTitle text = "Music" headStep = {2} />
+      <div class="category-text">
+        <MusicContainer />
+      </div>
+
+      <LabelTitle text = "Game" headStep = {2} />
+      <div class="category-text">
+        <LabelTitle text = "今プレイしているもの" headStep = {3} />
+        <p>特になし</p>
+        <LabelTitle text = "過去" headStep = {3} />
+        <ul class="item-list">
+          <li>グランブルーファンタジー</li>
+          <li>アークナイツ</li>
+          <li>ヘブンバーンズレッド</li>
+          <li>Hoi4</li>
+          <li>Delta Force（PC版）</li>
+        </ul>
       </div>
 
       <LabelTitle text = "感謝" headStep = {1} />
-      <div class="category-text">
-        <div class="category-text-table">
-          <div class="category-text-table-item">
-            <span><a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a></span>
-            <span>これで作っている</span>
-          </div>
-          <div class="category-text-table-item">
-            <span>GitHub Pages</span>
-            <span>ホストしてくれている</span>
-          </div>
-          <div class="category-text-table-item">
-            <span><a href="https://github.com/3846masa/kauntah-svg" target="_blank" rel="noopener noreferrer">kauntah-svg</a></span>
-            <span>かわいいアクセスカウンタ</span>
-          </div>
-          <div class="category-text-table-item">
-            <span>Me</span>
-            <span>つくったので</span>
-          </div>
-        </div>
-      </div>
+      <dl class="thanks">
+        <dt><a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a></dt>
+        <dd>これで作っている</dd>
+        <dt>GitHub Pages</dt>
+        <dd>ホストしてくれている</dd>
+        <dt>Me</dt>
+        <dd>つくったので</dd>
+      </dl>
 
       <LabelTitle text = "サイトバナー" headStep = {1} />
-      <div class="category-text">
+      <div class="banner">
           <img src="/images/banner.png" alt="サイトバナー" width="200" class="free">
           <p>持ち帰り・直リンクご自由にどうぞ。使用時は以下のように:</p>
           <Code code={`<a href="https://coiluck.moe/" target="_blank" rel="noopener noreferrer"><img src="https://coiluck.moe/images/banner.png" width="200" alt="革命学舎"></a>`} lang="html" />
@@ -183,61 +174,126 @@ import Footer from '../components/Footer.astro'
         display: none;
       }
     }
-    .title {
-      width: 70%;
-      font-size: 1.3rem;
-      font-weight: bold;
-      margin: 0 auto;
-    }
     .content {
       flex: 1;
       width: 70%;
       margin: 0 auto;
       margin-bottom: 1rem;
-    }
-    .category-text {
-      width: calc(100% - 2rem);
-      margin-left: 2rem;
-      font-size: 1rem;
-    }
-    .links-box {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 10px 20px;
-      z-index: 2;
+      counter-reset: sec;
     }
     @media (max-width: 768px) {
-      .title, .content {
-        width: 80%;
-      }
-    }
-    @media (max-width: 480px) {
-      .title, .content {
+      .content {
         width: 90%;
       }
     }
 
-    .category-text-table {
+    .about-head {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    @media (min-width: 1024px) {
+      .about-head {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 3rem;
+      }
+    }
+    .about-head-text {
+      width: 100%;
+    }
+    .about-title {
+      margin: .3rem 0 .2rem;
+      font-size: 1.5rem;
+      line-height: 1.4;
+    }
+    .about-sub {
+      font-size: .9rem;
+      opacity: .7;
+    }
+    .swatch {
+      display: inline-block;
+      width: .9em;
+      height: .9em;
+      margin-right: .4em;
+      vertical-align: -.1em;
+      background: #ff7f7e;
+      clip-path: polygon(22% 0, 100% 0, 78% 100%, 0 100%);
+    }
+
+    .category-text {
+      padding-left: 1.2rem;
+    }
+    .links-box {
+      display: grid;
+      grid-template-columns: 1fr;
+      column-gap: 2rem;
+    }
+    @media (min-width: 768px) {
+      .links-box {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .list-caption {
+      margin: .8rem 0 .3rem;
+    }
+    .item-list {
+      list-style: none;
+      border-top: 1px solid rgb(from var(--text) r g b / .35);
+    }
+    .item-list li {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      padding: .4rem .6rem;
+      border-bottom: 1px solid rgb(from var(--text) r g b / .35);
+    }
+    .item-list li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 3px;
+      height: .9rem;
+      background-color: var(--accent);
+      transform: skewX(-25deg);
+    }
+
+    .profile, .thanks {
       display: grid;
       grid-template-columns: auto 1fr;
-      row-gap: .5rem;
+      border-top: 1px solid rgb(from var(--text) r g b / .35);
     }
-    .category-text-table-item {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: subgrid;
+    .profile {
+      margin-top: 1rem;
     }
-
-    .category-text-table-item span {
-      border-bottom: 1px solid var(--text);
-      padding: 0.4rem 0;
+    .profile dt, .profile dd,
+    .thanks dt, .thanks dd {
+      padding: .55rem .6rem;
+      border-bottom: 1px solid rgb(from var(--text) r g b / .35);
     }
-
-    .category-text-table-item span:last-child {
+    .profile dd, .thanks dd {
       padding-left: clamp(1rem, 4vw, 3rem); /* 400 ~ 1200 */
     }
-    .category-text-table-item span a {
+    .profile dt {
+      font-size: .8rem;
+      font-style: italic;
+      opacity: .7;
+    }
+    .thanks dd {
+      opacity: .8;
+    }
+    .thanks a {
       color: var(--link);
+      text-decoration: none;
+    }
+
+    .banner img {
+      display: block;
+      margin: .4rem 0 .8rem;
+    }
+    .banner p {
+      margin: .4rem 0;
     }
   </style>
 </Layout>

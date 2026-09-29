@@ -1,135 +1,73 @@
 ---
+import BlogLine from './BlogLine.astro';
+
 interface Props {
   text: string;
   headStep: 1 | 2 | 3;
 }
 const { text, headStep = 1 } = Astro.props
-
-let labelClass = '';
-switch (headStep) {
-  case 1:
-    labelClass = 'head-label label-first';
-    break;
-  case 2:
-    labelClass = 'head-label label-second';
-    break;
-  case 3:
-    labelClass = 'head-label label-third';
-    break;
-}
 ---
-<div class={labelClass} id={text}>{text}</div>
+{headStep === 1 && (
+  <div class="head-first">
+    <h2 id={text}>{text}</h2>
+    <div class="head-first-line">
+      <BlogLine pcSize={100} smSize={100} />
+    </div>
+  </div>
+)}
+{headStep === 2 && <h3 class="head-second" id={text}>{text}</h3>}
+{headStep === 3 && <h4 class="head-third" id={text}>{text}</h4>}
 
 <style>
-  .head-label.label-first {
-    position: relative;
-    padding-left: 1rem;
-    padding-bottom: 0.5rem;
-    margin: 1rem 0 .8rem;
-    font-size: 1.1rem;
-    font-weight: bold;
+  .head-first {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 3rem 0 1rem;
+    counter-increment: sec;
   }
-  .head-label.label-first::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    mask-image: url("/images/h2.svg");
-    mask-repeat: no-repeat;
-    mask-size: auto 100%;
-    mask-position: left center;
+  .head-first h2 {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    flex-shrink: 0;
+    font-size: 1.2rem;
+    font-weight: normal;
+  }
+  .head-first h2::before {
+    content: counter(sec, decimal-leading-zero);
+    width: 2.6rem;
+    color: var(--text-dark);
     background-color: var(--accent);
-    pointer-events: none;
-    clip-path: inset(0 100% 100% 0);
+    font-size: .8rem;
+    text-align: center;
+    clip-path: polygon(22% 0, 100% 0, 78% 100%, 0 100%);
   }
-  /* アニメーション */
-  .head-label.label-first.is-visible::before {
-    animation: label-first-reveal 1.2s ease-in-out forwards;
-  }
-  @keyframes label-first-reveal {
-    0% {
-      clip-path: inset(0 100% 100% 0);
-    }
-    35% {
-      clip-path: inset(0 calc(100% - 15px) 0 0);
-    }
-    100% {
-      clip-path: inset(0 0 0 0);
-    }
+  .head-first-line {
+    flex: 1;
   }
 
-  .head-label.label-second {
-    padding: 5px 10px;
-    margin: .8rem 0;
-    color: var(--text);
-    font-size: 1rem;
-    font-weight: bold;
-    border-left: 4px solid var(--accent);
-  }
-  /* アニメーション */
-  .head-label.label-second.is-visible {
-    animation: fadeIn 0.8s ease-in-out;
-  }
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(5px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .head-label.label-third {
+  .head-second, .head-third {
     position: relative;
     width: fit-content;
-    padding-left: 1rem;
-    margin: 5px 0;
     color: var(--text);
-    font-size: 1rem;
-    font-weight: bold;
   }
-  .head-label.label-third::before {
-    content: '・';
+  .head-second {
+    margin: 1.6rem 0 .7rem;
+    padding: 0 .5rem 0 1.2rem;
+    font-size: 1.1rem;
+    border-bottom: 2px solid var(--accent);
+  }
+  .head-second::before {
+    content: '#';
     position: absolute;
-    top: 50%;
     left: 0;
-    transform: translateY(-50%);
-    font-size: 1rem;
     color: var(--accent);
   }
-  .head-label.label-third::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 1px;
-    background-color: var(--accent);
-    transition: width 0.8s ease-in-out;
-  }
-  /* アニメーション */
-  .head-label.label-third.is-visible::after {
-    width: 100%;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .head-label.label-first::before {
-      animation: none;
-      clip-path: inset(0 0 0 0);
-    }
-    .head-label.label-second {
-      animation: none;
-    }
-    .head-label.label-third::after {
-      width: 100%;
-      transition: none;
-      animation: none;
-    }
+  .head-third {
+    margin: 1rem 0 .4rem;
+    padding: 0 .5rem 0 1rem;
+    font-size: 1rem;
+    border-left: 3px solid var(--accent);
   }
 </style>
-<script>
-  import { observeVisibility } from '../utils/observer';
-  observeVisibility('.label-first', { once: false });
-  observeVisibility('.label-second, .label-third', { once: true });
-</script>

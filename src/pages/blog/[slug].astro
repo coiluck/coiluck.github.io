@@ -42,31 +42,30 @@ const ogDescription = generateExcerpt(post, 30);
   noindex={isUnlisted}
 >
   <Topbar />
+
   <div class="blog-header">
     <BlogImage />
   </div>
+
   <article
     class="blog-post"
     data-pagefind-body={isUnlisted ? undefined : true}
     data-pagefind-meta={isUnlisted ? undefined : `date:${date}`}
     data-pagefind-sort={isUnlisted ? undefined : `date:${date}`}
   >
-    <h2>{title}</h2>
-    <div class="meta">
-      <p>投稿日: {date}</p>
-      <p>
-        タグ:
-        {tags.map((tag, tagIndex) => (
-          <span>
-            <a href={`/blog/tag/${encodeURIComponent(tag)}/`}>
-              <span style="color: var(--accent);">#</span>
+    <header class="post-head">
+      <time class="date">{date}</time>
+      <h1 class="post-title">{title}</h1>
+      {tags.length > 0 && (
+        <div class="tags">
+          {tags.map((tag) => (
+            <a class="post-tag" href={`/blog/tag/${encodeURIComponent(tag)}/`}>
               <span data-pagefind-filter="tag">{tag}</span>
             </a>
-            {tagIndex < tags.length - 1 && ', '}
-          </span>
-        ))}
-      </p>
-    </div>
+          ))}
+        </div>
+      )}
+    </header>
 
     <BlogLine
       pcSize={100}
@@ -77,13 +76,14 @@ const ogDescription = generateExcerpt(post, 30);
     <div class="content prose">
       <Content />
     </div>
-  </article>
 
-  <BlogLine
-    pcSize={70}
-    smSize={90}
-    isNeedMargin={true}
-  />
+    <BlogLine
+      pcSize={100}
+      smSize={100}
+      isNeedMargin={true}
+      side="right"
+    />
+  </article>
 
   <TopButton />
 
@@ -100,50 +100,102 @@ const ogDescription = generateExcerpt(post, 30);
         padding-top: 6rem;
       }
     }
-    .blog-post {
+    
+    article {
       width: 70%;
       margin: 0 auto;
-      background-color: rgb(from var(--bg) r g b / .5);
+      background: rgb(from var(--bg) r g b / .3);
       backdrop-filter: blur(1px);
     }
     @media (max-width: 768px) {
-      .blog-post {
+      article {
         width: 90%;
       }
     }
-    .blog-post > h2 {
-      margin: .5rem 0 0;
-      color: var(--text);
-      text-align: center;
-    }
-    .meta {
-      font-size: 0.9rem;
-      text-align: center;
-      color: rgb(from var(--text) r g b / .5);
-    }
-    .meta p {
-      margin: .5rem 0 0;
-    }
-    .meta p span a {
+
+    .post-head {
       position: relative;
-      color: rgb(from var(--text) r g b / .5);
+      padding: 3.6rem 1.5rem 0;
+    }
+    @media (max-width: 768px) {
+      .post-head {
+        padding: 3.4rem 1rem 1.5rem;
+      }
+    }
+
+    .date {
+      position: absolute;
+      top: .6rem;
+      left: -1rem;
+      z-index: 0;
+      padding: .5rem 1.5rem .5rem 1rem;
+      font-size: .9rem;
+      line-height: 1;
+      color: var(--text-dark);
+    }
+    @media (max-width: 768px) {
+      .date {
+        left: -.6rem;
+      }
+    }
+    .date::before,
+    .date::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+    }
+    .date::before {
+      background: rgb(from var(--text) r g b / .3);
+      transform: translate(5px, 5px);
+    }
+    .date::after {
+      background: var(--accent);
+    }
+
+    .post-title {
+      width: fit-content;
+      margin: .6rem 0;
+      font-size: 1.5rem;
+      color: var(--text);
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      font-size: 0.9rem;
+    }
+    .post-tag {
+      position: relative;
+      padding: 2px 8px;
+      background: rgb(from var(--accent) r g b / 0.1);
+      color: var(--text);
       text-decoration: none;
+      font-style: italic;
+      border: 1px solid var(--accent);
       transition: all 0.3s ease;
     }
-    .meta p span a::before {
+    .post-tag::before {
+      content: '#';
+      color: var(--accent);
+    }
+    .post-tag::after {
       content: '';
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 0;
-      height: 2px;
-      background-color: rgb(from var(--text) r g b / .5);
-      transform: scaleY(0.5);
-      transform-origin: bottom;
-      transition: width 0.3s ease;
-    }
-    .meta p span a:hover::before {
       width: 100%;
+      height: 0%;
+      background: rgb(from var(--accent) r g b / 0.1);
+      transition: all 0.3s ease;
+    }
+    .post-tag:hover {
+      background: rgb(from var(--accent) r g b / 0.2);
+    }
+    .post-tag:hover::after {
+      height: 100%;
     }
 
     .content {

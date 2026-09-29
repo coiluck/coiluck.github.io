@@ -3,8 +3,8 @@ const { slug, title, tags, date, excerpt } = Astro.props;
 ---
 
 <a href={`/blog/${slug}/`} class="blog-post-item">
+  <time class="date">{date}</time>
   <div class="meta">
-    <time class="date">{date}</time>
     {tags.length > 0 && (
       <div class="tags">
         {tags.map((tag: string) => (
@@ -29,27 +29,35 @@ const { slug, title, tags, date, excerpt } = Astro.props;
 <style>
   .blog-post-item {
     --cut: 3rem;
+    --out: 1rem; /* 日付がカードの左からはみ出す幅 */
     display: flex;
     flex-direction: column;
     gap: .25rem;
     position: relative;
     width: 100%;
     padding: 3rem 1rem 1rem;
-    background: rgb(from var(--bg-mild) r g b / 0.5);
-    backdrop-filter: blur(1px);
+    isolation: isolate;
     color: var(--text);
     text-decoration: none;
+    opacity: 0;
+    transform: translateX(-5px);
+    transition: all .6s ease-in-out;
+  }
+  .blog-post-item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgb(from var(--bg-mild) r g b / 0.5);
+    backdrop-filter: blur(1px);
     clip-path: polygon(
-      var(--cut) 0%,        /* 左上カット */
+      0% 0%,
       100% 0%,
       100% calc(100% - var(--cut)),  /* 右下カット */
       calc(100% - var(--cut)) 100%,
       0% 100%,
       0% var(--cut)
     );
-    opacity: 0;
-    transform: translateX(-5px);
-    transition: all .6s ease-in-out;
   }
 
   .blog-post-item.is-visible {
@@ -71,7 +79,7 @@ const { slug, title, tags, date, excerpt } = Astro.props;
     text-decoration: none;
     background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
       linear-gradient(#f6d893, #f6d893) right 60% / 0 .8em no-repeat;
-    transition: background-size .4s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: background-size .4s;
   }
   .blog-post-item:hover h3 {
     background-position: right bottom, left 60%;
@@ -93,7 +101,6 @@ const { slug, title, tags, date, excerpt } = Astro.props;
     gap: 1rem;
     width: 100%;
     padding: 1px;
-    font-size: 0.9rem;
     text-wrap: nowrap;
     color: rgb(from var(--text) r g b / .5);
     overflow-x: auto;
@@ -109,6 +116,7 @@ const { slug, title, tags, date, excerpt } = Astro.props;
     flex-direction: row;
     justify-content: center;
     gap: 5px;
+    font-size: 0.9rem;
   }
 
   .tags .post-tag {
@@ -144,7 +152,29 @@ const { slug, title, tags, date, excerpt } = Astro.props;
   }
 
   .date {
-    text-align: left;
+    position: absolute;
+    top: .4rem;
+    left: calc(-1 * var(--out));
+    z-index: 0;
+    padding: .5rem 1.5rem .5rem 1rem;
+    font-size: .9rem;
+    line-height: 1;
+    color: var(--text-dark);
+  }
+  .date::before,
+  .date::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+  }
+  .date::before {
+    background: rgb(from var(--text) r g b / .3);
+    transform: translate(5px, 5px);
+  }
+  .date::after {
+    background: var(--accent);
   }
 
   .excerpt {
