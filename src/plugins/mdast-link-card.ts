@@ -9,6 +9,7 @@ import { access, mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileTypeFromBuffer } from "file-type";
 import ogs from "open-graph-scraper";
+import { escapeHtml } from "../utils/escapeHtml";
 
 interface Options {
   /** 表示URLをホスト名だけに短縮する */
@@ -260,15 +261,6 @@ async function guessExtension(
 // HTML生成
 const BLOCK = "link-card";
 const bem = (element?: string) => (element ? `${BLOCK}__${element}` : BLOCK);
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
 
 function createCardHtml(data: CardData, options: ResolvedOptions): string {
   const { title, description, faviconUrl, ogImageUrl, displayUrl, url } = data;

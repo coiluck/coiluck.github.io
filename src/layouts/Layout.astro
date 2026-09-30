@@ -11,9 +11,8 @@ interface Props {
 }
 
 const { pageTitle, ogDescription, isBlog, noindex } = Astro.props;
-const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://coiluck.moe';
-const OGImage = new URL("/images/ogp.png", siteUrl).toString();
-const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const OGImage = new URL("/images/ogp.png", Astro.site).toString();
+const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 <!DOCTYPE html>
 <html lang="ja">
@@ -35,7 +34,7 @@ const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
     <meta property="og:image" content={OGImage} />
     <meta property="og:site_name" content={siteTitle} />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={siteTitle} />
+    <meta name="twitter:title" content={pageTitle ?? siteTitle} />
 
     <style>
       @font-face {
@@ -72,7 +71,6 @@ const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
         height: 100dvh;
       }
       body {
-        background-color: var(--bg);
         background-image: radial-gradient(rgb(from var(--text) r g b / .5) 1px, transparent 1px);
         background-size: 20px 20px;
         transition: all 0.5s;

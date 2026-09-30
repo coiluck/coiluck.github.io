@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPathsOptions, Page } from 'astro';
-import { getSortedPosts, getListedPosts, POSTS_PER_PAGE } from '../../../../utils/getPosts';
+import { getSortedPosts, getListedPosts, getAllTags, getPostsByTag, POSTS_PER_PAGE } from '../../../../utils/getPosts';
 import { addExcerpts } from '../../../../utils/generateExcerpt';
 import getPostMetadata from '../../../../utils/postMetadata';
 import type { BlogPostWithExcerpt } from '../../../../utils/type';
@@ -19,16 +19,14 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const listedPosts = addExcerpts(getListedPosts(allSortedPosts));
 
   // すべてのタグを収集
-  const allTags = [...new Set(listedPosts.flatMap((post) => post.data.tags ?? []))];
+  const allTags = getAllTags(listedPosts);
 
   // 各タグごとにページを生成
   const paths = [];
 
   for (const tag of allTags) {
     // 現在のタグが含まれる投稿のみをフィルタリング
-    const filteredPosts = listedPosts.filter(post =>
-      post.data.tags?.includes(tag)
-    );
+    const filteredPosts = getPostsByTag(listedPosts, tag);
     // ページネーション実行
     const paginatedPosts = paginate(filteredPosts, {
       params: { tag },

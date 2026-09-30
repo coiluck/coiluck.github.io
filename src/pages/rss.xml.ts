@@ -22,7 +22,7 @@ export async function GET(context: APIContext) {
         pubDate: new Date(date),
         description: description,
         link: `/blog/${slug}/`,
-        customData: `<category>${tags?.join(', ') || ''}</category>`,
+        categories: tags,
       };
     }),
     customData: `<language>ja</language>`,

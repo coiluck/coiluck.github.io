@@ -1,6 +1,5 @@
 ---
 import LabelTitle from './LabelTitle.astro';
-const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
 ---
 <div id="music-recent-trend-container">
   <LabelTitle text = "Top tracks from the past 30 days" headStep = {3} />
@@ -131,7 +130,18 @@ const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
   }
 </style>
 
-<script define:vars={{ WORKER_URL }}>
+<script>
+  import { escapeHtml } from '../utils/escapeHtml';
+
+  interface Track {
+    title: string
+    artist: string
+    youtube_video_id?: string
+    warning_sign?: boolean
+    played_at: string
+  }
+
+  const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
   const RECENT_LIMIT = 3
   const TOP_LIMIT = 5
 
@@ -151,13 +161,18 @@ const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
     })
   })
 
-  async function loadInto({ el, elParent, url, render }) {
-    if (!el) return
+  async function loadInto({ el, elParent, url, render }: {
+    el: HTMLElement | null
+    elParent: HTMLElement | null
+    url: string
+    render: (item: Track, index: number) => string
+  }) {
+    if (!el || !elParent) return
     el.innerHTML = '<p class="loading">読み込み中…</p>'
     try {
       const res = await fetch(url)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const items = await res.json()
+      const items: Track[] = await res.json()
       if (!Array.isArray(items) || items.length === 0) {
         elParent.style.display = 'none'
         return
@@ -169,8 +184,8 @@ const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
     }
   }
 
-  function renderTop(item, index) {
-    const { title, artist, youtube_video_id, warning_sign, play_count } = item
+  function renderTop(item: Track, index: number) {
+    const { title, artist, youtube_video_id, warning_sign } = item
 
     const rank = String(index + 1).padStart(2, '0');
 
@@ -199,7 +214,7 @@ const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
     `
   }
 
-  function renderRecent(item) {
+  function renderRecent(item: Track) {
     const { title, artist, played_at, youtube_video_id, warning_sign } = item
     return `
       <a
@@ -219,7 +234,7 @@ const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
     `
   }
 
-  function thumb(videoId, warningSign) {
+  function thumb(videoId: string | undefined, warningSign: boolean | undefined) {
     if (!videoId) {
       return `<div class="thumb-placeholder" aria-hidden="true">♪</div>`
     }
@@ -233,13 +248,13 @@ const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
     `
   }
 
-  function formatDate(iso) {
+  function formatDate(iso: string) {
     try {
       const date = new Date(iso)
       const diffMs = date.getTime() - Date.now()
       const diffSec = Math.round(diffMs / 1000)
 
-      const units = [
+      const units: [string, number][] = [
         ['year', 60 * 60 * 24 * 365],
         ['month', 60 * 60 * 24 * 30],
         ['week', 60 * 60 * 24 * 7],
@@ -260,15 +275,5 @@ const WORKER_URL = import.meta.env.PUBLIC_WORKER_URL
     } catch {
       return iso
     }
-  }
-
-  function escapeHtml(s) {
-    if (s == null) return ''
-    return String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;')
   }
 </script>

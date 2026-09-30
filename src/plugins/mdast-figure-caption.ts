@@ -18,6 +18,7 @@
 */
 
 import { defineMdastPlugin } from "satteri";
+import { escapeHtml } from "../utils/escapeHtml";
 
 const VALID_NAME_ARRAY = ["figure", "fig", "image", "img"];
 
@@ -42,17 +43,6 @@ export default function mdastFigureCaption() {
       return { rawHtml: createFigureHtml({ src, alt, caption }) };
     },
   });
-}
-
-function escapeHtml(value: string | null): string {
-  if (!value) return ''
-
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
 }
 
 function createFigureHtml({ src, alt, caption }: Figure): string {

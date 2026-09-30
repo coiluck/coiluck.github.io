@@ -2,12 +2,12 @@
 import { Image } from 'astro:assets';
 import backIcon from '../assets/images/back.svg';
 ---
-<button class="top-button-container">
+<a href="/blog/" class="top-button-container">
   <div class="circle-button">
     <Image src={backIcon} alt="" />
   </div>
   <span class="top-text">Top</span>
-</button>
+</a>
 
 <style>
   /* 個別の記事のTopへボタン */
@@ -20,9 +20,6 @@ import backIcon from '../assets/images/back.svg';
     color: var(--accent);
     font-family: 'mamelon3.5', sans-serif;
     text-decoration: none;
-    border: none;
-    background: transparent;
-    cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -115,13 +112,11 @@ import backIcon from '../assets/images/back.svg';
       }
     }
 
-    document.querySelector('.top-button-container')?.addEventListener('click', function() {
-      const lastPage = sessionStorage.getItem('lastListPage');
-      if (lastPage) {
-        window.location.href = lastPage;
-      } else {
-        window.location.href = '/blog/';
-      }
-    });
+    // 戻り先があれば href を差し替える
+    const lastPage = sessionStorage.getItem('lastListPage');
+    const topButton = document.querySelector<HTMLAnchorElement>('.top-button-container');
+    if (lastPage && topButton) {
+      topButton.href = lastPage;
+    }
   });
 </script>

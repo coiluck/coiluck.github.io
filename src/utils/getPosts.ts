@@ -22,3 +22,13 @@ export async function getSortedPosts(): Promise<BlogPost[]> {
 export function getListedPosts(posts: BlogPost[]): BlogPost[] {
   return posts.filter((post) => post.data.status === 'public');
 }
+
+// 全タグの一覧
+export function getAllTags(posts: BlogPost[]): string[] {
+  return [...new Set(posts.flatMap((post) => post.data.tags))];
+}
+
+// タグで絞り込み
+export function getPostsByTag<T extends BlogPost>(posts: T[], tag: string): T[] {
+  return posts.filter((post) => post.data.tags.includes(tag));
+}

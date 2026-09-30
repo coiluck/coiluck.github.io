@@ -1,5 +1,5 @@
 import type { APIContext } from 'astro';
-import { getSortedPosts, getListedPosts, POSTS_PER_PAGE } from '../utils/getPosts';
+import { getSortedPosts, getListedPosts, getAllTags, getPostsByTag, POSTS_PER_PAGE } from '../utils/getPosts';
 import getPostMetadata from '../utils/postMetadata';
 
 // 1ページ目は `/blog/`、2ページ目以降は `/blog/2/`
@@ -17,7 +17,7 @@ export async function GET(context: APIContext) {
   const posts = await getSortedPosts();
   const publicPosts = getListedPosts(posts);
 
-  const tags = [...new Set(publicPosts.flatMap((post) => post.data.tags ?? []))];
+  const tags = getAllTags(publicPosts);
 
   const paths = [
     '/',
@@ -25,7 +25,7 @@ export async function GET(context: APIContext) {
     '/content/',
     ...paginatedPaths('/blog/', publicPosts.length),
     ...tags.flatMap((tag) => {
-      const taggedCount = publicPosts.filter((post) => post.data.tags?.includes(tag)).length;
+      const taggedCount = getPostsByTag(publicPosts, tag).length;
       return paginatedPaths(`/blog/tag/${encodeURIComponent(tag)}/`, taggedCount);
     }),
     ...publicPosts.map((post) => `/blog/${getPostMetadata(post).slug}/`),
