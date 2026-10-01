@@ -18,6 +18,7 @@
     "@astrojs/markdoc": "^2.0.0",
     "@astrojs/markdown-satteri": "^0.3.1",
     "@astrojs/rss": "^4.0.18",
+    "@fontsource/kiwi-maru": "^5.3.0",
     "@pagefind/default-ui": "^1.5.2",
     "astro": "^7.0.0",
     "astro-expressive-code": "^0.43.1",

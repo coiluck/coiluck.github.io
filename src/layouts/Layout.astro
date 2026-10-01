@@ -1,5 +1,6 @@
 ---
 import Live2D from '../components/Live2D.astro';
+import '@fontsource/kiwi-maru/400.css';
 
 const siteTitle = import.meta.env.SITE_TITLE;
 
@@ -37,11 +38,6 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
     <meta name="twitter:title" content={pageTitle ?? siteTitle} />
 
     <style>
-      @font-face {
-        font-family: 'mamelon3.5';
-        src: url('/Mamelon-3.5HiRegular.woff2') format('woff2');
-        font-display: swap;
-      }
       :root {
         --primary: #1a2a4f;
         --text-dark: #0a0f1e;
@@ -83,7 +79,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
       * {
         margin: 0;
         padding: 0;
-        font-family: 'mamelon3.5', 'Noto Sans JP', sans-serif;
+        font-family: 'Kiwi Maru', 'BIZ UDPゴシック', 'Yu Gothic', 'Noto Sans JP', sans-serif;
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
       }
