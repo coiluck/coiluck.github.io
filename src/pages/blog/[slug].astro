@@ -34,6 +34,8 @@ const {title, date, tags } = getPostMetadata(post);
 const { Content } = await render(post);
 
 const ogDescription = generateExcerpt(post, 30);
+
+const markdown = post.body ?? '';
 ---
 <Layout
   pageTitle={title}
@@ -56,15 +58,27 @@ const ogDescription = generateExcerpt(post, 30);
     <header class="post-head">
       <time class="date">{date}</time>
       <h1 class="post-title">{title}</h1>
-      {tags.length > 0 && (
+      <div class="post-sub">
         <div class="tags">
-          {tags.map((tag) => (
-            <a class="post-tag" href={`/blog/tag/${encodeURIComponent(tag)}/`}>
-              <span data-pagefind-filter="tag">{tag}</span>
-            </a>
-          ))}
+          {tags.length > 0 && (
+            tags.map((tag) => (
+              <a class="post-tag" href={`/blog/tag/${encodeURIComponent(tag)}/`}>
+                <span data-pagefind-filter="tag">{tag}</span>
+              </a>
+            ))
+          )}
         </div>
-      )}
+        <button id="copy" class="copy-md" data-markdown={markdown} title="Copy as Markdown">
+          <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="9" y="9" width="13" height="13" rx="2" />
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+          </svg>
+          <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+          <span class="copy-label" aria-live="polite">.md</span>
+        </button>
+      </div>
     </header>
 
     <BlogLine
@@ -161,6 +175,14 @@ const ogDescription = generateExcerpt(post, 30);
       color: var(--text);
     }
 
+    .post-sub {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+    }
+    
     .tags {
       display: flex;
       flex-wrap: wrap;
@@ -198,6 +220,59 @@ const ogDescription = generateExcerpt(post, 30);
       height: 100%;
     }
 
+    .copy-md {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "JetBrainsMono", sans-serif;
+      font-size: .85rem;
+      line-height: 1;
+      border: 1px solid var(--text);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .copy-md::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 0%;
+      background: rgb(from var(--accent) r g b / 0.1);
+      transition: all 0.3s ease;
+    }
+    .copy-md:hover {
+      background: rgb(from var(--accent) r g b / 0.2);
+    }
+    .copy-md:hover::after {
+      height: 100%;
+    }
+    .copy-md svg {
+      width: 14px;
+      height: 14px;
+      color: var(--accent);
+    }
+    .copy-md .check-icon {
+      display: none;
+    }
+    .copy-md[data-copied] {
+      background: var(--accent);
+      color: var(--text-dark);
+    }
+    .copy-md[data-copied] svg {
+      color: var(--text-dark);
+    }
+    .copy-md[data-copied] .copy-icon {
+      display: none;
+    }
+    .copy-md[data-copied] .check-icon {
+      display: block;
+    }
+
     .content {
       margin-bottom: 2rem;
     }
@@ -232,6 +307,21 @@ const ogDescription = generateExcerpt(post, 30);
 
       positionAll();
       window.addEventListener('resize', positionAll);
+
+      // copy
+      const copyBtn = document.getElementById('copy') as HTMLButtonElement | null;
+      const copyLabel = copyBtn?.querySelector<HTMLElement>('.copy-label');
+      let copiedTimer: number | undefined;
+      copyBtn?.addEventListener('click', async () => {
+        await navigator.clipboard.writeText(copyBtn.dataset.markdown ?? '');
+        copyBtn.dataset.copied = '';
+        if (copyLabel) copyLabel.textContent = 'Copied!';
+        clearTimeout(copiedTimer);
+        copiedTimer = window.setTimeout(() => {
+          delete copyBtn.dataset.copied;
+          if (copyLabel) copyLabel.textContent = '.md';
+        }, 2000);
+      });
     });
   </script>
 </Layout>
