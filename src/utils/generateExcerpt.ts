@@ -1,5 +1,6 @@
 // generateExcerpt.ts
 import type { BlogPost } from './type';
+import type { BlogPostWithExcerpt } from './type';
 
 export function generateExcerpt(entry: BlogPost, cut_length: number = 150) {
   // custom_excerptが設定されている場合はそれを優先
@@ -21,7 +22,6 @@ export function generateExcerpt(entry: BlogPost, cut_length: number = 150) {
   // マークダウン記法を除去してプレーンテキスト化
   const plainText = textToProcess
     .replace(/^:::.*\r?\n[\s\S]*?^:::[ \t]*$/gm, '') // ディレクティブ(figure, note)
-    .replace(/#{2,}[\s\S]*?\{\:\s*\.toc-heading\}/g, '') // 目次用
     .replace(/#+\s/g, '')                           // 見出し
     .replace(/<rt>.*?<\/rt>/gi, '')                 // ルビタグ
     .replace(/<br\s*\/?>/gi, ' ')                   // 改行タグ
@@ -46,8 +46,6 @@ export function generateExcerpt(entry: BlogPost, cut_length: number = 150) {
 }
 
 // 複数の投稿にexcerptを追加
-import type { BlogPostWithExcerpt } from './type';
-
 export function addExcerpts(posts: BlogPost[]): BlogPostWithExcerpt[] {
   return posts.map(post => ({
     ...post,
