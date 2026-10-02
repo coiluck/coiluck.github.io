@@ -2,7 +2,6 @@
 import type { GetStaticPathsOptions, Page } from 'astro';
 import { getSortedPosts, getListedPosts, POSTS_PER_PAGE } from '../../utils/getPosts';
 import { addExcerpts } from '../../utils/generateExcerpt';
-import getPostMetadata from '../../utils/postMetadata';
 import type { BlogPostWithExcerpt } from '../../utils/type';
 import Layout from '../../layouts/Layout.astro';
 import Topbar from '../../components/Topbar.astro';
@@ -35,28 +34,16 @@ const ogDescription = "書く、これしか出来ないから";
   isBlog
 >
   <Topbar />
+
   <div class="blog-header">
     <BlogImage />
     <Search />
   </div>
+
   <main>
     <div class="blog-content">
       {page.data.length > 0 ? (
-        <>
-        {page.data.map((post) => {
-          const { title, date, tags, slug } = getPostMetadata(post);
-
-          return (
-            <BlogPostCard
-              slug={slug}
-              title={title}
-              tags={tags}
-              date={date}
-              excerpt={post.excerpt}
-            />
-          );
-        })}
-      </>
+        page.data.map((post) => <BlogPostCard post={post} />)
       ) : (
         <div style="text-align: center; padding: 2rem;">
           <p>現在、表示できる投稿がありません</p>
