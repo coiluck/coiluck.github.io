@@ -1,0 +1,97 @@
+---
+interface Props {
+  title: string
+  description: string
+  url: string
+}
+
+const { title, description, url } = Astro.props;
+const domain = new URL(url).hostname;
+---
+<a href={url} class="link-preview-box" target="_blank" rel="noopener noreferrer">
+  <span class="link-name">
+    <span class="link-title">{title}</span>
+    <span class="link-description">{description}</span>
+  </span>
+  <span class="link-domain">{domain}</span>
+  <span class="link-slashes" aria-hidden="true"><i></i><i></i><i></i></span>
+</a>
+
+<style>
+  .link-preview-box {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: .2rem 1rem;
+    position: relative;
+    isolation: isolate;
+    padding: .7rem .6rem;
+    color: var(--text);
+    text-decoration: none;
+    border-top: 1px solid rgb(from var(--text) r g b / .4);
+    border-bottom: 1px solid rgb(from var(--text) r g b / .4);
+    overflow: hidden;
+  }
+  .link-preview-box::before {
+    content: '';
+    position: absolute;
+    inset: 0 -2rem;
+    z-index: -1;
+    background-color: rgb(from var(--accent) r g b / .18);
+    transform: skewX(-24deg) translateX(-105%);
+    transition: transform .4s;
+  }
+
+  .link-name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 .8rem;
+  }
+  .link-title {
+    font-size: 1.05rem;
+  }
+  .link-description {
+    font-size: .8rem;
+    opacity: .7;
+  }
+  .link-domain {
+    font-size: .7rem;
+    font-style: italic;
+    opacity: .5;
+  }
+
+  .link-slashes {
+    display: flex;
+    gap: 4px;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    transition: opacity .3s, translate .3s;
+  }
+  .link-slashes i {
+    width: 3px;
+    height: 1.2rem;
+    background-color: var(--accent);
+    transform: skewX(-25deg);
+  }
+  .link-slashes i:nth-child(2) {
+    opacity: .6;
+  }
+  .link-slashes i:nth-child(3) {
+    opacity: .3;
+  }
+
+  @media (hover: hover) {
+    .link-slashes {
+      opacity: 0;
+      translate: -8px 0;
+    }
+    .link-preview-box:hover::before {
+      transform: skewX(-24deg) translateX(0);
+    }
+    .link-preview-box:hover .link-slashes {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+</style>

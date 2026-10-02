@@ -1,0 +1,121 @@
+---
+import { Image } from 'astro:assets';
+import backIcon from '../assets/images/back.svg';
+---
+<a href="/blog/" class="top-button-container">
+  <div class="circle-button">
+    <Image src={backIcon} alt="" />
+  </div>
+  <span class="top-text">Top</span>
+</a>
+
+<style>
+  /* 個別の記事のTopへボタン */
+  .top-button-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-left: 15%;
+    width: fit-content;
+    color: var(--accent);
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+  }
+  .top-button-container::before {
+    content: '';
+    position: absolute;
+    bottom: -0.2rem;
+    left: 0;
+    width: 0px;
+    height: 1px;
+    background-color: var(--accent);
+    transition: width 0.3s ease-in-out;
+  }
+  .top-button-container:hover::before {
+    width: 100%;
+  }
+  .circle-button {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    background-color: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+  }
+  .circle-button img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+    overflow: hidden;
+  }
+  .top-button-container:hover .circle-button img {
+    animation: arrowAnimation 0.9s ease-in-out infinite;
+  }
+  @keyframes arrowAnimation {
+    0% {
+      transform: translate(-50%, -50%) translateX(0);
+      opacity: 1;
+    }
+    20% {
+      transform: translate(-50%, -50%) translateX(-150%);
+      opacity: 0;
+    }
+    40% {
+      transform: translate(-50%, -50%) translateX(150%);
+      opacity: 0;
+    }
+    66% {
+      transform: translate(-50%, -50%) translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -50%) translateX(0);
+      opacity: 1;
+    }
+  }
+  .top-text {
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  @media (max-width: 768px) {
+    .top-button-container {
+      margin-left: 5%;
+    }
+  }
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // `Top`ボタンの挙動
+    const referrer = document.referrer;
+    if (referrer) {
+      const referrerUrl = new URL(referrer);
+      const path = referrerUrl.pathname;
+      // 一覧系だけ保存する
+      // 一覧: /blog/, /blog/2, /blog/3 ... , /blog/tag/xxx/
+      const isListPage =
+        path === '/blog/' ||
+        /^\/blog\/\d+\/?$/.test(path) ||
+        path.startsWith('/blog/tag/');
+      if (isListPage) {
+        sessionStorage.setItem('lastListPage', referrer);
+      }
+    }
+
+    // 戻り先があれば href を差し替える
+    const lastPage = sessionStorage.getItem('lastListPage');
+    const topButton = document.querySelector<HTMLAnchorElement>('.top-button-container');
+    if (lastPage && topButton) {
+      topButton.href = lastPage;
+    }
+  });
+</script>

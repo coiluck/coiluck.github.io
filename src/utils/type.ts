@@ -1,4 +1,4 @@
-// types.ts
+// type.ts
 import type { CollectionEntry } from 'astro:content';
 
 export type BlogPost = CollectionEntry<'posts'>;

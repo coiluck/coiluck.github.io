@@ -6,6 +6,7 @@
   "author": "coiluck",
   "license": "MIT",
   "private": true,
+  "packageManager": "pnpm@12.6.0",
   "scripts": {
     "dev": "astro dev --open",
     "build": "astro build",
@@ -14,24 +15,24 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.9",
     "@astrojs/markdoc": "^2.0.0",
     "@astrojs/markdown-satteri": "^0.3.1",
     "@astrojs/rss": "^4.0.18",
+    "@fontsource/kiwi-maru": "^5.3.0",
     "@pagefind/default-ui": "^1.5.2",
     "astro": "^7.0.0",
     "astro-expressive-code": "^0.43.1",
     "file-type": "^22.0.1",
-    "firebase": "^12.14.0",
     "github-slugger": "^2.0.0",
     "open-graph-scraper": "^6.11.0",
     "pagefind": "^1.5.2",
     "satteri": "^0.9.1",
-    "satteri-expressive-code": "^0.1.15",
-    "typescript": "^6.0.3"
+    "satteri-expressive-code": "^0.1.15"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.9",
     "@types/hast": "^3.0.4",
-    "@types/mdast": "^4.0.4"
+    "@types/mdast": "^4.0.4",
+    "typescript": "^6.0.3"
   }
 }

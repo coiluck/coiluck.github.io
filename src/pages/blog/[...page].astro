@@ -1,15 +1,16 @@
 ---
-import type { GetStaticPathsOptions } from 'astro';
+import type { GetStaticPathsOptions, Page } from 'astro';
 import { getSortedPosts, getListedPosts, POSTS_PER_PAGE } from '../../utils/getPosts';
 import { addExcerpts } from '../../utils/generateExcerpt';
+import type { BlogPostWithExcerpt } from '../../utils/type';
 import Layout from '../../layouts/Layout.astro';
-import Topbar from '../../components/topbar.astro';
-import BlogImage from '../../components/blog-image.astro';
-import BlogLine from '../../components/blog-line.astro';
-import Search from "../../components/Search.astro";
-import BlogPostCard from '../../components/blog-post-card.astro';
-import Pagination from '../../components/pagination.astro';
-import Footer from '../../components/footer.astro';
+import Topbar from '../../components/Topbar.astro';
+import BlogImage from '../../components/BlogImage.astro';
+import BlogLine from '../../components/BlogLine.astro';
+import Search from '../../components/Search.astro';
+import BlogPostCard from '../../components/BlogPostCard.astro';
+import Pagination from '../../components/Pagination.astro';
+import Footer from '../../components/Footer.astro';
 
 export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   const allSortedPosts = await getSortedPosts();
@@ -19,9 +20,6 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
   return paginatedResult;
 }
 
-import type { BlogPostWithExcerpt } from '../../utils/type';
-import type { Page } from 'astro';
-
 interface Props {
   page: Page<BlogPostWithExcerpt>;
 }
@@ -29,9 +27,6 @@ const { page } = Astro.props;
 
 // OGP用
 const ogDescription = "書く、これしか出来ないから";
-
-// 記事データ用
-import getPostMetadata from '../../utils/postMetadata'
 ---
 <Layout
   pageTitle="Blog"
@@ -39,28 +34,16 @@ import getPostMetadata from '../../utils/postMetadata'
   isBlog
 >
   <Topbar />
+
   <div class="blog-header">
     <BlogImage />
     <Search />
   </div>
+
   <main>
     <div class="blog-content">
       {page.data.length > 0 ? (
-        <>
-        {page.data.map((post) => {
-          const { title, date, tags, slug } = getPostMetadata(post);
-
-          return (
-            <BlogPostCard
-              slug={slug}
-              title={title}
-              tags={tags}
-              date={date}
-              excerpt={post.excerpt}
-            />
-          );
-        })}
-      </>
+        page.data.map((post) => <BlogPostCard post={post} />)
       ) : (
         <div style="text-align: center; padding: 2rem;">
           <p>現在、表示できる投稿がありません</p>

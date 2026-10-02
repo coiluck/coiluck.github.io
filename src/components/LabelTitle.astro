@@ -1,0 +1,73 @@
+---
+import BlogLine from './BlogLine.astro';
+
+interface Props {
+  text: string;
+  headStep: 1 | 2 | 3;
+}
+const { text, headStep = 1 } = Astro.props
+---
+{headStep === 1 && (
+  <div class="head-first">
+    <h2 id={text}>{text}</h2>
+    <div class="head-first-line">
+      <BlogLine pcSize={100} smSize={100} />
+    </div>
+  </div>
+)}
+{headStep === 2 && <h3 class="head-second" id={text}>{text}</h3>}
+{headStep === 3 && <h4 class="head-third" id={text}>{text}</h4>}
+
+<style>
+  .head-first {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 3rem 0 1rem;
+    counter-increment: sec;
+  }
+  .head-first h2 {
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+    flex-shrink: 0;
+    font-size: 1.2rem;
+    font-weight: normal;
+  }
+  .head-first h2::before {
+    content: counter(sec, decimal-leading-zero);
+    width: 2.6rem;
+    color: var(--text-dark);
+    background-color: var(--accent);
+    font-size: .8rem;
+    text-align: center;
+    clip-path: polygon(22% 0, 100% 0, 78% 100%, 0 100%);
+  }
+  .head-first-line {
+    flex: 1;
+  }
+
+  .head-second, .head-third {
+    position: relative;
+    width: fit-content;
+    color: var(--text);
+  }
+  .head-second {
+    margin: 1.6rem 0 .7rem;
+    padding: 0 .5rem 0 1.2rem;
+    font-size: 1.1rem;
+    border-bottom: 2px solid var(--accent);
+  }
+  .head-second::before {
+    content: '#';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+  .head-third {
+    margin: 1rem 0 .4rem;
+    padding: 0 .5rem 0 1rem;
+    font-size: 1rem;
+    border-left: 3px solid var(--accent);
+  }
+</style>

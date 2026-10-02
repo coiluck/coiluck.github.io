@@ -1,5 +1,6 @@
 ---
 import Live2D from '../components/Live2D.astro';
+import '@fontsource/kiwi-maru/400.css';
 
 const siteTitle = import.meta.env.SITE_TITLE;
 
@@ -11,9 +12,8 @@ interface Props {
 }
 
 const { pageTitle, ogDescription, isBlog, noindex } = Astro.props;
-const siteUrl = Astro.site ? Astro.site.toString().replace(/\/$/, '') : 'https://coiluck.moe';
-const OGImage = new URL("/images/ogp.png", siteUrl).toString();
-const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const OGImage = new URL("/images/ogp.png", Astro.site).toString();
+const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 <!DOCTYPE html>
 <html lang="ja">
@@ -24,7 +24,7 @@ const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" href="/images/favicon.ico" />
     {isBlog && (
-      <link rel="alternate" type="application/rss+xml" title="革命学舎 | Blog" href="/rss.xml" />
+      <link rel="alternate" type="application/rss+xml" title={`${siteTitle} | Blog`} href="/rss.xml" />
     )}
     <link rel="sitemap" href="/sitemap.xml" />
     <title>{siteTitle}{pageTitle && ` | ${pageTitle}`}</title>
@@ -35,14 +35,9 @@ const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
     <meta property="og:image" content={OGImage} />
     <meta property="og:site_name" content={siteTitle} />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={siteTitle} />
+    <meta name="twitter:title" content={pageTitle ?? siteTitle} />
 
     <style>
-      @font-face {
-        font-family: 'mamelon3.5';
-        src: url('/Mamelon-3.5HiRegular.woff2') format('woff2');
-        font-display: swap;
-      }
       :root {
         --primary: #1a2a4f;
         --text-dark: #0a0f1e;
@@ -52,6 +47,7 @@ const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
         --text: #0a0f1e;
         --bg-mild: #fcd1d1;
         --link: #0066cc;
+        --marker: #f6d893;
       }
       :root[data-theme="dark"] {
         --accent: #ff2a3d;
@@ -59,6 +55,7 @@ const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
         --text: #fff3f1;
         --bg-mild: #2a3a5f;
         --link: #6088C6;
+        --marker: #c43967;
       }
       html, body {
         margin: 0;
@@ -72,7 +69,6 @@ const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
         height: 100dvh;
       }
       body {
-        background-color: var(--bg);
         background-image: radial-gradient(rgb(from var(--text) r g b / .5) 1px, transparent 1px);
         background-size: 20px 20px;
         transition: all 0.5s;
@@ -85,7 +81,7 @@ const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
       * {
         margin: 0;
         padding: 0;
-        font-family: 'mamelon3.5', 'Noto Sans JP', sans-serif;
+        font-family: 'Kiwi Maru', 'BIZ UDPゴシック', 'Yu Gothic', 'Noto Sans JP', sans-serif;
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
       }
@@ -101,6 +97,18 @@ const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
       }
       a {
         text-underline-offset: .2rem;
+      }
+      .marker {
+        width: fit-content;
+        background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
+          linear-gradient(var(--marker), var(--marker)) right 60% / 0 .8em no-repeat;
+        transition: background-size .4s;
+      }
+      @media (hover: hover) {
+        .marker-trigger:hover .marker {
+          background-position: right bottom, left 60%;
+          background-size: 0 2px, 100% .8em;
+        }
       }
     </style>
   </head>
@@ -125,6 +133,7 @@ const ogUrl = new URL(Astro.url.pathname, siteUrl).toString();
         '--text': '#2a1215',
         '--bg-mild': '#ff8802',
         '--link': '#0066cc',
+        '--marker': '#94b4f9',
       };
       window.applyKonamiColors = () => {
         const root = document.documentElement;

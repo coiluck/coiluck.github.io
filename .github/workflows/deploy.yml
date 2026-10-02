@@ -16,21 +16,16 @@ jobs:
     env:
       SITE_TITLE: "革命学舎"
       PUBLIC_FIREBASE_API_KEY: "AIzaSyAZTLHMr1Z_NnCXUDcNoVQGnIyvKEjMkxw"
-      PUBLIC_FIREBASE_AUTH_DOMAIN: website-counter-3c07a.firebaseapp.com
       PUBLIC_FIREBASE_PROJECT_ID: website-counter-3c07a
-      PUBLIC_FIREBASE_STORAGE_BUCKET: website-counter-3c07a.firebasestorage.app
-      PUBLIC_FIREBASE_MESSAGING_SENDER_ID: 134517158834
-      PUBLIC_FIREBASE_APP_ID: 1:134517158834:web:4122674273525f9ef62aab
-      PUBLIC_FIREBASE_MEASUREMENT_ID: G-X89VEZKJGR
       PUBLIC_WORKER_URL: https://play-history-api.coiluck.workers.dev
     steps:
       - name: Checkout your repository using git
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
       - name: Install, build, and upload your site
-        uses: withastro/action@v5
+        uses: withastro/action@v6
         with:
-          node-version: 24
-          package-manager: pnpm@latest
+          node-version: 26
+          build-cmd: pnpm astro check && pnpm build
 
   deploy:
     needs: build
@@ -41,4 +36,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

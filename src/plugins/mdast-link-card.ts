@@ -9,6 +9,7 @@ import { access, mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileTypeFromBuffer } from "file-type";
 import ogs from "open-graph-scraper";
+import { escapeHtml } from "../utils/escapeHtml";
 
 interface Options {
   /** 表示URLをホスト名だけに短縮する */
@@ -124,8 +125,17 @@ async function getLinkCardData(
   url: URL,
   options: ResolvedOptions,
 ): Promise<CardData> {
-  const og = await getOpenGraph(url);
+  let og: Record<string, any> | null = null;
 
+  try {
+    const { result }: Record<string, any> = await ogs({ url: url.toString(), timeout: TIMEOUT });
+    og = result;
+  } catch (error: any) {
+    throw new Error (
+      `[mdast-link-card] Error: Failed to get OG data of ${url} due to ${error?.result?.error ?? error}.`,
+    );
+  }
+  
   const title = og?.ogTitle || url.hostname;
   const description = og?.ogDescription || "";
 
@@ -146,19 +156,7 @@ async function getLinkCardData(
   return { title, description, faviconUrl, ogImageUrl, displayUrl, url };
 }
 
-async function getOpenGraph(url: URL): Promise<Record<string, any> | undefined> {
-  try {
-    const { result } = await ogs({ url: url.toString(), timeout: TIMEOUT });
-    return result as Record<string, any>;
-  } catch (error: any) {
-    console.error(
-      `[mdast-link-card] Error: Failed to get OG data of ${url} due to ${error?.result?.error ?? error}.`,
-    );
-    return undefined;
-  }
-}
-
-function extractOgImage(og: Record<string, any> | undefined): string | undefined {
+function extractOgImage(og: Record<string, any> | null): string | undefined {
   const images = og?.ogImage;
   return Array.isArray(images) && images.length > 0 ? images[0].url : undefined;
 }
@@ -261,15 +259,6 @@ async function guessExtension(
 const BLOCK = "link-card";
 const bem = (element?: string) => (element ? `${BLOCK}__${element}` : BLOCK);
 
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
 function createCardHtml(data: CardData, options: ResolvedOptions): string {
   const { title, description, faviconUrl, ogImageUrl, displayUrl, url } = data;
 
@@ -298,5 +287,5 @@ function createCardHtml(data: CardData, options: ResolvedOptions): string {
 
   return `<a class="${bem()}" href="${escapeHtml(url.toString())}" target="_blank" rel="noreferrer noopener">
       ${inner}
-    </a>`;
+    </a>`.replace(/\n[ \t]*(?=\n)/g, "");
 }
