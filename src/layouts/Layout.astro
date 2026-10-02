@@ -47,6 +47,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
         --text: #0a0f1e;
         --bg-mild: #fcd1d1;
         --link: #0066cc;
+        --marker: #f6d893;
       }
       :root[data-theme="dark"] {
         --accent: #ff2a3d;
@@ -54,6 +55,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
         --text: #fff3f1;
         --bg-mild: #2a3a5f;
         --link: #6088C6;
+        --marker: #c43967;
       }
       html, body {
         margin: 0;
@@ -96,6 +98,18 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
       a {
         text-underline-offset: .2rem;
       }
+      .marker {
+        width: fit-content;
+        background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
+          linear-gradient(var(--marker), var(--marker)) right 60% / 0 .8em no-repeat;
+        transition: background-size .4s;
+      }
+      @media (hover: hover) {
+        .marker-trigger:hover .marker {
+          background-position: right bottom, left 60%;
+          background-size: 0 2px, 100% .8em;
+        }
+      }
     </style>
   </head>
   <body class="loading">
@@ -119,6 +133,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
         '--text': '#2a1215',
         '--bg-mild': '#ff8802',
         '--link': '#0066cc',
+        '--marker': '#94b4f9',
       };
       window.applyKonamiColors = () => {
         const root = document.documentElement;

@@ -47,14 +47,14 @@ const createsByYear = [...groups];
           <ol class="timeline">
             {creates.map((create) => (
               <li>
-                <a class="timeline-item" href={create.data.url} target="_blank" rel="noopener noreferrer">
+                <a class="timeline-item marker-trigger" href={create.data.url} target="_blank" rel="noopener noreferrer">
                   <time class="timeline-date">
                     {(create.data.published_date).toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric'
                     })}
                   </time>
-                  <span class="timeline-title">{create.data.title}</span>
+                  <span class="timeline-title marker">{create.data.title}</span>
                   {create.data.tags.length > 0 && (
                     <div class="tags">
                       {create.data.tags.map((tag) => (
@@ -193,15 +193,7 @@ const createsByYear = [...groups];
       opacity: .7;
     }
     .timeline-title {
-      width: fit-content;
       font-size: 1.1rem;
-      background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
-        linear-gradient(#f6d893, #f6d893) right 60% / 0 .8em no-repeat;
-      transition: background-size .4s;
-    }
-    :root[data-theme="dark"] .timeline-title {
-      background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
-        linear-gradient(#6088C6, #6088C6) right 60% / 0 .8em no-repeat;
     }
     .timeline-description {
       grid-column: 2;
@@ -212,10 +204,6 @@ const createsByYear = [...groups];
     @media (hover: hover) {
       .timeline-item:hover {
         background-color: rgb(from var(--bg-mild) r g b / .7);
-      }
-      .timeline-item:hover .timeline-title {
-        background-position: right bottom, left 60%;
-        background-size: 0 2px, 100% .8em;
       }
     }
 

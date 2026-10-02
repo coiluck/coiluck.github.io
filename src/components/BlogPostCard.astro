@@ -10,8 +10,7 @@ const { post } = Astro.props;
 const { slug, title, tags, date } = getPostMetadata(post);
 const { excerpt } = post;
 ---
-
-<article class="blog-post-item">
+<article class="blog-post-item marker-trigger">
   <time class="date">{date}</time>
   <div class="meta">
     {tags.length > 0 && (
@@ -24,7 +23,7 @@ const { excerpt } = post;
       </div>
     )}
   </div>
-  <h3><a href={`/blog/${slug}/`} class="title-link">{title}</a></h3>
+  <h3 class="marker"><a href={`/blog/${slug}/`} class="title-link">{title}</a></h3>
   {excerpt && (
     <p class="excerpt">{excerpt}</p>
   )}
@@ -78,24 +77,8 @@ const { excerpt } = post;
   }
 
   .blog-post-item h3 {
-    width: fit-content;
     color: var(--text);
     text-decoration: none;
-    background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
-      linear-gradient(#f6d893, #f6d893) right 60% / 0 .8em no-repeat;
-    transition: background-size .4s;
-  }
-  .blog-post-item:hover h3 {
-    background-position: right bottom, left 60%;
-    background-size: 0 2px, 100% .8em;
-  }
-  :root[data-theme="dark"] .blog-post-item h3 {
-    background: linear-gradient(currentcolor, currentcolor) left bottom / 100% 2px no-repeat,
-      linear-gradient(#6088C6, #6088C6) right 60% / 0 .8em no-repeat;
-  }
-  :root[data-theme="dark"] .blog-post-item:hover h3 {
-    background-position: right bottom, left 60%;
-    background-size: 0 2px, 100% .8em;
   }
 
   .title-link {
