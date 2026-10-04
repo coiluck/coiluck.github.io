@@ -8,7 +8,7 @@ custom_excerpt: "普段の音楽再生履歴をCloudflare Workers経由でD1に�
 ---
 <!-- headings -->
 
-### まえがき
+## まえがき
 Spotifyを使っているだろうか。
 Spotifyだと最近のstatsなどをWebページに埋め込むことが出来る。公式のAPIもサードパーティー製のAPIも充実している。学生は月額580円でPremiumが使用出来る点も嬉しいだろう。
 
@@ -22,7 +22,7 @@ Spotifyだと最近のstatsなどをWebページに埋め込むことが出来�
 
 今回はこれを使って[Aboutページ](/about)のMusicの項目で過去30日間の再生回数の多い順と、聞いた時間が新しい順にそれぞれ表示できるようにする。
 
-### 全体の図
+## 全体の図
 Mermaidを入れていないツケがここで回ってくるとは……。仕方がないので人間の温かみがある図を描いてみる。
 
 ```typescript
@@ -36,12 +36,12 @@ Cloudflare Workers ⇔ Your Browser
 Cloudflare D1              
 ```
 
-### 再生プレーヤー
+## 再生プレーヤー
 まず、再生履歴を送信する必要がある。今回は[自作の音楽再生アプリ](https://github.com/coiluck/kokone-music-for-mobile/releases/)にCloudflare D1かFirebaseに履歴を送信する機能を追加した。
 
 曲の再生時に、設定に従ってFirebaseかCloudflare Workers経由でD1へ保存するだけだ。送る内容は曲のタイトル、アーティスト名、送信時間の3つで十分だろう。
 
-### Cloudflare D1
+## Cloudflare D1
 保存先としてFirebaseを使うことも出来るが、今回はCloudflare Workers + D1構成を採用した。理由は
 
 1. Workers側でAPI Tokenを検証することで権限の制御ができる
@@ -53,5 +53,5 @@ Cloudflare D1
 
 2026/05/26追記: キャッシュを有効化したため、完全無欠になった
 
-### Astro内
+## Astro内
 `DOMContentLoaded` 時にCloudflare Workersにリクエストを送る。Top tracksとRecent tracksは別々に受け取り、それぞれDOMに追加する。……正直ここは書くことないな。
