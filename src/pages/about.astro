@@ -6,7 +6,7 @@ import IconImage from '../components/IconImage.astro';
 import LabelTitle from '../components/LabelTitle.astro';
 import LinkPreviewBox from '../components/LinkPreviewBox.astro';
 import MusicContainer from '../components/MusicContainer.astro';
-import { Code } from 'astro-expressive-code/components';
+import Code from '../components/Code.astro';
 
 import Footer from '../components/Footer.astro'
 ---
@@ -153,7 +153,7 @@ import Footer from '../components/Footer.astro'
       <div class="banner">
           <img src="/images/banner.png" alt="サイトバナー" width="200" class="free">
           <p>持ち帰り・直リンクご自由にどうぞ。使用時は以下のように:</p>
-          <Code code={`<a href="https://coiluck.moe/" target="_blank" rel="noopener noreferrer"><img src="https://coiluck.moe/images/banner.png" width="200" alt="革命学舎"></a>`} lang="html" />
+          <Code code={`<a href="https://coiluck.moe/" target="_blank" rel="noopener noreferrer"><img src="https://coiluck.moe/images/banner.png" width="200" alt="革命学舎"></a>`} lang="html" copyable />
           <p>相互リンクをしたい方はお問い合わせください</p>
       </div>
     </div>

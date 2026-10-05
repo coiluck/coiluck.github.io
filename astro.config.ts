@@ -14,7 +14,6 @@ import markdoc from '@astrojs/markdoc';
 
 // syntax highlight
 import expressiveCode from "satteri-expressive-code";
-import astroExpressiveCode from "astro-expressive-code";
 
 export default defineConfig({
   markdown: {
@@ -52,7 +51,6 @@ export default defineConfig({
   trailingSlash: 'always',
   site: 'https://coiluck.moe',
   integrations: [
-    astroExpressiveCode(), // codeコンポーネント用（設定は ec.config.mjs）
     markdoc({
       allowHTML: true,
       ignoreIndentation: true
