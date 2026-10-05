@@ -15,6 +15,7 @@
 .prose img {
   display: block;
   width: 90%;
+  height: auto;
   margin: 5px auto;
 }
 /* 見出しの装飾 */

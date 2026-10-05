@@ -6,6 +6,7 @@ import mdastTocCollapse from './src/plugins/mdast-toc-collapse';
 import mdastLinkCard from './src/plugins/mdast-link-card';
 import hastLinkBlank from './src/plugins/hast-link-blank'
 import hastFootnoteHover from './src/plugins/hast-footnote-hover';
+import hastImageAttrs from './src/plugins/hast-image-attrs';
 import mdastNote from './src/plugins/mdast-note';
 import mdastFigureCaption from './src/plugins/mdast-figure-caption';
 
@@ -33,6 +34,7 @@ export default defineConfig({
       hastPlugins: [
         hastLinkBlank,
         hastFootnoteHover,
+        hastImageAttrs,
         expressiveCode({
           themes: ["light-plus", "dark-plus"],
           themeCssSelector: (theme) => `[data-theme='${theme.type}']`,
