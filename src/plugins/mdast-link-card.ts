@@ -7,7 +7,6 @@ type MdastVisitorContext = Parameters<NonNullable<MdastPluginDefinition["text"]>
 import { createHash } from "node:crypto";
 import { access, mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { fileTypeFromBuffer } from "file-type";
 import ogs from "open-graph-scraper";
 import { escapeHtml } from "../utils/escapeHtml";
 
@@ -29,6 +28,18 @@ interface ResolvedOptions extends Required<Options> {}
 // public/ 配下の保存先。ここに置いたファイルはそのまま静的配信される
 const OUTPUT_DIR = "/mdast-link-card/";
 const SAVE_DIR = path.join(process.cwd(), "public", OUTPUT_DIR);
+
+// Content-Type to 拡張子
+const IMAGE_EXTENSIONS: Record<string, string> = {
+  "image/png": ".png",
+  "image/jpeg": ".jpg",
+  "image/gif": ".gif",
+  "image/webp": ".webp",
+  "image/avif": ".avif",
+  "image/svg+xml": ".svg",
+  "image/x-icon": ".ico",
+  "image/vnd.microsoft.icon": ".ico",
+};
 
 const TIMEOUT = 10000;
 
@@ -227,7 +238,7 @@ async function cacheImage(url: URL): Promise<string | null> {
     const res = await fetch(url.href, { signal: AbortSignal.timeout(TIMEOUT) });
     if (!res.ok) return null;
     const buffer = Buffer.from(await res.arrayBuffer());
-    const extension = await guessExtension(res.headers.get("Content-Type"), buffer);
+    const extension = guessExtension(res.headers.get("Content-Type"));
     const filename = `${hash}${extension}`;
 
     try {
@@ -243,16 +254,10 @@ async function cacheImage(url: URL): Promise<string | null> {
   }
 }
 
-async function guessExtension(
-  contentType: string | null,
-  buffer: Buffer,
-): Promise<string> {
-  if (contentType?.startsWith("image/svg+xml")) return ".svg";
-  if (contentType?.startsWith("image/")) {
-    const type = await fileTypeFromBuffer(buffer);
-    return type ? `.${type.ext}` : ".png";
-  }
-  return "";
+function guessExtension(contentType: string | null): string {
+  const mimeType = contentType?.split(";")[0].trim().toLowerCase() ?? "";
+  if (!mimeType.startsWith("image/")) return "";
+  return IMAGE_EXTENSIONS[mimeType] ?? ".png";
 }
 
 // HTML生成

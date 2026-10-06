@@ -10,8 +10,6 @@ import hastImageAttrs from './src/plugins/hast-image-attrs';
 import mdastNote from './src/plugins/mdast-note';
 import mdastFigureCaption from './src/plugins/mdast-figure-caption';
 
-import markdoc from '@astrojs/markdoc';
-
 // syntax highlight
 import expressiveCode from "satteri-expressive-code";
 
@@ -50,10 +48,4 @@ export default defineConfig({
   },
   trailingSlash: 'always',
   site: 'https://coiluck.moe',
-  integrations: [
-    markdoc({
-      allowHTML: true,
-      ignoreIndentation: true
-    })
-  ]
 });
