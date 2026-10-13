@@ -16,13 +16,11 @@
 
 .link-card__thumbnail {
   height: 100%;
-  aspect-ratio: 1 / 1;
 }
-.link-card__image {
+.link-card .link-card__image {
   height: 100%;
-  width: 100%;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
+  width: auto;
+  margin: 0;
   object-fit: cover;
 }
 
@@ -62,10 +60,8 @@
   gap: .5rem;
 }
 
-.link-card__favicon {
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  margin-right: 0.2rem;
+.link-card .link-card__favicon {
+  margin: 0 .2rem 0 0;
   height: .7rem;
   width: .7rem;
 }

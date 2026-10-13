@@ -8,6 +8,10 @@
     font-size: .95rem;
   }
 }
+.prose > * + * {
+  margin-top: 1rem;
+}
+
 .prose a {
   color: var(--text);
   text-decoration-color: var(--text);
@@ -62,7 +66,6 @@
 .prose details ul {
   padding-top: 10px;
   padding-bottom: 10px;
-  margin: 0;
 }
 .prose details a {
   color: var(--link);
@@ -114,11 +117,6 @@
   padding: 0 .5rem 0 1rem;
   border-left: 3px solid var(--accent);
 }
-.prose .link-card img {
-  display: initial;
-  width: initial;
-  margin: initial;
-}
 .prose sup {
   position: relative;
 }
@@ -149,21 +147,9 @@
 /* 引用 */
 .prose blockquote {
   padding: 10px 15px;
-  margin: 10px 0;
   box-sizing: border-box;
   border-left: 4px solid var(--accent);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
-}
-.prose blockquote p {
-  margin: 0;
-  padding: 0;
-}
-.prose p {
-  margin-bottom: 1rem;
-  padding: 0;
-}
-.prose aside ul {
-  margin-bottom: 0;
 }
 .prose .footnotes {
   margin-top: 32px;
@@ -177,11 +163,8 @@
   display: flex;
   flex-direction: column;
   gap: .5rem;
-  margin: 2rem 0; /* .contentについているmargin-bottomと合わせる */
+  margin-top: 2rem; /* .contentについているmargin-bottomと合わせる */
   padding-left: 1rem; /* 数字だけはみ出しちゃうので */
-}
-.prose .footnotes p {
-  margin-bottom: 0;
 }
 .prose .footnote-hover-tooltip {
   position: absolute;
@@ -217,11 +200,6 @@
 :root[data-theme="dark"] .prose code:not(pre code) {
   background-color: #484848;
 }
-.prose .expressive-code {
-  /* 「```」で囲まれたコードの上下にスペースを追加 */
-  margin: 1.2rem 0;
-  font-size: .8em;
-}
 @media (max-width: 480px) {
   .prose .expressive-code * {
     font-size: .85rem !important;
@@ -239,18 +217,12 @@
   --ec-frm-edActTabBg: #24292e !important;
 }
 .prose hr {
-  margin: 1rem 0;
   height: 1px;
   border: 0;
   background: var(--text);
 }
-.prose ul {
+.prose ul, .prose ol {
   padding-left: 1.5rem;
-  margin-bottom: 1rem;
-}
-.prose ol {
-  padding-left: 1.5rem;
-  margin-bottom: 1rem;
 }
 /* :::でのaside */
 .prose aside.note {
@@ -294,11 +266,7 @@
   background-color: rgb(from #ff5959 r g b / 0.7);
 }
 
-.prose aside.note {
-  margin-bottom: 1rem;
-}
 .prose aside.note p {
-  margin-bottom: 0;
   font-size: .9rem;
 }
 
@@ -310,4 +278,16 @@
   text-align: center;
   font-size: .8rem;
   opacity: .7;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.prose tr:not(:last-child), .prose thead tr {
+  border-bottom: 1px solid rgb(from var(--text) r g b / .5);
+}
+.prose th,
+.prose td {
+  padding: 5px 0;
 }
