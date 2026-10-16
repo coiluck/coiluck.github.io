@@ -295,7 +295,7 @@ const MY_MAIL = 'hi' + '@' + MY_DOMAIN;
 
     // リサイズ・スクロール時に位置を再計算
     window.addEventListener('resize', () => { if (isOpen) calcPosition(); });
-    window.addEventListener('scroll', () => { if (isOpen) calcPosition(); }, true);
+    window.addEventListener('scroll', () => { if (isOpen) calcPosition(); });
 
     // Contactクリックでモーダル表示 & Othersメニュー閉じる
     if (contactBtn && modal) {

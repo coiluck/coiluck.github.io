@@ -106,14 +106,9 @@ const createsByYear = [...groups];
       flex-direction: column;
       gap: 3rem;
       position: relative;
-      height: 100dvh;
+      min-height: 100dvh;
       padding-top: 8rem;
       z-index: 2;
-      overflow-y: auto;
-      scrollbar-width: none;
-      &::-webkit-scrollbar {
-        display: none;
-      }
     }
     @media (max-width: 768px) {
       .content {

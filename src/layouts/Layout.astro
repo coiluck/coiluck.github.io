@@ -67,11 +67,22 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
       }
       html {
         height: 100dvh;
+        scrollbar-gutter: stable;
+        scrollbar-width: thin;
+        scrollbar-color: var(--accent) transparent;
       }
       body {
+        isolation: isolate;
+        transition: all 0.5s;
+      }
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
         background-image: radial-gradient(rgb(from var(--text) r g b / .5) 1px, transparent 1px);
         background-size: 20px 20px;
-        transition: all 0.5s;
       }
       body.loading {
         transition: none !important;
