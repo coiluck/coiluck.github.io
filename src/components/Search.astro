@@ -115,13 +115,10 @@ import "@pagefind/default-ui/css/ui.css";
     pointer-events: none;
   }
   .search-layer.focusing {
-    background: rgba(255, 243, 241, 0.5);
+    background: rgb(from var(--bg) r g b / 0.5);
     backdrop-filter: blur(5px);
     pointer-events: auto;
     z-index: 999;
-  }
-  :root[data-theme="dark"] .search-layer.focusing {
-    background: rgba(10, 15, 30, 0.5);
   }
   .search {
     position: relative;
@@ -195,18 +192,11 @@ import "@pagefind/default-ui/css/ui.css";
     height: 150px;
     background: linear-gradient(to bottom,
       transparent 0%,
-      rgba(255, 243, 241, 0.7) 40%,
-      rgba(255, 243, 241, 0.95) 100%
+      rgb(from var(--bg) r g b / 0.7) 40%,
+      rgb(from var(--bg) r g b / 0.95) 100%
     );
     pointer-events: none;
     z-index: 1;
-  }
-  :root[data-theme="dark"] .search .pagefind-ui__results-area:has(.pagefind-ui__button)::after {
-    background: linear-gradient(to bottom,
-      transparent 0%,
-      rgba(10, 15, 30, 0.7) 40%,
-      rgba(10, 15, 30, 0.95) 100%
-    );
   }
 
   .search .pagefind-ui__results {
@@ -235,7 +225,7 @@ import "@pagefind/default-ui/css/ui.css";
   }
   .search .pagefind-ui__result-inner p mark {
     color: var(--text-dark);
-    background: #f6d893;
+    background: var(--marker);
   }
   .pagefind-ui__result-inner .pagefind-ui__result-tags .pagefind-ui__result-tag {
     color: rgb(from var(--text) r g b / 0.5);
@@ -274,15 +264,12 @@ import "@pagefind/default-ui/css/ui.css";
     border: 1px solid rgb(from var(--text) r g b / 0.5) !important;
     border-radius: 8px;
     backdrop-filter: blur(5px);
-    background: rgba(255, 243, 241, 0.8);
+    background: rgb(from var(--bg) r g b / 0.8);
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     z-index: 1;
-  }
-  :root[data-theme="dark"] .search .pagefind-ui__filter-block {
-    background: rgba(10, 15, 30, 0.8);
   }
   .search .pagefind-ui__filter-block summary {
     color: var(--text);
