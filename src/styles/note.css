@@ -1,0 +1,38 @@
+/* :::でのお知らせ */
+.prose aside.note {
+  position: relative;
+  width: 100%;
+  padding: 12px;
+  padding-left: 48px;
+  border-radius: 8px;
+  background-color: rgb(from var(--note-color) r g b / 0.5);
+}
+.prose aside.note::before {
+  content: '!';
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  border-radius: 50%;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  background-color: rgb(from var(--note-color) r g b / 0.7);
+}
+
+.prose aside.note.note--info {
+  --note-color: #aeee6f;
+}
+.prose aside.note.note--warn {
+  --note-color: #ffba70;
+}
+.prose aside.note.note--alert {
+  --note-color: #ff5959;
+}
+
+.prose aside.note p {
+  font-size: .9rem;
+}

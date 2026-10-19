@@ -12,10 +12,6 @@
   margin-top: 1rem;
 }
 
-.prose a {
-  color: var(--text);
-  text-decoration-color: var(--text);
-}
 .prose img {
   display: block;
   width: 90%;
@@ -117,31 +113,12 @@
   padding: 0 .5rem 0 1rem;
   border-left: 3px solid var(--accent);
 }
-.prose sup {
-  position: relative;
+.prose a {
+  color: var(--link);
+  text-decoration-color: var(--link);
 }
-.prose sup a {
-  color: #6088C6;
-  text-decoration: none;
-}
-.prose sup a:visited {
-  color: #6088C6;
-}
-.prose sup a:hover,
-.prose sup a:focus {
-  color: #6088C6;
-  text-decoration: none;
-}
+.prose sup a,
 .prose a.data-footnote-backref {
-  color: #6088C6;
-  text-decoration: none;
-}
-.prose a.data-footnote-backref:visited {
-  color: #6088C6;
-}
-.prose a.data-footnote-backref:hover,
-.prose a.data-footnote-backref:focus {
-  color: #6088C6;
   text-decoration: none;
 }
 /* 引用 */
@@ -165,25 +142,6 @@
   gap: .5rem;
   margin-top: 2rem; /* .contentについているmargin-bottomと合わせる */
   padding-left: 1rem; /* 数字だけはみ出しちゃうので */
-}
-.prose .footnote-hover-tooltip {
-  position: absolute;
-  top: calc(100% + .5rem);
-  width: max-content;
-  max-width: min(20rem, 80vw);
-  padding: .5rem;
-  background-color: var(--bg-mild);
-  color: var(--text);
-  border-radius: .4rem;
-  font-size: 0.8rem;
-  opacity: 0;
-  visibility: hidden;
-  z-index: 2; /* expressive-codeのheaderに1が付いているため */
-  transition: opacity .3s ease, visibility .3s ease; /* allだと計算中のtransformがずれる */
-}
-.prose sup:hover .footnote-hover-tooltip {
-  opacity: 1;
-  visibility: visible;
 }
 @font-face {
   font-family: 'JetBrainsMono';
@@ -224,52 +182,6 @@
 .prose ul, .prose ol {
   padding-left: 1.5rem;
 }
-/* :::でのaside */
-.prose aside.note {
-  position: relative;
-  width: 100%;
-  padding: 12px;
-  padding-left: 48px;
-  border-radius: 8px;
-}
-.prose aside.note::before {
-  content: '!';
-  position: absolute;
-  left: 12px;
-  top: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20px;
-  height: 20px;
-  padding: 2px;
-  border-radius: 50%;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
-}
-
-.prose aside.note.note--info {
-  background-color: rgb(from #aeee6f r g b / 0.5);
-}
-.prose aside.note.note--warn {
-  background-color: rgb(from #ffba70 r g b / 0.5);
-}
-.prose aside.note.note--alert {
-  background-color: rgb(from #ff5959 r g b / 0.5);
-}
-.prose aside.note.note--info::before {
-  background-color: rgb(from #aeee6f r g b / 0.7);
-}
-.prose aside.note.note--warn::before {
-  background-color: rgb(from #ffba70 r g b / 0.7);
-}
-.prose aside.note.note--alert::before {
-  background-color: rgb(from #ff5959 r g b / 0.7);
-}
-
-.prose aside.note p {
-  font-size: .9rem;
-}
-
 /* キャプション */
 .prose figure {
   margin-bottom: 5px;
