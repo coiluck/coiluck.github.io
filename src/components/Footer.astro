@@ -11,30 +11,31 @@ const MY_MAIL = 'hi' + '@' + MY_DOMAIN;
     <span> / </span>
     <a href="/sitemap.xml" class="footer-item">Sitemap</a>
     <span> / </span>
-    <div class="footer-others footer-item" id="footer-others-btn">Others</div>
+    <button type="button" class="footer-others footer-item" id="footer-others-btn" popovertarget="others-menu">Others</button>
   </div>
   <div>Powered by Astro</div>
 </div>
 
-<div id="others-menu" class="others-menu" role="menu" style="display:none;">
-  <span class="others-menu-item" id="contact-menu-item">Contact</span>
+<div id="others-menu" class="others-menu" role="menu" popover>
+  <button type="button" class="others-menu-item" id="contact-menu-item">Contact</button>
   <a href="/" class="others-menu-item">工事予定地</a>
-  <span class="others-menu-item" id="summon-menu-item">召喚</span>
+  <button type="button" class="others-menu-item" id="summon-menu-item">召喚</button>
 </div>
 
 <!-- Contact modal -->
-<div id="contact-modal" class="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title" style="display:none;">
-  <div class="contact-modal-backdrop" data-close></div>
+<dialog id="contact-modal" class="contact-modal" aria-labelledby="contact-modal-title">
   <div class="contact-modal-panel">
     <div class="contact-modal-header">
       <p id="contact-modal-title" class="contact-modal-title">Contact</p>
-      <button type="button" class="contact-modal-close" aria-label="Close" data-close>×</button>
+      <form method="dialog">
+        <button class="contact-modal-close" aria-label="Close">×</button>
+      </form>
     </div>
     <div class="contact-modal-body">
       <Code code={contactCode} lang="ts" />
     </div>
   </div>
-</div>
+</dialog>
 
 <style>
   .footer-container {
@@ -92,10 +93,11 @@ const MY_MAIL = 'hi' + '@' + MY_DOMAIN;
 
   /* Others popup menu */
   .others-menu {
-    display: flex;
     flex-direction: column;
     gap: .6rem;
     position: fixed;
+    margin: 0;
+    overflow: visible;
     min-width: 120px;
     padding: 0.5rem;
     background-color: rgb(from var(--bg-mild) r g b / 0.8);
@@ -103,14 +105,22 @@ const MY_MAIL = 'hi' + '@' + MY_DOMAIN;
     border-radius: .5rem;
     opacity: 0;
     transform: translateY(4px);
-    pointer-events: none;
-    z-index: 9999;
-    transition: all 0.15s ease;
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease,
+      display 0.15s allow-discrete,
+      overlay 0.15s allow-discrete;
   }
-  .others-menu.is-open {
+  .others-menu:popover-open {
+    display: flex;
     opacity: 1;
     transform: translateY(0);
-    pointer-events: auto;
+  }
+  @starting-style {
+    .others-menu:popover-open {
+      opacity: 0;
+      transform: translateY(4px);
+    }
   }
   /* 吹き出しの下向き三角 */
   .others-menu::after {
@@ -132,6 +142,7 @@ const MY_MAIL = 'hi' + '@' + MY_DOMAIN;
     text-decoration: none;
     font-size: 0.8rem;
     font-family: inherit;
+    line-height: inherit;
     background: none;
     border: none;
     border-radius: .4rem;
@@ -155,38 +166,51 @@ const MY_MAIL = 'hi' + '@' + MY_DOMAIN;
 
   /* Contact modal */
   .contact-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-  .contact-modal.is-open {
-    opacity: 1;
-  }
-  .contact-modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background-color: rgb(from var(--bg) r g b / 0.5);
-    backdrop-filter: blur(2px);
-  }
-  .contact-modal-panel {
-    position: relative;
     width: min(92vw, 560px);
     max-height: 80vh;
+    margin: auto;
     overflow: auto;
-    padding: 1rem;
+    color: var(--text);
     background-color: var(--bg-mild);
     border: 1px solid rgb(from var(--text) r g b / 0.15);
     border-radius: .75rem;
+    opacity: 0;
     transform: translateY(8px);
-    transition: transform 0.2s ease;
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      display 0.2s allow-discrete,
+      overlay 0.2s allow-discrete;
   }
-  .contact-modal.is-open .contact-modal-panel {
+  .contact-modal[open] {
+    opacity: 1;
     transform: translateY(0);
+  }
+  @starting-style {
+    .contact-modal[open] {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  .contact-modal::backdrop {
+    background-color: rgb(from var(--bg) r g b / 0.5);
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition:
+      opacity 0.2s ease,
+      display 0.2s allow-discrete,
+      overlay 0.2s allow-discrete;
+  }
+  .contact-modal[open]::backdrop {
+    opacity: 1;
+  }
+  @starting-style {
+    .contact-modal[open]::backdrop {
+      opacity: 0;
+    }
+  }
+  .contact-modal-panel {
+    padding: 1rem;
   }
   .contact-modal-header {
     display: flex;
@@ -230,14 +254,10 @@ const MY_MAIL = 'hi' + '@' + MY_DOMAIN;
   const btn = document.getElementById('footer-others-btn') as HTMLElement | null;
   const menu = document.getElementById('others-menu') as HTMLElement | null;
   const contactBtn = document.getElementById('contact-menu-item') as HTMLElement | null;
-  const modal = document.getElementById('contact-modal') as HTMLElement | null;
+  const summonBtn = document.getElementById('summon-menu-item') as HTMLElement | null;
+  const modal = document.getElementById('contact-modal') as HTMLDialogElement | null;
 
   if (btn && menu) {
-    // body直下に移動（スタッキングコンテキストの影響を避けるため）
-    document.body.appendChild(menu);
-
-    let isOpen = false;
-
     function calcPosition() {
       if (!btn || !menu) return;
       const btnRect = btn.getBoundingClientRect();
@@ -254,96 +274,30 @@ const MY_MAIL = 'hi' + '@' + MY_DOMAIN;
       menu.style.top = `${top}px`;
     }
 
-    function open() {
-      if (!menu) return;
-      menu.style.display = 'flex';
-      // display変更後に位置計算・アニメーション開始
-      requestAnimationFrame(() => {
-        calcPosition();
-        menu.classList.add('is-open');
-      });
-      isOpen = true;
-    }
-
-    function close() {
-      if (!menu) return;
-      menu.classList.remove('is-open');
-      // transitionが終わったら非表示に
-      menu.addEventListener('transitionend', () => {
-        if (!isOpen) menu.style.display = 'none';
-      }, { once: true });
-      isOpen = false;
-    }
-
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      isOpen ? close() : open();
+    menu.addEventListener('toggle', (e) => {
+      if ((e as ToggleEvent).newState === 'open') calcPosition();
     });
 
-    // 外側クリックで閉じる
-    document.addEventListener('pointerdown', (e) => {
-      if (!isOpen) return;
-      const target = e.target as Node;
-      if (menu.contains(target) || btn.contains(target)) return;
-      close();
-    });
-
-    // Escキーで閉じる
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) close();
-    });
-
-    // リサイズ・スクロール時に位置を再計算
-    window.addEventListener('resize', () => { if (isOpen) calcPosition(); });
-    window.addEventListener('scroll', () => { if (isOpen) calcPosition(); });
-
-    // Contactクリックでモーダル表示 & Othersメニュー閉じる
-    if (contactBtn && modal) {
-      let modalOpen = false;
-
-      function openModal() {
-        if (!modal) return;
-        modal.style.display = 'flex';
-        requestAnimationFrame(() => {
-          modal.classList.add('is-open');
-        });
-        modalOpen = true;
-      }
-
-      function closeModal() {
-        if (!modal) return;
-        modal.classList.remove('is-open');
-        modal.addEventListener('transitionend', () => {
-          if (!modalOpen) modal.style.display = 'none';
-        }, { once: true });
-        modalOpen = false;
-      }
-
-      contactBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        close(); // Othersメニューを閉じる
-        openModal();
-      });
-
-      // 背景や×ボタンで閉じる
-      modal.querySelectorAll('[data-close]').forEach((el) => {
-        el.addEventListener('click', closeModal);
-      });
-
-      // Escキーで閉じる
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modalOpen) closeModal();
-      });
-    }
-
-    // Live2Dを出現
-    const summonBtn = document.getElementById('summon-menu-item') as HTMLElement | null;
-    if (summonBtn) {
-      summonBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        close();
-        window.summonLive2D?.();
-      });
-    }
+    window.addEventListener('resize', () => { if (menu.matches(':popover-open')) calcPosition(); });
+    window.addEventListener('scroll', () => { if (menu.matches(':popover-open')) calcPosition(); });
   }
+
+  // Contact
+  if (contactBtn && modal) {
+    contactBtn.addEventListener('click', () => {
+      menu?.hidePopover();
+      modal.showModal();
+    });
+
+    // 背景クリックで閉じる
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.close();
+    });
+  }
+
+  // Live2Dを出現
+  summonBtn?.addEventListener('click', () => {
+    menu?.hidePopover();
+    window.summonLive2D?.();
+  });
 </script>
