@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Topbar from '../components/Topbar.astro';
 import Footer from '../components/Footer.astro';
 import BlogLine from '../components/BlogLine.astro';
+import Tags from '../components/Tags.astro';
 import { Image } from 'astro:assets';
 import createImage from '../assets/images/create.avif';
 
@@ -56,11 +57,7 @@ const createsByYear = [...groups];
                   </time>
                   <span class="timeline-title marker">{create.data.title}</span>
                   {create.data.tags.length > 0 && (
-                    <div class="tags">
-                      {create.data.tags.map((tag) => (
-                        <span class="post-tag">{tag}</span>
-                      ))}
-                    </div>
+                    <Tags tagsArr={create.data.tags} isLink={false} class="timeline-tags" />
                   )}
                   <span class="timeline-description">{create.data.description}</span>
                 </a>
@@ -202,33 +199,20 @@ const createsByYear = [...groups];
       }
     }
 
-    .tags {
-      display: flex;
+    .timeline-tags {
       flex-wrap: wrap;
       justify-content: flex-end;
       align-self: center;
       grid-column: 3;
       grid-row: 1 / span 2;
-      gap: 5px;
       font-size: .8rem;
-    }
-    .post-tag {
-      padding: 2px 7px;
-      background: rgb(from var(--accent) r g b / 0.1);
-      color: var(--text);
-      font-style: italic;
-      border: 1px solid var(--accent);
-    }
-    .post-tag::before {
-      content: '#';
-      color: var(--accent);
     }
 
     @media (max-width: 768px) {
       .timeline-item {
         grid-template-columns: 1fr;
       }
-      .timeline-description, .tags {
+      .timeline-description, .timeline-tags {
         grid-column: 1;
         grid-row: auto;
         justify-content: flex-start;

@@ -9,6 +9,7 @@ import BlogImage from '../../../../components/BlogImage.astro';
 import BlogLine from '../../../../components/BlogLine.astro';
 import Search from '../../../../components/Search.astro';
 import BlogPostCard from '../../../../components/BlogPostCard.astro';
+import Tags from '../../../../components/Tags.astro';
 import Pagination from '../../../../components/Pagination.astro';
 import Footer from '../../../../components/Footer.astro';
 import pankuzuIcon from '../../../../assets/images/pankuzu.svg';
@@ -69,12 +70,12 @@ const ogDescription = "書く、これしか出来ないから";
         <a href={`/blog/tag/${encodeURIComponent(tag)}/`}>{tag}</a>
       </div>
 
-      <span class="tag-header-query">
+      <div class="tag-header-query">
         <span>WHERE</span>
         <span>tag</span>
         <span>=</span>
-        <span class="tag-header-query-value">{tag}</span>
-      </span>
+        <Tags tagsArr={[tag]} isLink={false} />
+      </div>
     </div>
 
     <BlogLine
@@ -168,19 +169,6 @@ const ogDescription = "書く、これしか出来ないから";
     gap: .5rem;
     align-items: center;
     font-size: 1.1rem;
-  }
-  .tag-header-query-value {
-    position: relative;
-    padding: .15rem .5rem;
-    background: rgb(from var(--accent) r g b / 0.1);
-    color: var(--text);
-    text-decoration: none;
-    font-style: italic;
-    border: 1px solid var(--accent);
-  }
-  .tag-header-query-value::before {
-    content: '#';
-    color: var(--accent);
   }
   main {
     display: flex;

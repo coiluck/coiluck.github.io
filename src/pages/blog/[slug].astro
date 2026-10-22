@@ -7,6 +7,8 @@ import Layout from '../../layouts/Layout.astro';
 import Topbar from '../../components/Topbar.astro';
 import BlogImage from '../../components/BlogImage.astro';
 import BlogLine from '../../components/BlogLine.astro';
+import Tags from '../../components/Tags.astro';
+import DateBadge from '../../components/DateBadge.astro';
 import Footer from '../../components/Footer.astro';
 import TopButton from '../../components/TopButton.astro';
 import '../../styles/link-card.css';
@@ -58,18 +60,10 @@ const markdown = post.body ?? '';
     data-pagefind-sort={isUnlisted ? undefined : `date:${date}`}
   >
     <header class="post-head">
-      <time class="date">{date}</time>
+      <DateBadge date={date} />
       <h1 class="post-title">{title}</h1>
       <div class="post-sub">
-        <div class="tags">
-          {tags.length > 0 && (
-            tags.map((tag) => (
-              <a class="post-tag" href={`/blog/tag/${encodeURIComponent(tag)}/`}>
-                <span data-pagefind-filter="tag">{tag}</span>
-              </a>
-            ))
-          )}
-        </div>
+        <Tags tagsArr={tags} isLink={true} class="post-tags" />
         <button id="copy" class="copy-md" data-markdown={markdown} title="Copy as Markdown">
           <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="9" y="9" width="13" height="13" rx="2" />
@@ -118,14 +112,16 @@ const markdown = post.body ?? '';
     }
     
     article {
-      width: 70%;
-      margin: 0 auto;
+      --out: 1rem;
+      width: calc(70% - var(--out));
+      margin-left: calc(15% + var(--out));
       background: rgb(from var(--bg) r g b / .3);
       backdrop-filter: blur(1px);
     }
     @media (max-width: 768px) {
       article {
-        width: 90%;
+        width: calc(90% - var(--out));
+        margin-left: calc(5% + var(--out));
       }
     }
 
@@ -137,37 +133,6 @@ const markdown = post.body ?? '';
       .post-head {
         padding: 3.4rem 1rem 1.5rem;
       }
-    }
-
-    .date {
-      position: absolute;
-      top: .6rem;
-      left: -1rem;
-      z-index: 0;
-      padding: .5rem 1.5rem .5rem 1rem;
-      font-size: .9rem;
-      line-height: 1;
-      color: var(--text-dark);
-    }
-    @media (max-width: 768px) {
-      .date {
-        left: -.6rem;
-      }
-    }
-    .date::before,
-    .date::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
-    }
-    .date::before {
-      background: rgb(from var(--text) r g b / .3);
-      transform: translate(5px, 5px);
-    }
-    .date::after {
-      background: var(--accent);
     }
 
     .post-title {
@@ -183,43 +148,11 @@ const markdown = post.body ?? '';
       align-items: center;
       gap: 1rem;
       width: 100%;
-    }
-    
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
       font-size: 0.9rem;
     }
-    .post-tag {
-      position: relative;
-      padding: 2px 8px;
-      background: rgb(from var(--accent) r g b / 0.1);
-      color: var(--text);
-      text-decoration: none;
-      font-style: italic;
-      border: 1px solid var(--accent);
-      transition: all 0.3s ease;
-    }
-    .post-tag::before {
-      content: '#';
-      color: var(--accent);
-    }
-    .post-tag::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 0%;
-      background: rgb(from var(--accent) r g b / 0.1);
-      transition: all 0.3s ease;
-    }
-    .post-tag:hover {
-      background: rgb(from var(--accent) r g b / 0.2);
-    }
-    .post-tag:hover::after {
-      height: 100%;
+    
+    .post-tags {
+      flex-wrap: wrap;
     }
 
     .copy-md {

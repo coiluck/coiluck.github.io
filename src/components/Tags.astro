@@ -1,0 +1,60 @@
+---
+interface Props {
+  tagsArr: string[];
+  isLink: boolean;
+  class?: string;
+}
+
+// rest は親から font size を受け取るために必要
+const { tagsArr, isLink, class: className, ...rest } = Astro.props;
+---
+<div class:list={['tags', className]} {...rest}>
+  {tagsArr.map((tag) => isLink ? (
+    <a class="tag" href={`/blog/tag/${encodeURIComponent(tag)}/`}>
+      <span data-pagefind-filter="tag">{tag}</span>
+    </a>
+  ) : (
+    <span class="tag">{tag}</span>
+  ))}
+</div>
+
+<style>
+  .tags {
+    display: flex;
+    gap: 5px;
+  }
+
+  .tag {
+    position: relative;
+    padding: 2px 8px;
+    background: rgb(from var(--accent) r g b / 0.1);
+    color: var(--text);
+    text-decoration: none;
+    font-style: italic;
+    border: 1px solid var(--accent);
+  }
+  .tag::before {
+    content: '#';
+    color: var(--accent);
+  }
+
+  a.tag {
+    transition: all 0.3s ease;
+  }
+  a.tag::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: rgb(from var(--accent) r g b / 0.1);
+    transition: all 0.3s ease;
+  }
+  a.tag:hover {
+    background: rgb(from var(--accent) r g b / 0.2);
+  }
+  a.tag:hover::after {
+    height: 100%;
+  }
+</style>
