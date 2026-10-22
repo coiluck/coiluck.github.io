@@ -4,34 +4,20 @@ interface Props {
 }
 
 const { date } = Astro.props;
+
+const display = new Date(date).toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC'
+})
 ---
-<time class="date">{date}</time>
+<time class="date" datetime={date}>{display}</time>
 
 <style>
-  /* 親が position: relative と --out（左にはみ出す幅）を持つ前提 */
   .date {
-    position: absolute;
-    top: .4rem;
-    left: calc(-1 * var(--out));
-    z-index: 0;
-    padding: .5rem 1.5rem .5rem 1rem;
     font-size: .9rem;
     line-height: 1;
-    color: var(--text-dark);
-  }
-  .date::before,
-  .date::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
-  }
-  .date::before {
-    background: rgb(from var(--text) r g b / .3);
-    transform: translate(5px, 5px);
-  }
-  .date::after {
-    background: var(--accent);
+    color: rgb(from var(--text) r g b / .6);
   }
 </style>

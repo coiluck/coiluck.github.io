@@ -126,7 +126,6 @@
   padding: 10px 15px;
   box-sizing: border-box;
   border-left: 4px solid var(--accent);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.14);
 }
 .prose .footnotes {
   margin-top: 32px;

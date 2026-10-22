@@ -13,8 +13,8 @@ const { slug, title, tags, date } = getPostMetadata(post);
 const { excerpt } = post;
 ---
 <article class="blog-post-item marker-trigger">
-  <DateBadge date={date} />
   <div class="meta">
+    <DateBadge date={date} />
     {tags.length > 0 && (
       <Tags tagsArr={tags} isLink={true} class="card-tags" />
     )}
@@ -27,15 +27,11 @@ const { excerpt } = post;
 
 <style>
   .blog-post-item {
-    --cut: 3rem;
-    --out: 1rem; /* 日付がカードの左からはみ出す幅 */
     display: flex;
     flex-direction: column;
     gap: .25rem;
     position: relative;
-    width: calc(100% - var(--out));
-    padding: 3rem 1rem 1rem;
-    margin-left: var(--out);
+    padding: 1rem;
     isolation: isolate;
     color: var(--text);
     text-decoration: none;
@@ -50,14 +46,6 @@ const { excerpt } = post;
     z-index: -1;
     background: rgb(from var(--bg-mild) r g b / 0.5);
     backdrop-filter: blur(1px);
-    clip-path: polygon(
-      0% 0%,
-      100% 0%,
-      100% calc(100% - var(--cut)),  /* 右下カット */
-      calc(100% - var(--cut)) 100%,
-      0% 100%,
-      0% var(--cut)
-    );
   }
 
   .blog-post-item.is-visible {
@@ -91,13 +79,12 @@ const { excerpt } = post;
   .meta {
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
+    align-items: center;
     gap: 1rem;
     width: 100%;
     padding: 1px;
     font-size: 0.9rem;
     text-wrap: nowrap;
-    color: rgb(from var(--text) r g b / .5);
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;

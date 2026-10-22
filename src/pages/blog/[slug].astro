@@ -5,7 +5,6 @@ import getPostMetadata from '../../utils/postMetadata';
 import { generateExcerpt } from '../../utils/generateExcerpt';
 import Layout from '../../layouts/Layout.astro';
 import Topbar from '../../components/Topbar.astro';
-import BlogImage from '../../components/BlogImage.astro';
 import BlogLine from '../../components/BlogLine.astro';
 import Tags from '../../components/Tags.astro';
 import DateBadge from '../../components/DateBadge.astro';
@@ -48,10 +47,6 @@ const markdown = post.body ?? '';
   noindex={isUnlisted}
 >
   <Topbar />
-
-  <div class="blog-header">
-    <BlogImage />
-  </div>
 
   <article
     class="blog-post"
@@ -102,36 +97,26 @@ const markdown = post.body ?? '';
   <Footer />
 
   <style>
-    .blog-header {
-      padding: 8rem 0 0;
-    }
-    @media (max-width: 768px) {
-      .blog-header {
-        padding-top: 6rem;
-      }
-    }
-    
     article {
-      --out: 1rem;
-      width: calc(70% - var(--out));
-      margin-left: calc(15% + var(--out));
+      width: 70%;
+      margin: 8rem 0 0 15%;
       background: rgb(from var(--bg) r g b / .3);
       backdrop-filter: blur(1px);
     }
     @media (max-width: 768px) {
       article {
-        width: calc(90% - var(--out));
-        margin-left: calc(5% + var(--out));
+        width: 90%;
+        margin: 6rem 0 0 5%;
       }
     }
 
     .post-head {
       position: relative;
-      padding: 3.6rem 1.5rem 0;
+      padding: 1.5rem 1.5rem 0;
     }
     @media (max-width: 768px) {
       .post-head {
-        padding: 3.4rem 1rem 1.5rem;
+        padding: 1.5rem 1rem 1.5rem;
       }
     }
 
