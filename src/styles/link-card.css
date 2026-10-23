@@ -4,7 +4,7 @@
   margin: 12px 0;
   height: 76.67px;
   display: flex;
-  border: 1px solid rgb(from var(--text) r g b /0.5);
+  border: 1px solid var(--fg-3);
   text-decoration: none;
   overflow: hidden;
   transition: all 0.3s ease-in-out;
@@ -46,9 +46,8 @@
 }
 .link-card__description {
   width: 100%;
-  color: var(--text);
   font-size: 0.7rem;
-  opacity: .7;
+  color: var(--fg-4);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

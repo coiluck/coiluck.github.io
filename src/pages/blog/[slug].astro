@@ -7,7 +7,7 @@ import Layout from '../../layouts/Layout.astro';
 import Topbar from '../../components/Topbar.astro';
 import BlogLine from '../../components/BlogLine.astro';
 import Tags from '../../components/Tags.astro';
-import DateBadge from '../../components/DateBadge.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
 import Footer from '../../components/Footer.astro';
 import TopButton from '../../components/TopButton.astro';
 import '../../styles/link-card.css';
@@ -55,7 +55,7 @@ const markdown = post.body ?? '';
     data-pagefind-sort={isUnlisted ? undefined : `date:${date}`}
   >
     <header class="post-head">
-      <DateBadge date={date} />
+      <FormattedDate date={date} />
       <h1 class="post-title">{title}</h1>
       <div class="post-sub">
         <Tags tagsArr={tags} isLink={true} class="post-tags" />

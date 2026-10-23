@@ -2,7 +2,7 @@
 import { type BlogPostWithExcerpt } from '../utils/type'
 import getPostMetadata from '../utils/postMetadata';
 import Tags from './Tags.astro';
-import DateBadge from './DateBadge.astro';
+import FormattedDate from './FormattedDate.astro';
 
 interface Props {
   post: BlogPostWithExcerpt
@@ -14,7 +14,7 @@ const { excerpt } = post;
 ---
 <article class="blog-post-item marker-trigger">
   <div class="meta">
-    <DateBadge date={date} />
+    <FormattedDate date={date} />
     {tags.length > 0 && (
       <Tags tagsArr={tags} isLink={true} class="card-tags" />
     )}
@@ -103,7 +103,7 @@ const { excerpt } = post;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
-    opacity: .7;
+    color: var(--fg-4);
   }
 </style>
 

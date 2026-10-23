@@ -204,7 +204,7 @@ import Footer from '../components/Footer.astro'
     }
     .about-sub {
       font-size: .9rem;
-      opacity: .7;
+      color: var(--fg-4);
     }
     .swatch {
       display: inline-block;
@@ -235,14 +235,14 @@ import Footer from '../components/Footer.astro'
     }
     .item-list {
       list-style: none;
-      border-top: 1px solid rgb(from var(--text) r g b / .35);
+      border-top: 1px solid var(--fg-2);
     }
     .item-list li {
       display: flex;
       align-items: center;
       gap: .7rem;
       padding: .4rem .6rem;
-      border-bottom: 1px solid rgb(from var(--text) r g b / .35);
+      border-bottom: 1px solid var(--fg-2);
     }
     .item-list li::before {
       content: '';
@@ -256,7 +256,7 @@ import Footer from '../components/Footer.astro'
     .profile, .thanks {
       display: grid;
       grid-template-columns: auto 1fr;
-      border-top: 1px solid rgb(from var(--text) r g b / .35);
+      border-top: 1px solid var(--fg-2);
     }
     .profile {
       margin-top: 1rem;
@@ -264,7 +264,7 @@ import Footer from '../components/Footer.astro'
     .profile dt, .profile dd,
     .thanks dt, .thanks dd {
       padding: .55rem .6rem;
-      border-bottom: 1px solid rgb(from var(--text) r g b / .35);
+      border-bottom: 1px solid var(--fg-2);
     }
     .profile dd, .thanks dd {
       padding-left: clamp(1rem, 4vw, 3rem); /* 400 ~ 1200 */
@@ -272,10 +272,7 @@ import Footer from '../components/Footer.astro'
     .profile dt {
       font-size: .8rem;
       font-style: italic;
-      opacity: .7;
-    }
-    .thanks dd {
-      opacity: .8;
+      color: var(--fg-4);
     }
     .thanks a {
       color: var(--link);

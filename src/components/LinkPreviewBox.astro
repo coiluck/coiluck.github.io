@@ -28,8 +28,8 @@ const domain = new URL(url).hostname;
     padding: .7rem .6rem;
     color: var(--text);
     text-decoration: none;
-    border-top: 1px solid rgb(from var(--text) r g b / .4);
-    border-bottom: 1px solid rgb(from var(--text) r g b / .4);
+    border-top: 1px solid var(--fg-2);
+    border-bottom: 1px solid var(--fg-2);
     overflow: hidden;
   }
   .link-preview-box::before {
@@ -37,7 +37,7 @@ const domain = new URL(url).hostname;
     position: absolute;
     inset: 0 -2rem;
     z-index: -1;
-    background-color: rgb(from var(--accent) r g b / .18);
+    background-color: rgb(from var(--accent) r g b / .2);
     transform: skewX(-24deg) translateX(-105%);
     transition: transform .4s;
   }
@@ -53,12 +53,12 @@ const domain = new URL(url).hostname;
   }
   .link-description {
     font-size: .8rem;
-    opacity: .7;
+    color: var(--fg-4);
   }
   .link-domain {
     font-size: .7rem;
     font-style: italic;
-    opacity: .5;
+    color: var(--fg-3);
   }
 
   .link-slashes {

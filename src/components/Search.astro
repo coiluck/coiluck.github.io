@@ -135,7 +135,7 @@ import "@pagefind/default-ui/css/ui.css";
     outline: none;
   }
   .search .pagefind-ui__form::before {
-    background-color: rgb(from var(--text) r g b / 0.3);
+    background-color: var(--fg-2);
     opacity: 1;
   }
   .search .pagefind-ui__search-input {
@@ -143,7 +143,7 @@ import "@pagefind/default-ui/css/ui.css";
     color: var(--text);
     font-size: 1rem;
     font-weight: bold;
-    border: 2px solid rgb(from var(--text) r g b / 0.3);
+    border: 2px solid var(--fg-2);
     border-radius: calc(64px * 0.8 * 0.5);
     background: transparent;
     transition: all 0.3s ease-in-out;
@@ -211,7 +211,7 @@ import "@pagefind/default-ui/css/ui.css";
   }
   .search .pagefind-ui__results .pagefind-ui__result {
     padding: 20px 0;
-    border-top: 1px solid rgb(from var(--text) r g b / 0.5);
+    border-top: 1px solid var(--fg-3);
     border-bottom: none !important;
   }
   .search .pagefind-ui__result .pagefind-ui__result-inner {
@@ -228,7 +228,7 @@ import "@pagefind/default-ui/css/ui.css";
     background: var(--marker);
   }
   .pagefind-ui__result-inner .pagefind-ui__result-tags .pagefind-ui__result-tag {
-    color: rgb(from var(--text) r g b / 0.5);
+    color: var(--fg-3);
     font-size: .7rem;
     background: none;
   }
@@ -261,7 +261,7 @@ import "@pagefind/default-ui/css/ui.css";
     position: absolute;
     width: 100%;
     border-bottom: none !important;
-    border: 1px solid rgb(from var(--text) r g b / 0.5) !important;
+    border: 1px solid var(--fg-3) !important;
     border-radius: 8px;
     backdrop-filter: blur(5px);
     background: rgb(from var(--bg) r g b / 0.8);

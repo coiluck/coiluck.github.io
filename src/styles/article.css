@@ -21,7 +21,7 @@
 /* 見出しの装飾 */
 .prose details {
   padding: 10px 20px;
-  border: 1px solid rgb(from var(--text) r g b / .5);
+  border: 1px solid var(--fg-3);
   border-radius: 8px;
   user-select: none;
   -webkit-user-select: none;
@@ -188,7 +188,7 @@
 .prose figure figcaption {
   text-align: center;
   font-size: .8rem;
-  opacity: .7;
+  color: var(--fg-4);
 }
 
 .prose table {
@@ -196,7 +196,7 @@
   border-collapse: collapse;
 }
 .prose tr:not(:last-child), .prose thead tr {
-  border-bottom: 1px solid rgb(from var(--text) r g b / .5);
+  border-bottom: 1px solid var(--fg-3);
 }
 .prose th,
 .prose td {

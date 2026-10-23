@@ -41,6 +41,10 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
       :root {
         --primary: #1a2a4f;
         --text-dark: #0a0f1e;
+        --fg-1: rgb(from var(--text) r g b / .15);
+        --fg-2: rgb(from var(--text) r g b / .3);
+        --fg-3: rgb(from var(--text) r g b / .5);
+        --fg-4: rgb(from var(--text) r g b / .7);
         /* ここから変わる部分 */
         --accent: #ff7f7e;
         --bg: #fff3f1;
@@ -58,8 +62,6 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
         --marker: #8c3d5e;
       }
       html, body {
-        margin: 0;
-        padding: 0;
         width: 100%;
         color: var(--text);
         line-height: 1.6;
@@ -81,7 +83,7 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
         inset: 0;
         z-index: -1;
         pointer-events: none;
-        background-image: radial-gradient(rgb(from var(--text) r g b / .5) 1px, transparent 1px);
+        background-image: radial-gradient(var(--fg-3) 1px, transparent 1px);
         background-size: 20px 20px;
       }
       body.loading {

@@ -31,7 +31,7 @@ import LabelTitle from './LabelTitle.astro';
     grid-template-columns: auto 1fr;
     align-items: center;
     text-decoration: none;
-    border: 1px solid rgb(from var(--text) r g b / 0.8);
+    border: 1px solid var(--fg-4);
     background-color: rgb(from var(--bg-mild) r g b / 0.5);
     backdrop-filter: blur(2px);
   }
@@ -41,7 +41,7 @@ import LabelTitle from './LabelTitle.astro';
     align-items: center;
     text-decoration: none;
     color: var(--text);
-    border-bottom: 1px solid rgb(from var(--text) r g b / 0.8);
+    border-bottom: 1px solid var(--fg-4);
     background-color: rgb(from var(--bg) r g b / 0.5);
     backdrop-filter: blur(2px);
   }
@@ -88,14 +88,14 @@ import LabelTitle from './LabelTitle.astro';
   }
   .music-text-container .music-url {
     font-size: 0.7rem;
-    color: rgb(from var(--text) r g b / 0.5);
+    color: var(--fg-3);
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
   }
   .music-text-container .music-time {
     font-size: 0.7rem;
-    color: rgb(from var(--text) r g b / 0.5);
+    color: var(--fg-3);
   }
 
   .music-text-sub-container {
