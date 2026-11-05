@@ -142,7 +142,7 @@ import "@pagefind/default-ui/css/ui.css";
     outline: none;
     color: var(--text);
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: var(--fw-bold);
     border: 2px solid var(--fg-2);
     border-radius: calc(64px * 0.8 * 0.5);
     background: transparent;
@@ -150,13 +150,13 @@ import "@pagefind/default-ui/css/ui.css";
   }
   .search .pagefind-ui__search-input::placeholder {
     color: var(--text);
-    font-weight: normal;
+    font-weight: var(--fw-normal);
     opacity: 0.5;
   }
   .search .pagefind-ui__search-input[type="text"] {
     color: var(--text);
     backdrop-filter: blur(1px);
-    font-weight: normal;
+    font-weight: var(--fw-normal);
   }
   .search .pagefind-ui__search-input[type="text"]:focus {
     border: 2px solid var(--text);
@@ -169,7 +169,7 @@ import "@pagefind/default-ui/css/ui.css";
   .search .pagefind-ui__message {
     padding: 10px 0;
     color: var(--text);
-    font-weight: normal;
+    font-weight: var(--fw-normal);
   }
   .search .pagefind-ui__drawer {
     position: absolute;
@@ -219,6 +219,9 @@ import "@pagefind/default-ui/css/ui.css";
   }
   .search .pagefind-ui__results .pagefind-ui__result .pagefind-ui__result-inner p {
     color: var(--text);
+  }
+  .search .pagefind-ui__results .pagefind-ui__result .pagefind-ui__result-excerpt {
+    font-weight: var(--fw-normal);
   }
   :root[data-theme="dark"] .search .pagefind-ui__results .pagefind-ui__result .pagefind-ui__result-inner p a {
     color: var(--text);
@@ -273,7 +276,7 @@ import "@pagefind/default-ui/css/ui.css";
   }
   .search .pagefind-ui__filter-block summary {
     color: var(--text);
-    font-weight: bold;
+    font-weight: var(--fw-bold);
     cursor: pointer;
     padding: 10px;
     list-style: none;
@@ -310,6 +313,9 @@ import "@pagefind/default-ui/css/ui.css";
   }
   .search .pagefind-ui__filter-name {
     cursor: pointer;
+  }
+  .search .pagefind-ui__filter-group .pagefind-ui__filter-value .pagefind-ui__filter-label {
+    font-weight: var(--fw-normal);
   }
   details {
     /* 中身のスタイル */

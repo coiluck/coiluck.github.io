@@ -32,7 +32,7 @@ const { text, headStep = 1 } = Astro.props
     gap: .8rem;
     flex-shrink: 0;
     font-size: 1.2rem;
-    font-weight: normal;
+    font-weight: var(--fw-normal);
   }
   .head-first h2::before {
     content: counter(sec, decimal-leading-zero);

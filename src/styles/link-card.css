@@ -42,7 +42,11 @@
 .link-card__title {
   color: var(--text);
   font-size: .9rem;
-  font-weight: bold;
+  font-weight: var(--fw-bold);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .link-card__description {
   width: 100%;

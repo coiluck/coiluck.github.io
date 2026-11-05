@@ -1,6 +1,7 @@
 ---
 import Live2D from '../components/Live2D.astro';
-import '@fontsource/kiwi-maru/400.css';
+import '@fontsource/kiwi-maru/300.css';
+import '@fontsource/kiwi-maru/500.css';
 
 const siteTitle = import.meta.env.SITE_TITLE;
 
@@ -45,6 +46,8 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
         --fg-2: rgb(from var(--text) r g b / .3);
         --fg-3: rgb(from var(--text) r g b / .5);
         --fg-4: rgb(from var(--text) r g b / .7);
+        --fw-normal: 300;
+        --fw-bold: 500;
         /* ここから変わる部分 */
         --accent: #ff7f7e;
         --bg: #fff3f1;
@@ -72,10 +75,12 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
         scrollbar-gutter: stable;
         scrollbar-width: thin;
         scrollbar-color: var(--accent) transparent;
+        font-synthesis-weight: none;
       }
       body {
         isolation: isolate;
         transition: all 0.5s;
+        font-weight: var(--fw-normal);
       }
       body::before {
         content: '';
@@ -97,6 +102,12 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
         font-family: 'Kiwi Maru', 'BIZ UDPゴシック', 'Yu Gothic', 'Noto Sans JP', sans-serif;
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
+      }
+      button, input, select, textarea {
+        font-weight: inherit;
+      }
+      h1, h2, h3, h4, h5, h6, strong, b, th {
+        font-weight: var(--fw-bold);
       }
       img:not(.free) {
         user-select: none;
