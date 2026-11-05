@@ -120,7 +120,17 @@ const ogUrl = new URL(Astro.url.pathname, Astro.site).toString();
         -o-user-drag: none;
       }
       a {
+        color: var(--link);
         text-underline-offset: .2rem;
+      }
+      .prose a[target="_blank"]:not(.link-card)::after,
+      .text-link[target="_blank"]::after {
+        content: "";
+        margin: 0 .2em;
+        padding-left: .6em;
+        padding-bottom: .3em;
+        background-color: currentcolor;
+        mask: url("../assets/images/external.svg") center / .8em no-repeat;
       }
       .marker {
         width: fit-content;

@@ -141,7 +141,7 @@ import Footer from '../components/Footer.astro'
 
       <LabelTitle text = "感謝" headStep = {1} />
       <dl class="thanks">
-        <dt><a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a></dt>
+        <dt><a href="https://astro.build" class="text-link" target="_blank" rel="noopener noreferrer">Astro</a></dt>
         <dd>これで作っている</dd>
         <dt>GitHub Pages</dt>
         <dd>ホストしてくれている</dd>
@@ -273,10 +273,6 @@ import Footer from '../components/Footer.astro'
       font-size: .8rem;
       font-style: italic;
       color: var(--fg-4);
-    }
-    .thanks a {
-      color: var(--link);
-      text-decoration: none;
     }
 
     .banner img {

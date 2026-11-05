@@ -63,10 +63,6 @@
   padding-top: 10px;
   padding-bottom: 10px;
 }
-.prose details a {
-  color: var(--link);
-  text-decoration: none;
-}
 .prose h2, .prose h3, .prose h4 {
   position: relative;
   width: fit-content;
@@ -113,13 +109,11 @@
   padding: 0 .5rem 0 1rem;
   border-left: 3px solid var(--accent);
 }
-.prose a {
-  color: var(--link);
-  text-decoration-color: var(--link);
-}
 .prose sup a,
-.prose a.data-footnote-backref {
+.prose a.data-footnote-backref,
+.prose details a {
   text-decoration: none;
+  user-select: none;
 }
 /* 引用 */
 .prose blockquote {
