@@ -4,11 +4,64 @@ import Topbar from '../components/Topbar.astro';
 
 import IconImage from '../components/IconImage.astro';
 import LabelTitle from '../components/LabelTitle.astro';
-import LinkPreviewBox from '../components/LinkPreviewBox.astro';
+import LinkPreviewList from '../components/LinkPreviewList.astro';
 import MusicContainer from '../components/MusicContainer.astro';
 import Code from '../components/Code.astro';
 
 import Footer from '../components/Footer.astro'
+
+const links = [
+  {
+    title: 'GitHub',
+    description: '最近はTauriとかが好き',
+    url: 'https://github.com/coiluck/',
+  },
+  {
+    title: 'Twitter',
+    description: 'Xではありません',
+    url: 'https://twitter.com/RabbitGbf',
+  },
+  {
+    title: 'chichi-pui',
+    description: 'AIイラスト1',
+    url: 'https://www.chichi-pui.com/users/coiluck/',
+  },
+  {
+    title: 'Aipictors',
+    description: 'AIイラスト2',
+    url: 'https://www.aipictors.com/users/6f92b753-d44f-dd7d-6c98-3bb495495278/',
+  },
+  {
+    title: 'pixiv',
+    description: '更新しない。ナゾノクサの絵ばかり',
+    url: 'https://www.pixiv.net/users/63923759',
+  },
+  {
+    title: 'Truth Social',
+    description: '二日で飽きた',
+    url: 'https://truthsocial.com/@coiluck',
+  },
+  {
+    title: 'Steam',
+    description: '遊ぶ',
+    url: 'https://steamcommunity.com/id/coiluck/',
+  },
+  {
+    title: 'YouTube',
+    description: '限定公開で動画を共有する時に使う',
+    url: 'https://www.youtube.com/@kozakurakokone',
+  },
+  {
+    title: 'Misskey',
+    description: '予備',
+    url: 'https://misskey.io/@Asiraat/',
+  },
+  {
+    title: 'mixi2',
+    description: '予備',
+    url: 'https://mixi.social/@coiluck',
+  },
+];
 ---
 
 <Layout pageTitle="About" ogDescription="自己紹介">
@@ -35,58 +88,7 @@ import Footer from '../components/Footer.astro'
       </header>
 
       <LabelTitle text = "アカウント" headStep = {1} />
-      <div class="links-box">
-        <LinkPreviewBox
-          title="GitHub"
-          description="最近はTauriとかが好き"
-          url="https://github.com/coiluck/"
-        />
-        <LinkPreviewBox
-          title="Twitter"
-          description="Xではありません"
-          url="https://twitter.com/RabbitGbf"
-        />
-        <LinkPreviewBox
-          title="chichi-pui"
-          description="AIイラスト1"
-          url="https://www.chichi-pui.com/users/coiluck/"
-        />
-        <LinkPreviewBox
-          title="Aipictors"
-          description="AIイラスト2"
-          url="https://www.aipictors.com/users/6f92b753-d44f-dd7d-6c98-3bb495495278/"
-        />
-        <LinkPreviewBox
-          title="pixiv"
-          description="更新しない。ナゾノクサの絵ばかり"
-          url="https://www.pixiv.net/users/63923759"
-        />
-        <LinkPreviewBox
-          title="Truth Social"
-          description="二日で飽きた"
-          url="https://truthsocial.com/@coiluck"
-        />
-        <LinkPreviewBox
-          title="Steam"
-          description="遊ぶ"
-          url="https://steamcommunity.com/id/coiluck/"
-        />
-        <LinkPreviewBox
-          title="YouTube"
-          description="限定公開で動画を共有する時に使う"
-          url="https://www.youtube.com/@kozakurakokone"
-        />
-        <LinkPreviewBox
-          title="Misskey"
-          description="予備"
-          url="https://misskey.io/@Asiraat/"
-        />
-        <LinkPreviewBox
-          title="mixi2"
-          description="予備"
-          url="https://mixi.social/@coiluck"
-        />
-      </div>
+      <LinkPreviewList links={links} />
 
       <LabelTitle text = "Love" headStep = {1} />
       <LabelTitle text = "Novel" headStep = {2} />
@@ -218,16 +220,6 @@ import Footer from '../components/Footer.astro'
 
     .category-text {
       padding-left: 1.2rem;
-    }
-    .links-box {
-      display: grid;
-      grid-template-columns: 1fr;
-      column-gap: 2rem;
-    }
-    @media (min-width: 768px) {
-      .links-box {
-        grid-template-columns: 1fr 1fr;
-      }
     }
 
     .list-caption {
