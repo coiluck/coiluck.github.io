@@ -25,6 +25,7 @@ jobs:
         uses: withastro/action@v6
         with:
           node-version: 26
+          cache: false
           build-cmd: pnpm astro check && pnpm build --timings
 
   deploy:

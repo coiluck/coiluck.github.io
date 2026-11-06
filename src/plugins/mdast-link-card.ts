@@ -1,11 +1,35 @@
-import { defineMdastPlugin } from "satteri";
-import type { MdastPluginDefinition } from "satteri";
-import type { Link, Parents, Text } from "mdast";
+/*
+ * remark-link-card-plus を satteri 向けに移植・改変したものです。
+ * https://github.com/okaryo/remark-link-card-plus
+ *
+ * MIT License
+ *
+ * Copyright (c) 2025 okaryo
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
 
-// satteri は mdast の context 型を公開していないので visitor から導出する
-type MdastVisitorContext = Parameters<NonNullable<MdastPluginDefinition["text"]>>[1];
+import { defineMdastPlugin } from "satteri";
+import type { MdastVisitorContext } from "satteri";
+import type { Link, Parents } from "mdast";
 import { createHash } from "node:crypto";
-import { access, mkdir, readdir, writeFile } from "node:fs/promises";
+import { mkdir, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import ogs from "open-graph-scraper";
 import { escapeHtml } from "../utils/escapeHtml";
@@ -42,6 +66,10 @@ const IMAGE_EXTENSIONS: Record<string, string> = {
 };
 
 const TIMEOUT = 10000;
+const USER_AGENT = "Mozilla/5.0 (compatible; coiluck-link-card; +https://coiluck.moe/)";
+
+// 名前空間付きの <svg:script> も対象にする
+const SVG_SCRIPT_PATTERN = /<(?:[\w-]+:)?script[\s/>]/i;
 
 export default function mdastLinkCard(opts: Options = {}) {
   const options: ResolvedOptions = {
@@ -55,8 +83,9 @@ export default function mdastLinkCard(opts: Options = {}) {
   return defineMdastPlugin({
     name: "mdastLinkCard",
 
-    // GFM のオートリンクなどで link ノードになっているケース
+    // 素のURLも GFM のオートリンクで link ノードになる
     async link(node, ctx) {
+      if (!isCardableUrl(node.url)) return;
       const child = node.children[0];
       const isAutolink =
         node.children.length === 1 &&
@@ -65,13 +94,6 @@ export default function mdastLinkCard(opts: Options = {}) {
       if (!isAutolink) return;
       if (!isStandalone(node, ctx)) return;
       await replaceWithCard(node.url, node, ctx, options);
-    },
-
-    // 素のURLがテキストとして残っているケース
-    async text(node, ctx) {
-      if (!isCardableUrl(node.value)) return;
-      if (!isStandalone(node, ctx)) return;
-      await replaceWithCard(node.value, node, ctx, options);
     },
   });
 }
@@ -94,7 +116,7 @@ function isSameUrl(a: string, b: string): boolean {
 // 「段落にそのノードだけ」かつ「段落が root 直下」のときだけカード化する。
 // 文中のインラインリンクを巻き込まないための条件。
 function isStandalone(
-  node: Readonly<Text | Link>,
+  node: Readonly<Link>,
   ctx: MdastVisitorContext,
 ): boolean {
   const paragraph = ctx.parent(node) as Parents | undefined;
@@ -107,7 +129,7 @@ function isStandalone(
 // 置換
 async function replaceWithCard(
   rawUrl: string,
-  node: Readonly<Text | Link>,
+  node: Readonly<Link>,
   ctx: MdastVisitorContext,
   options: ResolvedOptions,
 ): Promise<void> {
@@ -136,23 +158,27 @@ async function getLinkCardData(
   url: URL,
   options: ResolvedOptions,
 ): Promise<CardData> {
-  let og: Record<string, any> | null = null;
+  let og: Record<string, any>;
 
   try {
-    const { result }: Record<string, any> = await ogs({ url: url.toString(), timeout: TIMEOUT });
+    const { result }: Record<string, any> = await ogs({
+      url: url.toString(),
+      timeout: TIMEOUT / 1000, // ogs の timeout は秒単位
+      fetchOptions: { headers: { "User-Agent": USER_AGENT } },
+    });
     og = result;
   } catch (error: any) {
-    throw new Error (
-      `[mdast-link-card] Error: Failed to get OG data of ${url} due to ${error?.result?.error ?? error}.`,
+    throw new Error(
+      `Failed to get OG data of ${url} due to ${error?.result?.error ?? error}.`,
     );
   }
-  
-  const title = og?.ogTitle || url.hostname;
-  const description = og?.ogDescription || "";
+
+  const title = og.ogTitle || url.hostname;
+  const description = og.ogDescription || "";
 
   const faviconUrl = options.noFavicon
     ? ""
-    : await resolveFavicon(url, og?.favicon, options);
+    : await resolveFavicon(url, og.favicon, options);
   const ogImageUrl = options.noThumbnail
     ? ""
     : await resolveOgImage(url, extractOgImage(og), options);
@@ -167,8 +193,8 @@ async function getLinkCardData(
   return { title, description, faviconUrl, ogImageUrl, displayUrl, url };
 }
 
-function extractOgImage(og: Record<string, any> | null): string | undefined {
-  const images = og?.ogImage;
+function extractOgImage(og: Record<string, any>): string | undefined {
+  const images = og.ogImage;
   return Array.isArray(images) && images.length > 0 ? images[0].url : undefined;
 }
 
@@ -182,7 +208,7 @@ async function resolveFavicon(
   // 相対パスなら絶対URLに直す
   if (faviconUrl && !URL.canParse(faviconUrl)) {
     try {
-      faviconUrl = new URL(faviconUrl, url.origin).toString();
+      faviconUrl = new URL(faviconUrl, url).toString();
     } catch {
       faviconUrl = undefined;
     }
@@ -209,20 +235,22 @@ async function resolveFavicon(
 }
 
 async function resolveOgImage(
-  _url: URL,
+  url: URL,
   imageUrl: string | undefined,
   options: ResolvedOptions,
 ): Promise<string> {
-  if (!imageUrl || !URL.canParse(imageUrl)) return "";
+  if (!imageUrl || !URL.canParse(imageUrl, url)) return "";
+  // 相対パスなら絶対URLに直す
+  const absoluteUrl = new URL(imageUrl, url);
   if (options.cache) {
-    return (await cacheImage(new URL(imageUrl))) ?? imageUrl;
+    return (await cacheImage(absoluteUrl)) ?? absoluteUrl.toString();
   }
-  return imageUrl;
+  return absoluteUrl.toString();
 }
 
 // 画像をビルド時に`public/`へ落とす
 async function cacheImage(url: URL): Promise<string | null> {
-  const hash = createHash("sha256").update(decodeURI(url.href)).digest("hex");
+  const hash = createHash("sha256").update(url.href).digest("hex");
 
   // 既存チェック
   try {
@@ -235,17 +263,21 @@ async function cacheImage(url: URL): Promise<string | null> {
 
   // ダウンロードして保存
   try {
-    const res = await fetch(url.href, { signal: AbortSignal.timeout(TIMEOUT) });
+    const res = await fetch(url.href, {
+      headers: { "User-Agent": USER_AGENT },
+      signal: AbortSignal.timeout(TIMEOUT),
+    });
     if (!res.ok) return null;
     const buffer = Buffer.from(await res.arrayBuffer());
-    const extension = guessExtension(res.headers.get("Content-Type"));
+    const contentType = res.headers.get("Content-Type");
+    const extension = guessExtension(contentType);
+    if (!extension) throw new Error(`Not an image: ${contentType}`);
+    if (extension === ".svg" && SVG_SCRIPT_PATTERN.test(buffer.toString("utf8"))) {
+      throw new Error("SVG contains a script tag");
+    }
     const filename = `${hash}${extension}`;
 
-    try {
-      await access(SAVE_DIR);
-    } catch {
-      await mkdir(SAVE_DIR, { recursive: true });
-    }
+    await mkdir(SAVE_DIR, { recursive: true });
     await writeFile(path.join(SAVE_DIR, filename), buffer);
     return path.posix.join(OUTPUT_DIR, filename);
   } catch (error) {
