@@ -14,6 +14,7 @@ import '../../styles/link-card.css';
 import '../../styles/article.css';
 import '../../styles/note.css';
 import '../../styles/footnote-hover.css';
+import '../../styles/plugin-toc.css'
 
 export async function getStaticPaths() {
   const posts = await getSortedPosts();
@@ -116,7 +117,7 @@ const markdown = post.body ?? '';
     }
     @media (max-width: 768px) {
       .post-head {
-        padding: 1.5rem 1rem 1.5rem;
+        padding: 1.5rem 1rem 0;
       }
     }
 

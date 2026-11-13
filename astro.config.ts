@@ -2,7 +2,7 @@ import { defineConfig, passthroughImageService } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 
 // Sätteri plugin
-import mdastTocCollapse from './src/plugins/mdast-toc-collapse';
+import mdastToc from './src/plugins/mdast-toc';
 import mdastLinkCard from './src/plugins/mdast-link-card';
 import hastLinkBlank from './src/plugins/hast-link-blank'
 import hastFootnoteHover from './src/plugins/hast-footnote-hover';
@@ -23,7 +23,7 @@ export default defineConfig({
         headingAttributes: true,
       },
       mdastPlugins: [
-        mdastTocCollapse,
+        mdastToc,
         mdastNote,
         mdastFigureCaption,
         mdastLinkCard({ thumbnailPosition: "left" })

@@ -81,8 +81,7 @@ export default function mdastHeadingsToc(opts: TocOptions = {}) {
       if (done.has(parent)) return;
       done.add(parent);
 
-      const root = parent as Root;
-      const children = root.children as RootContent[];
+      const children = (parent as Root).children;
 
       // マーカーコメントを探す
       const markerIndex = children.findIndex(
@@ -92,27 +91,24 @@ export default function mdastHeadingsToc(opts: TocOptions = {}) {
       const markerNode = children[markerIndex];
 
       // 文書中の見出しを収集
-      const headings: Heading[] = [];
-      const texts: string[] = [];
-      for (const c of children) {
-        if (c.type === "heading") {
-          headings.push(c as Heading);
-          texts.push(ctx.textContent(c));
-        }
-      }
-
-      // slugを生成
+      const headings = children.filter((c): c is Heading => c.type === "heading");
+      const texts = headings.map((h) => ctx.textContent(h));
       const slugger = new GithubSlugger();
       const slugs = texts.map((text) => slugger.slug(text));
 
-      const list = buildTocList(headings, texts, slugs, maxDepth);
-      const open: Html = { type: "html", value: `<details>\n<summary>${summary}</summary>` };
-      const closing: Html = { type: "html", value: "</details>" };
-
-      // 置換（コメントは消える）
-      ctx.insertBefore(markerNode, [open, list as RootContent]);
-      ctx.insertAfter(markerNode, closing);
-      ctx.removeNode(markerNode);
+      // 置換
+      ctx.replaceNode(markerNode, {
+        type: "plugin-toc",
+        data: { hName: "nav", hProperties: { className: ["plugin-toc"], ariaLabel: summary } },
+        children: [
+          {
+            type: "paragraph",
+            data: { hProperties: { className: ["plugin-toc-title"] } },
+            children: [{ type: "text", value: summary }],
+          },
+          buildTocList(headings, texts, slugs, maxDepth),
+        ],
+      });
     },
   });
 }

@@ -1,0 +1,64 @@
+.prose nav.plugin-toc {
+  margin: 1.5rem 0 2rem;
+}
+.prose nav.plugin-toc .plugin-toc-title {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  margin-bottom: .8rem;
+  font-size: .8rem;
+  letter-spacing: .2em;
+}
+.prose nav.plugin-toc .plugin-toc-title::after {
+  content: '';
+  flex: 1;
+  border-top: 1px dashed rgb(from var(--text) r g b / .45);
+}
+/* 記事の先頭に置かれた場合は BlogLine が区切り線を兼ねるので点線を消す */
+.prose > nav.plugin-toc:first-child {
+  margin-top: 0;
+}
+.prose > nav.plugin-toc:first-child .plugin-toc-title::after {
+  display: none;
+}
+.prose nav.plugin-toc ul {
+  margin-bottom: 0;
+  list-style: none;
+}
+.prose nav.plugin-toc > ul {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  padding-left: 0;
+  counter-reset: toc;
+}
+.prose nav.plugin-toc > ul > li {
+  counter-increment: toc;
+}
+.prose nav.plugin-toc > ul > li > a::before {
+  content: counter(toc, decimal-leading-zero);
+  display: inline-block;
+  width: 2.2rem;
+  margin-right: .5rem;
+  color: var(--accent);
+  font-size: .8rem;
+  font-variant-numeric: tabular-nums;
+}
+/* 2 段目以降 */
+.prose nav.plugin-toc ul ul {
+  padding: .2rem 0 .2rem 2.7rem;
+  font-size: .88rem;
+  opacity: .85;
+}
+.prose nav.plugin-toc ul ul a::before {
+  content: '#';
+  margin-right: .35rem;
+  color: var(--accent);
+}
+.prose nav.plugin-toc a {
+  color: var(--text);
+  text-decoration: none;
+}
+.prose nav.plugin-toc a:hover {
+  text-decoration: underline;
+}
