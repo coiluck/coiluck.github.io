@@ -9,6 +9,7 @@ import hastFootnoteHover from './src/plugins/hast-footnote-hover';
 import hastImageAttrs from './src/plugins/hast-image-attrs';
 import mdastNote from './src/plugins/mdast-note';
 import mdastFigureCaption from './src/plugins/mdast-figure-caption';
+import mdastRuby from './src/plugins/mdast-ruby';
 
 // syntax highlight
 import expressiveCode from "satteri-expressive-code";
@@ -25,6 +26,7 @@ export default defineConfig({
       mdastPlugins: [
         mdastToc,
         mdastNote,
+        mdastRuby,
         mdastFigureCaption,
         mdastLinkCard({ thumbnailPosition: "left" })
       ],

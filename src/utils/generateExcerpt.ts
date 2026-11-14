@@ -33,6 +33,7 @@ export function generateExcerpt(entry: BlogPost, cut_length: number = 150) {
     .replace(/\s+/g, ' ')                           // 連続空白
     .replace(/<[^>]+>/g, '')                        // HTMLタグ
     .replace(/\[\^\d+\]/g, '')                      // footnote用ラベル
+    .replace(/\[([^\]]{1,20})\]!([^?]{1,20})\?/g, '$1') // ルビ記法
     .trim();
 
   // <!--more-->がある場合はそこまでの全文、ない場合は指定文字数で切る
